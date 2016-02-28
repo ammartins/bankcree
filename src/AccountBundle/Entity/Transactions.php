@@ -38,21 +38,21 @@ class Transactions
     /**
      * @var string
      *
-     * @ORM\Column(name="startsaldo", type="decimal", precision=3, scale=0)
+     * @ORM\Column(name="startsaldo", type="float")
      */
     private $startsaldo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="endsaldo", type="decimal", precision=3, scale=0)
+     * @ORM\Column(name="endsaldo", type="float")
      */
     private $endsaldo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="amount", type="decimal", precision=3, scale=0)
+     * @ORM\Column(name="amount", type="float")
      */
     private $amount;
 
@@ -70,11 +70,18 @@ class Transactions
      */
     private $shortDescription;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="account_id", type="integer")
+     */
+    private $accountId;
+
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -97,7 +104,7 @@ class Transactions
     /**
      * Get transactionId
      *
-     * @return integer 
+     * @return integer
      */
     public function getTransactionId()
     {
@@ -120,7 +127,7 @@ class Transactions
     /**
      * Get createAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateAt()
     {
@@ -143,7 +150,7 @@ class Transactions
     /**
      * Get startsaldo
      *
-     * @return string 
+     * @return string
      */
     public function getStartsaldo()
     {
@@ -166,7 +173,7 @@ class Transactions
     /**
      * Get endsaldo
      *
-     * @return string 
+     * @return string
      */
     public function getEndsaldo()
     {
@@ -189,7 +196,7 @@ class Transactions
     /**
      * Get amount
      *
-     * @return string 
+     * @return string
      */
     public function getAmount()
     {
@@ -212,7 +219,7 @@ class Transactions
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -235,10 +242,34 @@ class Transactions
     /**
      * Get shortDescription
      *
-     * @return string 
+     * @return string
      */
     public function getShortDescription()
     {
         return $this->shortDescription;
+    }
+
+
+    /**
+     * Set accountId
+     *
+     * @param integer $accountId
+     * @return Transactions
+     */
+    public function setaccountId($accountId)
+    {
+        $this->accountId = $accountId;
+
+        return $this;
+    }
+
+    /**
+     * Get accountId
+     *
+     * @return integer
+     */
+    public function getAccountId()
+    {
+        return $this->accountId;
     }
 }
