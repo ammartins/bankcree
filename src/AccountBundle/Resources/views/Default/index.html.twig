@@ -1,1 +1,22 @@
 {% extends 'base.html.twig' %}
+
+{% block body %}
+  <table class="table table-condensed table-hover table-responsive">
+    <tr>
+      <th>Transaction</th>
+      <th>Transaction Date</th>
+      <th>Saldo</th>
+      <th>Ammount</th>
+      <th>Short Description</th>
+    </tr>
+    {% for transaction in transactions %}
+      <tr {% if transaction.amount > 0 %} class='success' {% endif %}>
+        <td>{{ transaction.id }}</td>
+        <td>{{ transaction.createAt|date("d/m/Y") }}</td>
+        <td>{{ transaction.endsaldo }}</td>
+        <td >{{ transaction.amount }}</td>
+        <td>{{ transaction.shortDescription }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

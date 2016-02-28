@@ -12,4 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class TransactionsRepository extends EntityRepository
 {
+  public function findAllByMonth($month)
+  {
+    return $this->getEntityManager()
+      ->createQuery(
+        "SELECT p FROM AccountBundle:Transactions p WHERE MONTH(p.createAt) = $month ORDER BY p.createAt ASC"
+      )
+      ->getResult();
+  }
 }

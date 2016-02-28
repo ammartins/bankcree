@@ -12,6 +12,15 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('AccountBundle:Default:index.html.twig');
+        $currentMonth = date('m');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $transactions = $em->getRepository('AccountBundle:Transactions')
+            ->findAllByMonth($currentMonth);
+
+        return $this->render('AccountBundle:Default:index.html.twig',
+          array('transactions' => $transactions)
+        );
     }
 }
