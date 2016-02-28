@@ -24,6 +24,7 @@
         "twitter/bootstrap": "3.*",
         "components/jquery": "1.11.1",
         "doctrine/doctrine-migrations-bundle": "^1.0",
+        "oro/doctrine-extensions": "dev-master",
         "symfony/assetic-bundle": "^2.7"
     },
     "require-dev": {
