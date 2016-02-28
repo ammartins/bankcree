@@ -23,7 +23,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "twitter/bootstrap": "3.*",
         "components/jquery": "1.11.1",
-        "doctrine/doctrine-migrations-bundle": "^1.0"
+        "doctrine/doctrine-migrations-bundle": "^1.0",
+        "symfony/assetic-bundle": "^2.7"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
