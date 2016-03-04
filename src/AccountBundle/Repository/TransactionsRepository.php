@@ -16,8 +16,41 @@ class TransactionsRepository extends EntityRepository
   {
     return $this->getEntityManager()
       ->createQuery(
-        "SELECT p FROM AccountBundle:Transactions p WHERE MONTH(p.createAt) = $month ORDER BY p.createAt ASC"
+        "SELECT p
+        FROM AccountBundle:Transactions p
+        WHERE MONTH(p.createAt) = $month
+        ORDER BY p.createAt ASC"
       )
       ->getResult();
+  }
+
+  public function getCurrentMonth($month)
+  {
+     $dataGraph = $this->getEntityManager()
+      ->createQuery(
+        "SELECT SUM(p.amount)
+        FROM AccountBundle:Transactions p
+        WHERE MONTH(p.createAt) = $month
+        GROUP BY p.shortDescription"
+      )
+      ->execute();
+
+      return $dataGraph;
+  }
+
+  public function getDescriptionUsage($month)
+  {
+    $data = $this->getEntityManager()
+      ->createQuery(
+        "SELECT p.shortDescription, sum(p.amount) as total, count(p.shortDescription) as ocurrencies
+        FROM AccountBundle:Transactions p
+        WHERE Month(p.createAt) = $month
+        AND p.shortDescription != ''
+        AND p.shortDescription != 'savings'
+        GROUP BY p.shortDescription"
+      )
+      ->execute();
+
+      return $data;
   }
 }

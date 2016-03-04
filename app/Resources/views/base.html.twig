@@ -10,10 +10,10 @@
        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-        {% javascripts '@jquery' '@bootstrap_js' %}
+        {% javascripts '@jquery' '@bootstrap_js' '@AccountBundle/Resources/public/js/highcharts.src.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
+        {% block javascripts %}{% endblock %}
+        {% block body %}{% endblock %}
     </body>
 </html>
