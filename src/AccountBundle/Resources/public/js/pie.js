@@ -1,19 +1,19 @@
 var chart1; // globally available
 
 $(document).ready(function() {
-    var sdF = [];
-    var frr = [];
-    var idx = 0;
+    $('#myTabs a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+
+    var sdF   = [];
+    var idx   = 0;
     var total = 0;
 
     for(var key in obj) {
         if (obj.hasOwnProperty(key)){
             if (obj[key]['total'] > 0) {
                 total = parseInt(obj[key]['total']);
-                continue;
-            }
-            else {
-                frr[obj[key]['shortDescription']] = parseInt(obj[key]['total']);
             }
         }
     }
@@ -28,7 +28,7 @@ $(document).ready(function() {
         }
     }
 
-    chart2 = new Highcharts.Chart({
+    chart1 = new Highcharts.Chart({
         chart: {
             renderTo: 'container2',
             plotBackgroundColor: null,

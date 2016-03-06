@@ -53,4 +53,20 @@ class TransactionsRepository extends EntityRepository
 
       return $data;
   }
+
+  public function  getDescriptionPerDayInMonth($month)
+  {
+    $data = $this->getEntityManager()
+      ->createQuery(
+        "SELECT sum(p.amount) as total, Day(p.createAt) as day
+        FROM AccountBundle:Transactions p
+        WHERE Month(p.createAt) = $month
+        AND p.shortDescription != ''
+        AND p.shortDescription != 'savings'
+        GROUP BY day"
+      )
+      ->execute();
+
+      return $data;
+  }
 }

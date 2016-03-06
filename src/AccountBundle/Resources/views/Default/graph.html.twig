@@ -1,19 +1,14 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-    <script type="text/javascript">
-        obj = jQuery.parseJSON('{{ data|raw }}');
-    </script>
-
-    {% block javascripts %}
-        {% javascripts '@AccountBundle/Resources/public/js/pie.js' %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-    {% endblock %}
-
-    <div id="containerGUI">
-        <div id="listagem">
-            <div id="container2" style="width: 100%; height: 100%"></div>
-        </div>
-    </div>
+{% block javascripts %}
+    {% javascripts '@AccountBundle/Resources/public/js/pie.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
+
+<div id="containerGUI">
+    <!--div id="listagem">
+        <div id="container" style="width: 100%; height: 100%"></div>
+    </div-->
+    <div id="listagem">
+        <div id="container2" style="width: 100%; height: 100%"></div>
+    </div>
+</div>
