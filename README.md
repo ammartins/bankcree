@@ -3,7 +3,6 @@
 
 ## Installation:
 
-
 ```
 #!bash
 
@@ -12,11 +11,9 @@
   php app/console server:run
 ```
 
-
 ## Exporting your Transactions and saving it as CSV
 
 Importing data from ADN (the console command works for ABN at the moment)
-
 
 ```
 #!csv
@@ -30,12 +27,23 @@ Importing data from ADN (the console command works for ABN at the moment)
 123456789;EUR;20160328;20160328;17;9,00;-7,00;We payed more things,PAS572
 ```
 
+### For now the short_description needs to be manually update :)  TODO
+
+```
+#!sql
+
+  update transactions set short_description =  'negative' where description like '%payed%';
+  update transactions set short_description =  'positive' where description like '%money%';
+  update transactions set short_description =  'moneys' where description like '%reach%';
+  update transactions set short_description =  'money in' where description like '%Transaction%';
+```
+
+#### You will not be able to see some data on the first tab and on the pie chart
+
 ```
 #!bash
 
   php app/console import:csv test.csv
 ```
-
-
 
 A Symfony project created on February 17, 2016, 9:38 pm.
