@@ -69,4 +69,18 @@ class TransactionsRepository extends EntityRepository
 
       return $data;
   }
+
+  public function getMonths($year)
+  {
+    $months = $this->getEntityManager()
+      ->createQuery(
+        "SELECT DISTINCT Month(p.createAt) as months
+        FROM AccountBundle:Transactions p
+        WHERE Year(p.createAt) = $year
+        ORDER BY months"
+      )
+      ->execute();
+
+      return $months;
+  }
 }

@@ -16,3 +16,15 @@
     </tr>
   {% endfor %}
 </table>
+
+<nav class="text-center">
+  <ul class="pagination" id="months">
+    {% for month in months %}
+      <li {% if month.months == currentMonth%}class="active"{% endif %}>
+        <a id="month-{{ month.months }}" href="#{{ month.months }}">
+          {{ month.months }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

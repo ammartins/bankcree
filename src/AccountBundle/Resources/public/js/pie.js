@@ -4,7 +4,13 @@ $(document).ready(function() {
     $('#myTabs a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
-    })
+    });
+
+    $('#months a').click(function (e) {
+      e.preventDefault();
+      // TODO ajax call to get the content for the month and reload the table :)
+      // alert($(this).attr('href'));
+    });
 
     var sdF   = [];
     var idx   = 0;
