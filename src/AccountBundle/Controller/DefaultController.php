@@ -17,17 +17,18 @@ class DefaultController extends Controller
    */
    public function indexAction(Request $request)
    {
-      $currentMonth = $request->query->get('currentMonth') ? str_replace('#', '', $request->query->get('currentMonth')) : date('m');
+      $currentMonth = $request->query->get('currentMonth')
+      ? str_replace('#', '', $request->query->get('currentMonth')) : date('m');
       $currentYear  = date('Y');
 
       $em = $this->getDoctrine()->getManager();
 
       $transactions     = $em->getRepository('AccountBundle:Transactions')
-        ->findAllByMonth($currentMonth);
+        ->findAllByMonth($currentMonth, $currentYear);
       $graphDataType    = $em->getRepository('AccountBundle:Transactions')
-        ->getDescriptionUsage($currentMonth);
+        ->getDescriptionUsage($currentMonth, $currentYear);
       $graphDataDay     = $em->getRepository('AccountBundle:Transactions')
-        ->getDescriptionPerDayInMonth($currentMonth);
+        ->getDescriptionPerDayInMonth($currentMonth, $currentYear);
       $monthsData       = $em->getRepository('AccountBundle:Transactions')
         ->getMonths($currentYear);
       $descriptionData  = $em->getRepository('AccountBundle:Transactions')
