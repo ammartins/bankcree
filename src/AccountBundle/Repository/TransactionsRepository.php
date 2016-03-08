@@ -83,4 +83,20 @@ class TransactionsRepository extends EntityRepository
 
       return $months;
   }
+
+  public function getDescriptionPerMonth($month, $year)
+  {
+    $data = $this->getEntityManager()
+      ->createQuery(
+        "SELECT DISTINCT p.shortDescription as description, sum(p.amount) as amount
+        FROM AccountBundle:Transactions p
+        WHERE Month(p.createAt) = $month
+        AND Year(p.createAt) = $year
+        GROUP BY description
+        ORDER BY p.createAt"
+      )
+      ->execute();
+
+      return $data;
+  }
 }
