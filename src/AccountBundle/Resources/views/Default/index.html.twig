@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block menu %}
   {% include 'menu.html.twig' %}
+{% endblock %}
+{% block body %}
   <script type="text/javascript">
       obj = jQuery.parseJSON('{{ data|raw }}');
       day = jQuery.parseJSON('{{ dataDay|raw }}');

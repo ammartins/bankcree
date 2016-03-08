@@ -12,25 +12,27 @@ use Doctrine\ORM\EntityRepository;
  */
 class TransactionsRepository extends EntityRepository
 {
-  public function findAllByMonth($month)
+  public function findAllByMonth($month, $year)
   {
     return $this->getEntityManager()
       ->createQuery(
         "SELECT p
         FROM AccountBundle:Transactions p
         WHERE MONTH(p.createAt) = $month
+        AND Year(p.createAt) = $year
         ORDER BY p.createAt ASC"
       )
       ->getResult();
   }
 
-  public function getCurrentMonth($month)
+  public function getCurrentMonth($month, $year)
   {
      $dataGraph = $this->getEntityManager()
       ->createQuery(
         "SELECT SUM(p.amount)
         FROM AccountBundle:Transactions p
         WHERE MONTH(p.createAt) = $month
+        AND Year(p.createAt) = $year
         GROUP BY p.shortDescription"
       )
       ->execute();
@@ -38,13 +40,14 @@ class TransactionsRepository extends EntityRepository
       return $dataGraph;
   }
 
-  public function getDescriptionUsage($month)
+  public function getDescriptionUsage($month, $year)
   {
     $data = $this->getEntityManager()
       ->createQuery(
         "SELECT p.shortDescription, sum(p.amount) as total, count(p.shortDescription) as ocurrencies
         FROM AccountBundle:Transactions p
         WHERE Month(p.createAt) = $month
+        AND Year(p.createAt) = $year
         AND p.shortDescription != ''
         AND p.shortDescription != 'savings'
         GROUP BY p.shortDescription"
@@ -54,16 +57,47 @@ class TransactionsRepository extends EntityRepository
       return $data;
   }
 
-  public function  getDescriptionPerDayInMonth($month)
+  public function  getDescriptionPerDayInMonth($month, $year)
   {
     $data = $this->getEntityManager()
       ->createQuery(
         "SELECT sum(p.amount) as total, Day(p.createAt) as day
         FROM AccountBundle:Transactions p
         WHERE Month(p.createAt) = $month
+        AND Year(p.createAt) = $year
         AND p.shortDescription != ''
         AND p.shortDescription != 'savings'
         GROUP BY day"
+      )
+      ->execute();
+
+      return $data;
+  }
+
+  public function getMonths($year)
+  {
+    $months = $this->getEntityManager()
+      ->createQuery(
+        "SELECT DISTINCT Month(p.createAt) as months
+        FROM AccountBundle:Transactions p
+        WHERE Year(p.createAt) = $year
+        ORDER BY months"
+      )
+      ->execute();
+
+      return $months;
+  }
+
+  public function getDescriptionPerMonth($month, $year)
+  {
+    $data = $this->getEntityManager()
+      ->createQuery(
+        "SELECT DISTINCT p.shortDescription as description, sum(p.amount) as amount
+        FROM AccountBundle:Transactions p
+        WHERE Month(p.createAt) = $month
+        AND Year(p.createAt) = $year
+        GROUP BY description
+        ORDER BY p.createAt"
       )
       ->execute();
 
