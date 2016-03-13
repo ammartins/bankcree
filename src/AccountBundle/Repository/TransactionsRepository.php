@@ -20,6 +20,7 @@ class TransactionsRepository extends EntityRepository
         FROM AccountBundle:Transactions p
         WHERE MONTH(p.createAt) = $month
         AND Year(p.createAt) = $year
+        AND p.shortDescription != 'savings'
         ORDER BY p.createAt ASC"
       )
       ->getResult();
@@ -33,6 +34,7 @@ class TransactionsRepository extends EntityRepository
         FROM AccountBundle:Transactions p
         WHERE MONTH(p.createAt) = $month
         AND Year(p.createAt) = $year
+        AND p.shortDescription != 'savings'
         GROUP BY p.shortDescription"
       )
       ->execute();

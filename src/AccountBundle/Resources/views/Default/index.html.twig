@@ -5,8 +5,9 @@
 {% endblock %}
 {% block body %}
   <script type="text/javascript">
-      obj = jQuery.parseJSON('{{ data|raw }}');
-      day = jQuery.parseJSON('{{ dataDay|raw }}');
+      obj   = jQuery.parseJSON('{{ data|raw }}');
+      objD  = jQuery.parseJSON('{{ graphDay|raw }}');
+      day   = jQuery.parseJSON('{{ dataDay|raw }}');
   </script>
   <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="table">
