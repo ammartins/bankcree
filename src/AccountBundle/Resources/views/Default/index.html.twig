@@ -12,8 +12,11 @@
       <div role="tabpanel" class="tab-pane active" id="table">
           {% include 'AccountBundle:Default:table.html.twig' %}
       </div>
-      <div role="tabpanel" class="tab-pane" id="graph">
+      <div role="tabpanel" class="tab-pane" id="monthgraph">
           {% include 'AccountBundle:Default:graph.html.twig' %}
+      </div>
+      <div role="tabpanel" class="tab-pane" id="dailygraph">
+          {% include 'AccountBundle:Default:dailygraph.html.twig' %}
       </div>
   </div>
 {% endblock %}
