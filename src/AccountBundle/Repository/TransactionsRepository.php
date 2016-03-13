@@ -20,6 +20,7 @@ class TransactionsRepository extends EntityRepository
         FROM AccountBundle:Transactions p
         WHERE MONTH(p.createAt) = $month
         AND Year(p.createAt) = $year
+        AND p.shortDescription != 'savings'
         ORDER BY p.createAt ASC"
       )
       ->getResult();
@@ -33,6 +34,7 @@ class TransactionsRepository extends EntityRepository
         FROM AccountBundle:Transactions p
         WHERE MONTH(p.createAt) = $month
         AND Year(p.createAt) = $year
+        AND p.shortDescription != 'savings'
         GROUP BY p.shortDescription"
       )
       ->execute();
@@ -81,6 +83,7 @@ class TransactionsRepository extends EntityRepository
         "SELECT DISTINCT Month(p.createAt) as months
         FROM AccountBundle:Transactions p
         WHERE Year(p.createAt) = $year
+        AND p.shortDescription != 'savings'
         ORDER BY months"
       )
       ->execute();
@@ -96,6 +99,7 @@ class TransactionsRepository extends EntityRepository
         FROM AccountBundle:Transactions p
         WHERE Month(p.createAt) = $month
         AND Year(p.createAt) = $year
+        AND p.shortDescription != 'savings'
         GROUP BY description
         ORDER BY p.createAt"
       )
@@ -103,4 +107,22 @@ class TransactionsRepository extends EntityRepository
 
       return $data;
   }
+
+
+  public function getAmountPerDay($month, $year)
+  {
+    $data = $this->getEntityManager()
+      ->createQuery(
+        "SELECT DAY(p.createAt) as days, sum(p.amount) as amount
+        FROM AccountBundle:Transactions p
+        WHERE YEAR(p.createAt) = $year
+        AND MONTH(p.createAt) = $month
+        AND p.shortDescription != 'savings'
+        GROUP BY days"
+      )
+      ->execute();
+
+      return $data;
+  }
+
 }

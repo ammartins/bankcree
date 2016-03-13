@@ -1,0 +1,16 @@
+{% block javascripts %}
+    {% javascripts '@AccountBundle/Resources/public/js/pie.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+    <div class="col-md-3">
+      {% include 'AccountBundle:Default:descriptionDailyData.html.twig' %}
+    </div>
+    <div id="containerGUI" class="col-md-4">
+        <div id="listagem">
+            <div id="container" style="width: 60%; height: 45%"></div>
+        </div>
+    </div>
+{% endblock %}

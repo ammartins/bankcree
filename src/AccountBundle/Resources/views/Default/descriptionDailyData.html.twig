@@ -1,0 +1,18 @@
+<table class="table table-condensed table-hover table-responsive">
+  <tr>
+    <th>Day</th>
+    <th>Amount</th>
+  </tr>
+  {% set total = 0 %}
+  {% for description in descriptionDay %}
+    <tr class="#{{ description.days }}">
+      <td>{{ description.days }}</td>
+      <td class="text-right">{{ description.amount|round(1, 'floor') }} €</td>
+    </tr>
+    {% set total = total + description.amount %}
+  {% endfor %}
+  <tr class="{% if total > 0 %}success{% else %}danger{% endif %}">
+    <td>Total</td>
+    <td class="text-right">{{ total|round(1, 'floor') }} €</td>
+  </tr>
+</table>

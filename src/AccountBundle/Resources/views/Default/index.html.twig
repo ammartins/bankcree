@@ -5,15 +5,19 @@
 {% endblock %}
 {% block body %}
   <script type="text/javascript">
-      obj = jQuery.parseJSON('{{ data|raw }}');
-      day = jQuery.parseJSON('{{ dataDay|raw }}');
+      obj   = jQuery.parseJSON('{{ data|raw }}');
+      objD  = jQuery.parseJSON('{{ graphDay|raw }}');
+      day   = jQuery.parseJSON('{{ dataDay|raw }}');
   </script>
   <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="table">
           {% include 'AccountBundle:Default:table.html.twig' %}
       </div>
-      <div role="tabpanel" class="tab-pane" id="graph">
+      <div role="tabpanel" class="tab-pane" id="monthgraph">
           {% include 'AccountBundle:Default:graph.html.twig' %}
+      </div>
+      <div role="tabpanel" class="tab-pane" id="dailygraph">
+          {% include 'AccountBundle:Default:dailygraph.html.twig' %}
       </div>
   </div>
 {% endblock %}
