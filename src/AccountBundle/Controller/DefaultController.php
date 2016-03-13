@@ -18,7 +18,7 @@ class DefaultController extends Controller
    public function indexAction(Request $request)
    {
       $currentMonth = $request->query->get('currentMonth')
-      ? str_replace('#', '', $request->query->get('currentMonth')) : date('m');
+      ? str_replace('#', '', $request->query->get('currentMonth')) : date('m')-2;
       $currentYear  = date('Y');
 
       $em = $this->getDoctrine()->getManager();
@@ -33,11 +33,14 @@ class DefaultController extends Controller
         ->getMonths($currentYear);
       $descriptionData  = $em->getRepository('AccountBundle:Transactions')
         ->getDescriptionPerMonth($currentMonth, $currentYear);
+      $amountDay        = $em->getRepository('AccountBundle:Transactions')
+        ->getAmountPerDay($currentMonth, $currentYear);
 
       // serializer ... maybe should move this to Repository
       $serializer       = $this->get('jms_serializer');
       $graphDataType    = $serializer->serialize($graphDataType, 'json');
       $graphDataDay     = $serializer->serialize($graphDataDay, 'json');
+      //$graphAmountDay   = $serializer->serialize($amountDay, 'json');
       //$descriptionData  = $serializer->serialize($descriptionData, 'json');
       // serializer ... maybe should move this to Repository
 
@@ -48,7 +51,8 @@ class DefaultController extends Controller
           'dataDay'           => $graphDataDay,
           'months'            => $monthsData,
           'currentMonth'      => $currentMonth,
-          'descriptionData'   => $descriptionData
+          'descriptionData'   => $descriptionData,
+          'descriptionDay'    => $amountDay,
         )
       );
     }
