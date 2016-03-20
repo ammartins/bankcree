@@ -1,6 +1,10 @@
 var chart1; // globally available
 
 $(document).ready(function() {
+    $('#daily tr').click(function() {
+      alert('Sucess');
+    });
+
     $('#myTabs a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
@@ -104,5 +108,4 @@ $(document).ready(function() {
             data: sdF
         }]
     });
-
 });
