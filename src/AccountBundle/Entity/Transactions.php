@@ -77,6 +77,13 @@ class Transactions
      */
     private $accountId;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="recurring", type="boolean")
+     */
+    private $recurring;
+
 
     /**
      * Get id
@@ -97,6 +104,29 @@ class Transactions
     public function setTransactionId($transactionId)
     {
         $this->transactionId = $transactionId;
+
+        return $this;
+    }
+
+    /**
+     * Get recurring
+     *
+     * @return boolean
+     */
+    public function getRecurring()
+    {
+        return $this->recurring;
+    }
+
+    /**
+     * Set recurring
+     *
+     * @param boolean $recurring
+     * @return Transactions
+     */
+    public function setRecurring($recurring)
+    {
+        $this->recurring = $recurring;
 
         return $this;
     }

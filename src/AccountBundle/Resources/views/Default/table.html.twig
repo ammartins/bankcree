@@ -4,6 +4,7 @@
     <th class="text-right">Saldo</th>
     <th class="text-right">Ammount</th>
     <th class="text-right">Short Description</th>
+    <th class="text-right">Options</th>
   </tr>
   {% for transaction in transactions %}
     <tr {% if transaction.amount > 0 %} class='success' {% endif %}>
@@ -11,6 +12,10 @@
       <td class="text-right">{{ transaction.endsaldo }} €</td>
       <td class="text-right">{{ transaction.amount }} €</td>
       <td class="text-right">{{ transaction.shortDescription|capitalize }}</td>
+      <td class="text-right">
+        <a href="{{ path('show', {'id': transaction.id}) }}">Show</a>
+        <a href="{{ path('show', {'id': transaction.id}) }}">Edit</a>
+      </td>
     </tr>
   {% endfor %}
 </table>

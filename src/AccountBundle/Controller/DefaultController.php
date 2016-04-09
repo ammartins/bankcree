@@ -57,4 +57,14 @@ class DefaultController extends Controller
         )
       );
     }
+
+    /**
+     * @Route("/show", name="show")
+     */
+     public function showAction(Request $request)
+     {
+       $id = $request->query->get('id');
+
+       return $this->render('AccountBundle:Default:show.html.twig');
+     }
 }
