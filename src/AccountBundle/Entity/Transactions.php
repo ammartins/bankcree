@@ -24,9 +24,9 @@ class Transactions
     /**
      * @var int
      *
-     * @ORM\Column(name="transaction_id", type="integer")
+     * @ORM\Column(name="transaction_hash", type="string")
      */
-    private $transactionId;
+    private $transactionHash;
 
     /**
      * @var \DateTime
@@ -96,14 +96,14 @@ class Transactions
     }
 
     /**
-     * Set transactionId
+     * Set transactionHash
      *
-     * @param integer $transactionId
+     * @param integer $transactionHash
      * @return Transactions
      */
-    public function setTransactionId($transactionId)
+    public function setTransactionHash($transactionHash)
     {
-        $this->transactionId = $transactionId;
+        $this->transactionHash = $transactionHash;
 
         return $this;
     }
@@ -132,13 +132,13 @@ class Transactions
     }
 
     /**
-     * Get transactionId
+     * Get transactionHash
      *
      * @return integer
      */
-    public function getTransactionId()
+    public function getTransactionHash()
     {
-        return $this->transactionId;
+        return $this->transactionHash;
     }
 
     /**
