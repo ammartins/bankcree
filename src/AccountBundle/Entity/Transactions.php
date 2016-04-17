@@ -24,9 +24,9 @@ class Transactions
     /**
      * @var int
      *
-     * @ORM\Column(name="transaction_id", type="integer")
+     * @ORM\Column(name="transaction_hash", type="string")
      */
-    private $transactionId;
+    private $transactionHash;
 
     /**
      * @var \DateTime
@@ -77,6 +77,13 @@ class Transactions
      */
     private $accountId;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="recurring", type="boolean")
+     */
+    private $recurring;
+
 
     /**
      * Get id
@@ -89,26 +96,49 @@ class Transactions
     }
 
     /**
-     * Set transactionId
+     * Set transactionHash
      *
-     * @param integer $transactionId
+     * @param integer $transactionHash
      * @return Transactions
      */
-    public function setTransactionId($transactionId)
+    public function setTransactionHash($transactionHash)
     {
-        $this->transactionId = $transactionId;
+        $this->transactionHash = $transactionHash;
 
         return $this;
     }
 
     /**
-     * Get transactionId
+     * Get recurring
+     *
+     * @return boolean
+     */
+    public function getRecurring()
+    {
+        return $this->recurring;
+    }
+
+    /**
+     * Set recurring
+     *
+     * @param boolean $recurring
+     * @return Transactions
+     */
+    public function setRecurring($recurring)
+    {
+        $this->recurring = $recurring;
+
+        return $this;
+    }
+
+    /**
+     * Get transactionHash
      *
      * @return integer
      */
-    public function getTransactionId()
+    public function getTransactionHash()
     {
-        return $this->transactionId;
+        return $this->transactionHash;
     }
 
     /**

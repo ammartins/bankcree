@@ -1,6 +1,10 @@
 var chart1; // globally available
 
 $(document).ready(function() {
+    $('#daily tr').click(function() {
+      alert('Sucess');
+    });
+
     $('#myTabs a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
@@ -38,6 +42,10 @@ $(document).ready(function() {
                 total = parseInt(obj[key]['total']);
             }
         }
+    }
+    // To avoid strange infinity on the y value
+    if ( total <= 0) {
+        total = 1;
     }
 
     // total is 100 so sd[key] is percent
@@ -104,5 +112,4 @@ $(document).ready(function() {
             data: sdF
         }]
     });
-
 });
