@@ -43,6 +43,10 @@ $(document).ready(function() {
             }
         }
     }
+    // To avoid strange infinity on the y value
+    if ( total <= 0) {
+        total = 1;
+    }
 
     // total is 100 so sd[key] is percent
     // 100 - total
