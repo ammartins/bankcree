@@ -39,9 +39,9 @@
     </div>
 
     <div class="form-group">
-        <label for="short_description">{{ form_label(form.shortDescription) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.shortDescription.vars.errors} %}
-        {{ form_widget(form.shortDescription, { 'attr': {'class': 'form-control'} }) }}
+        <label for="short_description">{{ form_label(form.transaction_type) }}</label>
+        {% include '::errors.html.twig' with {'errors': form.transaction_type.vars.errors} %}
+        {{ form_widget(form.transaction_type, { 'attr': {'class': 'form-control'} }) }}
     </div>
 
     <div class="form-group">
@@ -50,15 +50,9 @@
         {{ form_widget(form.accountId, { 'attr': {'class': 'form-control'} }) }}
     </div>
 
-    <div class="form-group">
-        <label for="recurring">{{ form_label(form.recurring) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.recurring.vars.errors} %}
-        {{ form_widget(form.recurring, { 'attr': {'class': 'form-control'} }) }}
-    </div>
-
     <div class="text-right">
       {{ form_widget(form.save, { 'attr': {'class': 'btn btn-success'}}) }}
-      <a type="button" class="btn btn-primary" href="{{ path('home') }}">Back</a>
+      <a type="button" class="btn btn-primary" href="{{ path('home', {'currentMonth': currentMonth}) }}">Back</a>
     </div>
   {{ form_end(form) }}
 {% endblock %}

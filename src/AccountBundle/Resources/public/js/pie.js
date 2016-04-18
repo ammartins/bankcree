@@ -54,8 +54,10 @@ $(document).ready(function() {
     for(var key in obj) {
         if (obj.hasOwnProperty(key) && parseInt(obj[key]['total']) <= 0)
         {
-            sdF[idx++] = { 'name': obj[key]['shortDescription'],
-            'y' : (Math.floor((parseInt(obj[key]['total'])*100)/total))*-1 };
+            sdF[idx++] = {
+                'name': obj[key]['shortDescription'],
+                'y' : (Math.floor((parseInt(obj[key]['total'])*100)/total))*-1
+            };
         }
     }
 
@@ -103,7 +105,20 @@ $(document).ready(function() {
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotShadow: false,
-            type: 'pie'
+            type: 'pie',
+        },
+        tooltip: {
+                pointFormat: '<b>{point.y:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
         },
         title: {
             text: 'Quantity'

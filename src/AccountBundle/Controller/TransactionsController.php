@@ -13,15 +13,19 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use AccountBundle\Entity\Transactions;
 use AccountBundle\Form\TransactionsType;
 
-class DefaultController extends Controller
+class TransactionsController extends Controller
 {
   /**
-   * @Route("/", name="home")
+   *
+   * @param int $currentMonth
+   * @param Request $request
+   *
+   * @Route("/{currentMonth}", name="home")
    */
-  public function indexAction(Request $request)
+  public function indexAction($currentMonth, Request $request)
   {
-    $currentMonth = $request->query->get('currentMonth')
-    ? str_replace('#', '', $request->query->get('currentMonth')) : date('m');
+    //$currentMonth = $request->query->get('currentMonth')
+    //? str_replace('#', '', $request->query->get('currentMonth')) : date('m');
     $currentYear  = date('Y');
 
     $em = $this->getDoctrine()->getManager();
@@ -38,69 +42,82 @@ class DefaultController extends Controller
       ->getDescriptionPerMonth($currentMonth, $currentYear);
     $amountDay        = $em->getRepository('AccountBundle:Transactions')
       ->getAmountPerDay($currentMonth, $currentYear);
+    $transactionType  = $em->getRepository('AccountBundle:TransactionType')
+      ->findAll();
 
     // serializer ... maybe should move this to Repository
-    $serializer       = $this->get('jms_serializer');
-    $graphDataType    = $serializer->serialize($graphDataType, 'json');
-    $graphDataDay     = $serializer->serialize($graphDataDay, 'json');
-    $graphAmountDay   = $serializer->serialize($amountDay, 'json');
+    $serializer           = $this->get('jms_serializer');
+    $graphDataType        = $serializer->serialize($graphDataType, 'json');
+    $graphDataDay         = $serializer->serialize($graphDataDay, 'json');
+    $graphAmountDay       = $serializer->serialize($amountDay, 'json');
+    //$dataTransactionType  = $serializer->serialize($transactionType, 'json');
     //$descriptionData  = $serializer->serialize($descriptionData, 'json');
     // serializer ... maybe should move this to Repository
 
     return $this->render('AccountBundle:Default:index.html.twig',
       array(
-        'transactions'      => $transactions,
-        'data'              => $graphDataType,
-        'dataDay'           => $graphDataDay,
-        'months'            => $monthsData,
-        'currentMonth'      => $currentMonth,
-        'descriptionData'   => $descriptionData,
-        'descriptionDay'    => $amountDay,
-        'graphDay'          => $graphAmountDay,
+        'transactions'        => $transactions,
+        'data'                => $graphDataType,
+        'dataDay'             => $graphDataDay,
+        'months'              => $monthsData,
+        'currentMonth'        => $currentMonth,
+        'descriptionData'     => $descriptionData,
+        'descriptionDay'      => $amountDay,
+        'graphDay'            => $graphAmountDay,
+        'dataTransactionType' => $transactionType,
+        'currentMonth'        => $currentMonth,
       )
     );
   }
 
   /**
-   * @Route("/show", name="show")
+   * @Route("/show/{currentMonth}/{id}", name="show")
+   *
+   * @param int $id
+   * @param int $currentMonth
+   * @param Request $request
    */
-  public function showAction(Request $request)
+  public function showAction($currentMonth, $id, Request $request)
   {
     $em           = $this->getDoctrine()->getManager();
-    $id           = $request->query->get('id');
     $transaction  = $em->getRepository('AccountBundle:Transactions')->find($id);
 
     return $this->render('AccountBundle:Default:show.html.twig',
       array(
-        'transaction' => $transaction,
+        'transaction'   => $transaction,
+        'currentMonth'  => $currentMonth,
       )
     );
   }
 
   /**
-   * @Route("/edit/{id}", name="edit")
+   * @Route("/edit/{currentMonth}/{id}", name="edit")
    *
+   * @param int $currentMonth
    * @param int $id
    * @param Request $request
    * @return \Symfony\Component\HttpFoundation\Response
    */
-  public function editAction($id, Request $request)
+  public function editAction($currentMonth, $id, Request $request)
   {
     $em               = $this->getDoctrine()->getManager();
     $transaction      = $em->getRepository('AccountBundle:Transactions')->find($id);
     $form             = $this->createForm(TransactionsType::class, $transaction);
     $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
+    if ($form->isSubmitted() && $form->isValid())
+    {
         $em->persist($transaction);
         $em->flush();
         $this->addFlash('notice', 'Transaction was successfully updated.');
+        return $this->redirectToRoute('home', array('currentMonth' => $currentMonth), 301);
     }
 
     return $this->render('AccountBundle:Default:edit.html.twig',
       array(
-        'transaction' => $transaction,
-        'form'        => $form->createView(),
+        'transaction'   => $transaction,
+        'form'          => $form->createView(),
+        'currentMonth'  => $currentMonth,
       )
     );
   }

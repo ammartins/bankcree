@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div id="{{ transaction.id }}">
+    <h1>Description</h1>
+    <div class="row">
+      <div class="col-md-2">
+        <h5>Transaction Name:</h5>
+      </div>
+      <div class="col-md-6">
+        <h5>{{ transaction.name }}</h5>
+      </div>
+    </div>
+    <br />
+    <br />
+    <span>
+      Recurring Payment:
+      {% if transaction.recurring %}
+        <span class="glyphicon glyphicon-ok"></span>
+      {% else %}
+        <span class="glyphicon glyphicon-remove"></span>
+      {% endif %}
+    </span>
+  </div>
+  <div class="text-right">
+    <a type="button" class="btn btn-primary" href="{{ path('home') }}">Back</a>
+  </div,
+{% endblock %}
