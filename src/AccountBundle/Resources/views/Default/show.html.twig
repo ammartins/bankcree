@@ -14,8 +14,14 @@
         <br />
         <h5>Full Description:</h5>
         <br />
+        <br />
+        <br />
         <h4>Short Description:</h5>
-        <h5>{{ transaction.shortDescription }}</h5>
+        {% if transaction.transactionType %}
+          <h5>{{ transaction.transactionType.name }}</h5>
+        {% else %}
+          <h5>{{ transaction.shortDescription }}</h5>
+        {% endif %}
       </div>
       <div class="col-md-6">
         <h5>{{ transaction.createAt|date("d/m/Y") }}</h5>
@@ -32,7 +38,7 @@
     <br />
     <span>
       Recurring Payment:
-      {% if transaction.recurring %}
+      {% if transaction.transactionType and transaction.transactionType.recurring %}
         <span class="glyphicon glyphicon-ok"></span>
       {% else %}
         <span class="glyphicon glyphicon-remove"></span>
@@ -40,6 +46,6 @@
     </span>
   </div>
   <div class="text-right">
-    <a type="button" class="btn btn-primary" href="{{ path('home') }}">Back</a>
+    <a type="button" class="btn btn-primary" href="{{ path('home', {'currentMonth': currentMonth}) }}">Back</a>
   </div,
 {% endblock %}

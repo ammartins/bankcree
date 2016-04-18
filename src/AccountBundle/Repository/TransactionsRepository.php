@@ -44,13 +44,15 @@ class TransactionsRepository extends EntityRepository
   {
     $data = $this->getEntityManager()
       ->createQuery(
-        "SELECT p.shortDescription, sum(p.amount) as total, count(p.shortDescription) as ocurrencies
+        "SELECT t.name as shortDescription, sum(p.amount) as total, count(p.transactionType) as ocurrencies
         FROM AccountBundle:Transactions p
-        WHERE Month(p.createAt) = $month
+        JOIN AccountBundle:TransactionType t
+        WHERE p.transactionType = t.id
+        AND Month(p.createAt) = $month
         AND Year(p.createAt) = $year
-        AND p.shortDescription != ''
-        AND p.shortDescription != 'savings'
-        GROUP BY p.shortDescription"
+        AND t.name != ''
+        AND t.name != 'savings'
+        GROUP BY t.name"
       )->execute();
 
     return $data;

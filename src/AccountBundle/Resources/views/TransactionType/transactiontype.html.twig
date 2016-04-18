@@ -1,0 +1,20 @@
+<div class="text-right">
+  <a class="btn btn-success" href="{{ path('type_new', {'currentMonth': currentMonth}) }}">New</a>
+</div>
+<table class="table table-condensed table-hover table-responsive">
+  <tr>
+    <th class="text-left">Name</th>
+    <th class="text-right">Recurring</th>
+    <th class="text-right">Options</th>
+  </tr>
+  {% for type in dataTransactionType %}
+    <tr>
+      <td class="text-left">{{ type.name }}</td>
+      <td class="text-right">{{ type.recurring }}</td>
+      <td class="text-right">
+        <a href="{{ path('delete_type', {'id': type.id, 'currentMonth': currentMonth}) }}">Delete</a>
+        <a href="{{ path('type_edit', {'id': type.id, 'currentMonth': currentMonth}) }}">Edit</a>
+      </td>
+    </tr>
+  {% endfor %}
+</table>

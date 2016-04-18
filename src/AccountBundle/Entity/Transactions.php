@@ -78,12 +78,10 @@ class Transactions
     private $accountId;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="recurring", type="boolean")
+     * @ORM\OneToOne(targetEntity="TransactionType")
+     * @ORM\JoinColumn(name="transaction_type", referencedColumnName="id")
      */
-    private $recurring;
-
+    private $transactionType;
 
     /**
      * Get id
@@ -104,29 +102,6 @@ class Transactions
     public function setTransactionHash($transactionHash)
     {
         $this->transactionHash = $transactionHash;
-
-        return $this;
-    }
-
-    /**
-     * Get recurring
-     *
-     * @return boolean
-     */
-    public function getRecurring()
-    {
-        return $this->recurring;
-    }
-
-    /**
-     * Set recurring
-     *
-     * @param boolean $recurring
-     * @return Transactions
-     */
-    public function setRecurring($recurring)
-    {
-        $this->recurring = $recurring;
 
         return $this;
     }
@@ -279,7 +254,6 @@ class Transactions
         return $this->shortDescription;
     }
 
-
     /**
      * Set accountId
      *
@@ -301,5 +275,28 @@ class Transactions
     public function getAccountId()
     {
         return $this->accountId;
+    }
+
+    /**
+     * Set transactionType
+     *
+     * @param integer $transactionType
+     * @return Transactions
+     */
+    public function setTransactionType($transactionType)
+    {
+        $this->transactionType = $transactionType;
+
+        return $this;
+    }
+
+    /**
+     * Get transactionType
+     *
+     * @return integer
+     */
+    public function getTransactionType()
+    {
+        return $this->transactionType;
     }
 }

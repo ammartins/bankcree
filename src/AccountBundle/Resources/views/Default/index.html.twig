@@ -9,6 +9,11 @@
       objD  = jQuery.parseJSON('{{ graphDay|raw }}');
       day   = jQuery.parseJSON('{{ dataDay|raw }}');
   </script>
+  {% for flash_message in app.session.flashBag.get('notice') %}
+    <div class="alert alert-success">
+      {{ flash_message }}
+    </div>
+  {% endfor %}
   <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="table">
           {% include 'AccountBundle:Default:currentMonth.html.twig' %}
@@ -18,6 +23,9 @@
       </div>
       <div role="tabpanel" class="tab-pane" id="dailygraph">
           {% include 'AccountBundle:Default:dailygraph.html.twig' %}
+      </div>
+      <div role="tabpanel" class="tab-pane" id="transactiontype">
+          {% include 'AccountBundle:TransactionType:transactiontype.html.twig' %}
       </div>
   </div>
 {% endblock %}

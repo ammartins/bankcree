@@ -1,0 +1,11 @@
+<nav class="text-center">
+  <ul class="pagination">
+    {% for month in months %}
+      <li {% if month.months == currentMonth%}class="active"{% endif %}>
+        <a href="{{ path('home', {'currentMonth' : month.months}) }}">
+          {{ month.months }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>
