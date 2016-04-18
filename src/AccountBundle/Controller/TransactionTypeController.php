@@ -25,8 +25,8 @@ class TransactionTypeController extends Controller
 
     return $this->render('AccountBundle:TransactionType:show.html.twig',
       array(
-        'transaction' => $transaction,
-        'currentMonth'        => $currentMonth,
+        'transaction'   => $transaction,
+        'currentMonth'  => $currentMonth,
       )
     );
   }
@@ -49,7 +49,8 @@ class TransactionTypeController extends Controller
     {
         $em->persist($transaction);
         $em->flush();
-        $this->addFlash('notice', 'Transaction was successfully updated.');
+        $this->addFlash('notice', 'Transaction was successfully created.');
+        return $this->redirectToRoute('home', array('currentMonth' => $currentMonth), 301);
     }
 
     return $this->render('AccountBundle:TransactionType:edit.html.twig',

@@ -33,7 +33,7 @@ class TransactionsType extends AbstractType
             ->add('transaction_type', EntityType::class, array(
               'label'     => 'Transaction Type',
               'class'     => 'AccountBundle:TransactionType',
-              'property'  => 'name',
+              'choice_label'  => 'name',
             ))
             ->add('accountId')
             ->add('save', SubmitType::class)
