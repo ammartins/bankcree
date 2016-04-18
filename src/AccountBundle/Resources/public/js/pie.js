@@ -1,6 +1,10 @@
 var chart1; // globally available
 
 $(document).ready(function() {
+    $('#daily tr').click(function() {
+      alert('Sucess');
+    });
+
     $('#myTabs a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
@@ -39,6 +43,10 @@ $(document).ready(function() {
             }
         }
     }
+    // To avoid strange infinity on the y value
+    if ( total <= 0) {
+        total = 1;
+    }
 
     // total is 100 so sd[key] is percent
     // 100 - total
@@ -46,8 +54,10 @@ $(document).ready(function() {
     for(var key in obj) {
         if (obj.hasOwnProperty(key) && parseInt(obj[key]['total']) <= 0)
         {
-            sdF[idx++] = { 'name': obj[key]['shortDescription'],
-            'y' : (Math.floor((parseInt(obj[key]['total'])*100)/total))*-1 };
+            sdF[idx++] = {
+                'name': obj[key]['shortDescription'],
+                'y' : (Math.floor((parseInt(obj[key]['total'])*100)/total))*-1
+            };
         }
     }
 
@@ -95,7 +105,20 @@ $(document).ready(function() {
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotShadow: false,
-            type: 'pie'
+            type: 'pie',
+        },
+        tooltip: {
+                pointFormat: '<b>Total %: {point.y:.1f}% : Spent %: {point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
         },
         title: {
             text: 'Quantity'
@@ -104,5 +127,4 @@ $(document).ready(function() {
             data: sdF
         }]
     });
-
 });

@@ -24,9 +24,9 @@ class Transactions
     /**
      * @var int
      *
-     * @ORM\Column(name="transaction_id", type="integer")
+     * @ORM\Column(name="transaction_hash", type="string")
      */
-    private $transactionId;
+    private $transactionHash;
 
     /**
      * @var \DateTime
@@ -77,6 +77,11 @@ class Transactions
      */
     private $accountId;
 
+    /**
+     * @ORM\OneToOne(targetEntity="TransactionType")
+     * @ORM\JoinColumn(name="transaction_type", referencedColumnName="id")
+     */
+    private $transactionType;
 
     /**
      * Get id
@@ -89,26 +94,26 @@ class Transactions
     }
 
     /**
-     * Set transactionId
+     * Set transactionHash
      *
-     * @param integer $transactionId
+     * @param integer $transactionHash
      * @return Transactions
      */
-    public function setTransactionId($transactionId)
+    public function setTransactionHash($transactionHash)
     {
-        $this->transactionId = $transactionId;
+        $this->transactionHash = $transactionHash;
 
         return $this;
     }
 
     /**
-     * Get transactionId
+     * Get transactionHash
      *
      * @return integer
      */
-    public function getTransactionId()
+    public function getTransactionHash()
     {
-        return $this->transactionId;
+        return $this->transactionHash;
     }
 
     /**
@@ -249,7 +254,6 @@ class Transactions
         return $this->shortDescription;
     }
 
-
     /**
      * Set accountId
      *
@@ -271,5 +275,28 @@ class Transactions
     public function getAccountId()
     {
         return $this->accountId;
+    }
+
+    /**
+     * Set transactionType
+     *
+     * @param integer $transactionType
+     * @return Transactions
+     */
+    public function setTransactionType($transactionType)
+    {
+        $this->transactionType = $transactionType;
+
+        return $this;
+    }
+
+    /**
+     * Get transactionType
+     *
+     * @return integer
+     */
+    public function getTransactionType()
+    {
+        return $this->transactionType;
     }
 }

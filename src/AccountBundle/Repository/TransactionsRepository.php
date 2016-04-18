@@ -22,13 +22,12 @@ class TransactionsRepository extends EntityRepository
         AND Year(p.createAt) = $year
         AND p.shortDescription != 'savings'
         ORDER BY p.createAt ASC"
-      )
-      ->getResult();
+      )->getResult();
   }
 
   public function getCurrentMonth($month, $year)
   {
-     $dataGraph = $this->getEntityManager()
+    $dataGraph = $this->getEntityManager()
       ->createQuery(
         "SELECT SUM(p.amount)
         FROM AccountBundle:Transactions p
@@ -36,27 +35,27 @@ class TransactionsRepository extends EntityRepository
         AND Year(p.createAt) = $year
         AND p.shortDescription != 'savings'
         GROUP BY p.shortDescription"
-      )
-      ->execute();
+      )->execute();
 
-      return $dataGraph;
+    return $dataGraph;
   }
 
   public function getDescriptionUsage($month, $year)
   {
     $data = $this->getEntityManager()
       ->createQuery(
-        "SELECT p.shortDescription, sum(p.amount) as total, count(p.shortDescription) as ocurrencies
+        "SELECT t.name as shortDescription, sum(p.amount) as total, count(p.transactionType) as ocurrencies
         FROM AccountBundle:Transactions p
-        WHERE Month(p.createAt) = $month
+        JOIN AccountBundle:TransactionType t
+        WHERE p.transactionType = t.id
+        AND Month(p.createAt) = $month
         AND Year(p.createAt) = $year
-        AND p.shortDescription != ''
-        AND p.shortDescription != 'savings'
-        GROUP BY p.shortDescription"
-      )
-      ->execute();
+        AND t.name != ''
+        AND t.name != 'savings'
+        GROUP BY t.name"
+      )->execute();
 
-      return $data;
+    return $data;
   }
 
   public function  getDescriptionPerDayInMonth($month, $year)
@@ -70,10 +69,9 @@ class TransactionsRepository extends EntityRepository
         AND p.shortDescription != ''
         AND p.shortDescription != 'savings'
         GROUP BY day"
-      )
-      ->execute();
+      )->execute();
 
-      return $data;
+    return $data;
   }
 
   public function getMonths($year)
@@ -85,27 +83,27 @@ class TransactionsRepository extends EntityRepository
         WHERE Year(p.createAt) = $year
         AND p.shortDescription != 'savings'
         ORDER BY months"
-      )
-      ->execute();
+      )->execute();
 
-      return $months;
+    return $months;
   }
 
   public function getDescriptionPerMonth($month, $year)
   {
     $data = $this->getEntityManager()
       ->createQuery(
-        "SELECT DISTINCT p.shortDescription as description, sum(p.amount) as amount
+        "SELECT DISTINCT t.name  as description, sum(p.amount) as amount
         FROM AccountBundle:Transactions p
-        WHERE Month(p.createAt) = $month
+        JOIN AccountBundle:TransactionType t
+        WHERE p.transactionType = t.id
+        AND Month(p.createAt) = $month
         AND Year(p.createAt) = $year
-        AND p.shortDescription != 'savings'
+        AND t.name != 'savings'
         GROUP BY description
         ORDER BY p.createAt"
-      )
-      ->execute();
+      )->execute();
 
-      return $data;
+    return $data;
   }
 
 
@@ -119,10 +117,20 @@ class TransactionsRepository extends EntityRepository
         AND MONTH(p.createAt) = $month
         AND p.shortDescription != 'savings'
         GROUP BY days"
-      )
-      ->execute();
+      )->execute();
 
-      return $data;
+    return $data;
   }
 
+  public function getTransactionByHash($hash)
+  {
+    $data = $this->getEntityManager()
+      ->createQuery(
+        "SELECT p.id
+        FROM AccountBundle:Transactions p
+        WHERE p.transactionHash = '$hash'"
+      )->execute();
+
+    return $data;
+  }
 }
