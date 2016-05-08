@@ -1,4 +1,4 @@
-{% include 'AccountBundle:Default:monthMenu.html.twig' %}
+{% include 'AccountBundle:tools:monthMenu.html.twig' %}
 <table class="table table-condensed table-hover table-responsive">
   <tr>
     <th class="text-left">Transaction Date</th>
@@ -12,7 +12,7 @@
       <td>{{ transaction.createAt|date("d/m/Y") }}</td>
       <td class="text-right">{{ transaction.endsaldo }} €</td>
       <td class="text-right">{{ transaction.amount }} €</td>
-      <td class="text-right {% if transaction.transactionType %} alert alert-warning {% endif %}">
+      <td class="text-right">
         {% if transaction.transactionType %}
           {{ transaction.transactionType.name|capitalize }}
         {% else %}
@@ -20,10 +20,18 @@
         {% endif %}
       </td>
       <td class="text-right">
-        <a href="{{ path('show', {'id': transaction.id, 'currentMonth': currentMonth}) }}">Show</a>
-        <a href="{{ path('edit', {'id': transaction.id, 'currentMonth': currentMonth}) }}">Edit</a>
+        <a href="{{ path('show', {
+            'id': transaction.id,
+            'currentMonth': currentMonth,
+            'currentYear': currentYear,
+          }) }}">Show</a>
+        <a href="{{ path('edit', {
+          'id': transaction.id,
+          'currentMonth': currentMonth,
+          'currentYear': currentYear,
+        }) }}">Edit</a>
       </td>
     </tr>
   {% endfor %}
 </table>
-{% include 'AccountBundle:Default:monthMenu.html.twig' %}
+{% include 'AccountBundle:tools:monthMenu.html.twig' %}

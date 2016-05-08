@@ -12,6 +12,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class TransactionsRepository extends EntityRepository
 {
+  public function getMonths($year)
+  {
+    $months = $this->getEntityManager()
+      ->createQuery(
+        "SELECT DISTINCT Month(p.createAt) as months
+        FROM AccountBundle:Transactions p
+        WHERE Year(p.createAt) = $year
+        ORDER BY months"
+      )->execute();
+
+    return $months;
+  }
+
+  public function getAllYears() {
+    return $this->getEntityManager()
+      ->createQuery(
+        "SELECT DISTINCT YEAR(p.createAt) as year
+        FROM AccountBundle:Transactions p
+        ORDER BY p.createAt"
+      )->getResult();
+  }
+
   public function findAllByMonth($month, $year)
   {
     return $this->getEntityManager()
@@ -20,7 +42,6 @@ class TransactionsRepository extends EntityRepository
         FROM AccountBundle:Transactions p
         WHERE MONTH(p.createAt) = $month
         AND Year(p.createAt) = $year
-        AND p.shortDescription != 'savings'
         ORDER BY p.createAt ASC"
       )->getResult();
   }
@@ -33,7 +54,6 @@ class TransactionsRepository extends EntityRepository
         FROM AccountBundle:Transactions p
         WHERE MONTH(p.createAt) = $month
         AND Year(p.createAt) = $year
-        AND p.shortDescription != 'savings'
         GROUP BY p.shortDescription"
       )->execute();
 
@@ -51,7 +71,6 @@ class TransactionsRepository extends EntityRepository
         AND Month(p.createAt) = $month
         AND Year(p.createAt) = $year
         AND t.name != ''
-        AND t.name != 'savings'
         GROUP BY t.name"
       )->execute();
 
@@ -67,25 +86,10 @@ class TransactionsRepository extends EntityRepository
         WHERE Month(p.createAt) = $month
         AND Year(p.createAt) = $year
         AND p.shortDescription != ''
-        AND p.shortDescription != 'savings'
         GROUP BY day"
       )->execute();
 
     return $data;
-  }
-
-  public function getMonths($year)
-  {
-    $months = $this->getEntityManager()
-      ->createQuery(
-        "SELECT DISTINCT Month(p.createAt) as months
-        FROM AccountBundle:Transactions p
-        WHERE Year(p.createAt) = $year
-        AND p.shortDescription != 'savings'
-        ORDER BY months"
-      )->execute();
-
-    return $months;
   }
 
   public function getDescriptionPerMonth($month, $year)
@@ -98,7 +102,6 @@ class TransactionsRepository extends EntityRepository
         WHERE p.transactionType = t.id
         AND Month(p.createAt) = $month
         AND Year(p.createAt) = $year
-        AND t.name != 'savings'
         GROUP BY description
         ORDER BY p.createAt"
       )->execute();
@@ -115,7 +118,6 @@ class TransactionsRepository extends EntityRepository
         FROM AccountBundle:Transactions p
         WHERE YEAR(p.createAt) = $year
         AND MONTH(p.createAt) = $month
-        AND p.shortDescription != 'savings'
         GROUP BY days"
       )->execute();
 

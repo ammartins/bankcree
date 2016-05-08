@@ -17,16 +17,17 @@ class TransactionsController extends Controller
 {
   /**
    *
+   * @param int $currentYear
    * @param int $currentMonth
    * @param Request $request
    *
-   * @Route("/{currentMonth}", name="home")
+   * @Route("/{currentYear}/{currentMonth}", name="home")
    */
-  public function indexAction($currentMonth, Request $request)
+  public function indexAction($currentYear, $currentMonth, Request $request)
   {
     //$currentMonth = $request->query->get('currentMonth')
     //? str_replace('#', '', $request->query->get('currentMonth')) : date('m');
-    $currentYear  = date('Y');
+    $currentYear  = $currentYear ? $currentYear : date('Y');
 
     $em = $this->getDoctrine()->getManager();
 
@@ -38,6 +39,8 @@ class TransactionsController extends Controller
       ->getDescriptionPerDayInMonth($currentMonth, $currentYear);
     $monthsData       = $em->getRepository('AccountBundle:Transactions')
       ->getMonths($currentYear);
+    $allYears         = $em->getRepository('AccountBundle:Transactions')
+      ->getAllYears();
     $descriptionData  = $em->getRepository('AccountBundle:Transactions')
       ->getDescriptionPerMonth($currentMonth, $currentYear);
     $amountDay        = $em->getRepository('AccountBundle:Transactions')
@@ -66,18 +69,21 @@ class TransactionsController extends Controller
         'graphDay'            => $graphAmountDay,
         'dataTransactionType' => $transactionType,
         'currentMonth'        => $currentMonth,
+        'years'               => $allYears,
+        "currentYear"         => $currentYear,
       )
     );
   }
 
   /**
-   * @Route("/show/{currentMonth}/{id}", name="show")
+   * @Route("/show/{currentYear}/{currentMonth}/{id}", name="show")
    *
+   * @param int $currentYear
    * @param int $id
    * @param int $currentMonth
    * @param Request $request
    */
-  public function showAction($currentMonth, $id, Request $request)
+  public function showAction($currentYear, $currentMonth, $id, Request $request)
   {
     $em           = $this->getDoctrine()->getManager();
     $transaction  = $em->getRepository('AccountBundle:Transactions')->find($id);
@@ -86,19 +92,21 @@ class TransactionsController extends Controller
       array(
         'transaction'   => $transaction,
         'currentMonth'  => $currentMonth,
+        "currentYear"   => $currentYear,
       )
     );
   }
 
   /**
-   * @Route("/edit/{currentMonth}/{id}", name="edit")
+   * @Route("/edit/{currentYear}/{currentMonth}/{id}", name="edit")
    *
+   * @param int $currentYear
    * @param int $currentMonth
    * @param int $id
    * @param Request $request
    * @return \Symfony\Component\HttpFoundation\Response
    */
-  public function editAction($currentMonth, $id, Request $request)
+  public function editAction($currentYear, $currentMonth, $id, Request $request)
   {
     $em               = $this->getDoctrine()->getManager();
     $transaction      = $em->getRepository('AccountBundle:Transactions')->find($id);
@@ -110,7 +118,11 @@ class TransactionsController extends Controller
         $em->persist($transaction);
         $em->flush();
         $this->addFlash('notice', 'Transaction was successfully updated.');
-        return $this->redirectToRoute('home', array('currentMonth' => $currentMonth), 301);
+        return $this->redirectToRoute('home',
+          array(
+            'currentYear'   => $currentYear,
+            'currentMonth' => $currentMonth
+          ),301);
     }
 
     return $this->render('AccountBundle:Default:edit.html.twig',
@@ -118,6 +130,7 @@ class TransactionsController extends Controller
         'transaction'   => $transaction,
         'form'          => $form->createView(),
         'currentMonth'  => $currentMonth,
+        "currentYear"   => $currentYear,
       )
     );
   }
