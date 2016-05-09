@@ -13,11 +13,11 @@
       <td class="text-right">{{ transaction.endsaldo }} €</td>
       <td class="text-right">{{ transaction.amount }} €</td>
       <td class="text-right">
-        {% if transaction.transactionType %}
-          {{ transaction.transactionType.name|capitalize }}
-        {% else %}
-          {{ transaction.shortDescription|capitalize }}
-        {% endif %}
+          {% if transaction.transactionType %}
+            {{ transaction.transactionType.name|capitalize }}
+          {% else %}
+            <a href="#">Pick-one</a>
+          {% endif %}
       </td>
       <td class="text-right">
         <a href="{{ path('show', {
