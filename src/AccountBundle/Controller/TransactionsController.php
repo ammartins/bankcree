@@ -16,6 +16,30 @@ use AccountBundle\Form\TransactionsType;
 class TransactionsController extends Controller
 {
   /**
+   * @Route("/shortDescription/{id}", name="shortDescription")
+   *
+   * @param int $id
+   * @param Request $request
+   * @return \Symfony\Component\HttpFoundation\Response
+   */
+  public function shortDescriptionAction(Request $request) {
+    $id = 1058;
+
+    $em               = $this->getDoctrine()->getManager();
+    $transaction      = $em->getRepository('AccountBundle:Transactions')->find($id);
+    $form             = $this->createForm(TransactionsType::class, $transaction);
+    $form->handleRequest($request);
+
+    return $this->render('AccountBundle:Tools:shortDescription.html.twig',
+      array(
+        'transaction'   => $id,
+        'form'          => $form->createView(),
+      )
+    );
+
+  }
+
+  /**
    *
    * @param int $currentYear
    * @param int $currentMonth
