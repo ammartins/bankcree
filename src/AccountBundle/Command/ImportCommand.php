@@ -37,27 +37,40 @@ class ImportCommand extends ContainerAwareCommand
         $fileContent = file_get_contents($fileLocation);
         $fileContentArray = explode( "\n", $fileContent);
 
-        $doctrine = $this->getContainer()->get('doctrine');
+        $doctrine   = $this->getContainer()->get('doctrine');
+        $em = $doctrine->getManager();
+
+        $skip = 1;
 
         if ( $fileContent )
         {
-          $em = $doctrine->getManager();
           foreach ( $fileContentArray as $line )
           {
+            if ( $skip ) {
+                $skip = FALSE;
+                continue;
+            }
             if ( empty($line) ) {
                 continue;
             }
             $info = explode(";", $line);
-            $correctDate = substr($info[2], 0,4).'-'.substr($info[2],5,1).'-'.substr($info[2],6,2);
+            $correctDate = substr($info[2],0,4).'-'.substr($info[2],4,2).'-'.substr($info[2],6,2);
             $Date = new \DateTime($correctDate);
 
             # Generate Hash
-#            $hashString = $info[7].$info
-#            $hash = hash('derp',
+            $hashString = $line;
+            $hash = hash('md5', $hashString, False);
+
+            // Check if this is already on DB and if so continue
+            // Should probably clean this a bit
+            if ( $em->getRepository('AccountBundle:Transactions')->getTransactionByHash($hash) )
+            {
+                continue;
+            }
 
             $transaction = new Transactions();
 
-            $transaction->setTransactionId($info[0]);
+            $transaction->setTransactionHash($hash);
             $transaction->setCreateAt($Date);
             $transaction->setAmount(floatval(str_replace(',', '.', str_replace('.', '', $info[6]))));
             $transaction->setstartsaldo(floatval(str_replace(',', '.', str_replace('.', '', $info[4]))));
