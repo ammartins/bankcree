@@ -16,7 +16,11 @@
           {% if transaction.transactionType %}
             {{ transaction.transactionType.name|capitalize }}
           {% else %}
-            <a href="{{ path('shortDescription', { 'id': transaction.id })}}">Pick-one</a>
+            <a href="{{ path('saveShortDescription', {
+                'id': transaction.id,
+                'currentMonth': currentMonth,
+                'currentYear': currentYear,
+              }) }}">Pick-one</a>
           {% endif %}
       </td>
       <td class="text-right">
