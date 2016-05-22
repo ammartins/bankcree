@@ -37,6 +37,24 @@ class TransactionTypeController extends Controller
   }
 
   /**
+   * @Route("/match/{currentYear}/{currentMonth}/{id}", name="match")
+   *
+   * @param int $currentYear
+   * @param int $currentMonth
+   * @param int $id
+   * @param Request $request
+   * @return \Symfony\Component\HttpFoundation\Response
+   */
+  public function matchAction($currentYear, $currentMonth, $id, Request $request) {
+    //$em           = $this->getDoctrine()->getManager();
+    //$transaction  = $em->getRepository('AccountBundle:TransactionType')->find($id);
+
+    return $this->render('AccountBundle:tools:matchTransaction.html.twig',
+      array()
+    );
+  }
+
+  /**
    * @Route("/type/new/{currentYear}/{currentMonth}", name="type_new")
    *
    * @param int $currentYear
