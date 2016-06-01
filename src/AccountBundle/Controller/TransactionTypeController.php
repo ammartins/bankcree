@@ -46,8 +46,8 @@ class TransactionTypeController extends Controller
    * @return \Symfony\Component\HttpFoundation\Response
    */
   public function matchAction($currentYear, $currentMonth, $id, Request $request) {
-    //$em           = $this->getDoctrine()->getManager();
-    //$transaction  = $em->getRepository('AccountBundle:TransactionType')->find($id);
+    $em           = $this->getDoctrine()->getManager();
+    $transaction  = $em->getRepository('AccountBundle:Transactions')->getMatchTransactions($id);
 
     return $this->render('AccountBundle:tools:matchTransaction.html.twig',
       array()
