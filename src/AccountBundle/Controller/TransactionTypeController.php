@@ -10,7 +10,6 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
-
 use AccountBundle\Entity\TransactionType;
 use AccountBundle\Form\TransactionTypeType;
 
