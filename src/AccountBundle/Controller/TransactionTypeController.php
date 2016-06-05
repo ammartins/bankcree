@@ -13,6 +13,10 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use AccountBundle\Entity\TransactionType;
 use AccountBundle\Form\TransactionTypeType;
 
+// For forms
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 class TransactionTypeController extends Controller
 {
   /**
@@ -46,11 +50,94 @@ class TransactionTypeController extends Controller
    * @return \Symfony\Component\HttpFoundation\Response
    */
   public function matchAction($currentYear, $currentMonth, $id, Request $request) {
-    //$em           = $this->getDoctrine()->getManager();
-    //$transaction  = $em->getRepository('AccountBundle:TransactionType')->find($id);
+    $em           = $this->getDoctrine()->getManager();
+    $serializer   = $this->get('jms_serializer');
+    $toBeSave     = $em->getRepository('AccountBundle:Transactions')->find($id);
+    $transaction  = $em->getRepository('AccountBundle:Transactions')->getMatchTransactions($id);
+
+    $results = array();
+    $transactionDescription = preg_split('/[\s\/]/', $transaction['transaction'][0]['description']);
+    foreach ( $transaction['data'] as $item )
+    {
+      $itemDescription = $item['description'];
+      $itemDescription = preg_replace('!\s+!', ' ', $itemDescription);
+      $itemDescription = preg_split('/[\s\/]/', $itemDescription);
+      $score = 0;
+      $special = 0;
+      foreach ( $itemDescription as $item1)
+      {
+        if (
+          $item1 == 'TRTP' || $item1 == 'IBAN' || $item1 == 'BIC' ||
+          $item1 == 'NAME' || $item1 == 'EREF' || $item1 == 'SEPA' ||
+          $item1 == 'REMI' || $item1 == 'CSID' || $item1 == 'Incasso' ||
+          $item1 == 'MARF' || $item1 == '' || $item1 == 'algemeen' ||
+          $item1 == 'doorlopend' || $item1 == 'IBAN:' ||
+          $item1 == 'Overboeking' || $item1 == 'INGBNL2A' || $item1 == 'BIC:' ||
+          $item1 == 'Omschrijving:' || $item1 == 'SEPA'
+        )
+        {
+          $special += 1;
+          continue;
+        }
+        if ( in_array($item1, $transactionDescription) )
+        {
+          $score += 1;
+        }
+        if ( $score > (count($itemDescription)-$special)/2 ) {
+            $item['percentage'] = round((($score*100)/(count($itemDescription)-$special)), 0);
+            $results[] = $item;
+            $score = 0;
+            $special = 0;
+            continue;
+        }
+      }
+    }
+
+    $form = $this->createFormBuilder($toBeSave)
+              ->add('transaction_type', EntityType::class, array(
+                    'label'     => 'Transaction Type',
+                    'class'     => 'AccountBundle:TransactionType',
+                    'choice_label'  => 'name',
+              ))->getForm();
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid())
+    {
+        $em->persist($toBeSave);
+        $em->flush();
+        $this->addFlash('notice', 'Transaction was successfully updated.');
+        return $this->redirectToRoute('home',
+          array(
+            'currentYear'   => $currentYear,
+            'currentMonth' => $currentMonth
+          ),301);
+    } elseif ($form->isSubmitted() && !$form->isValid()) {
+        $this->addFlash('notice', 'Transaction was not updated.');
+    }
+
+    // Even more hugly code :P
+    $type = array();
+    foreach ( $results as $result )
+    {
+      if ( array_key_exists($result['name'], $type) ) {
+        $type[$result['name']] += 1;
+      } else {
+        $type[$result['name']] = 1;
+      }
+    }
+
+    $type = $serializer->serialize($type, 'json');
 
     return $this->render('AccountBundle:tools:matchTransaction.html.twig',
-      array()
+      array(
+        'type'          => $type,
+        'form'          => $form->createView(),
+        'transactions'  => $results,
+        'transaction'   => $transaction['transaction'][0],
+        'currentYear'   => $currentYear,
+        'currentMonth'  => $currentMonth
+      )
     );
   }
 

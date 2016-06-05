@@ -16,12 +16,6 @@
           {% if transaction.transactionType %}
             {{ transaction.transactionType.name|capitalize }}
           {% else %}
-            <a href="{{ path('saveShortDescription', {
-                'id': transaction.id,
-                'currentMonth': currentMonth,
-                'currentYear': currentYear,
-              }) }}">Pick-one</a>
-              &nbsp;|&nbsp;
               <a href="{{ path('match', {
                 'id': transaction.id,
                 'currentMonth': currentMonth,
@@ -40,13 +34,6 @@
           'currentMonth': currentMonth,
           'currentYear': currentYear,
         }) }}">Edit</a>
-      <!--li>
-        <a href="{{ path('match', {
-          'id': transaction.id,
-          'currentMonth': currentMonth,
-          'currentYear': currentYear,
-        }) }}">Match</a>
-      </li-->
       </td>
     </tr>
   {% endfor %}

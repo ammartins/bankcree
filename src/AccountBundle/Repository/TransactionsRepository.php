@@ -48,7 +48,7 @@ class TransactionsRepository extends EntityRepository
 
   public function getCurrentMonth($month, $year)
   {
-    $dataGraph = $this->getEntityManager()
+    $data = $this->getEntityManager()
       ->createQuery(
         "SELECT SUM(p.amount)
         FROM AccountBundle:Transactions p
@@ -57,7 +57,28 @@ class TransactionsRepository extends EntityRepository
         GROUP BY p.shortDescription"
       )->execute();
 
-    return $dataGraph;
+    return $data;
+  }
+
+  public function getMatchTransactions($transactionId)
+  {
+    $transaction = $this->getEntityManager()
+      ->createQuery(
+        "SELECT p.amount, p.description
+        FROM AccountBundle:Transactions p
+        WHERE p.id = $transactionId"
+      )->execute();
+
+    $data = $this->getEntityManager()
+      ->createQuery(
+        "SELECT p.id, p.createAt, p.amount, p.description, t.name
+        FROM AccountBundle:Transactions p
+        JOIN AccountBundle:TransactionType t
+        WHERE
+        p.transactionType = t.id"
+      )->execute();
+
+    return array('data' => $data, 'transaction' => $transaction);
   }
 
   public function getDescriptionUsage($month, $year)
