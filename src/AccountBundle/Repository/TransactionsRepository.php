@@ -62,14 +62,13 @@ class TransactionsRepository extends EntityRepository
 
   public function getMatchTransactions($transactionId)
   {
-    $data = $this->getEntityManager()
+    $transaction = $this->getEntityManager()
       ->createQuery(
         "SELECT p.amount, p.description
         FROM AccountBundle:Transactions p
         WHERE p.id = $transactionId"
       )->execute();
 
-    $amount = $data[0]['amount'];
     $data = $this->getEntityManager()
       ->createQuery(
         "SELECT p.id, p.createAt, p.amount, p.description, t.name
@@ -79,68 +78,7 @@ class TransactionsRepository extends EntityRepository
         p.transactionType = t.id"
       )->execute();
 
-    $transactionDescription = preg_split('/[\s\/]/', $data[0]['description']);
-    foreach ( $data as $item )
-    {
-      $itemDescription = $item['description'];
-      $itemDescription = preg_replace('!\s+!', ' ', $itemDescription);
-      $itemDescription = preg_split('/[\s\/]/', $itemDescription);
-      $score = 0;
-      foreach ( $itemDescription as $item1)
-      {
-        if ( in_array($item1, $transactionDescription) )
-        {
-          echo "$item1 was found </br>";
-          $score += 1;
-        }
-        if ( $score > count($itemDescription)/2 ) {
-            var_dump($item['id']);
-            echo "</br>";
-            var_dump($item['description']);
-            echo "</br>";
-            echo "$score out of ".count($itemDescription).' '.round((($score*100)/count($itemDescription)), 0)."% match \n";
-            echo "</br>";
-            $score = 0;
-          //  echo "<pre>";
-          //  var_dump($itemDescription);
-          //  echo "</ br>";
-          //  var_dump($transactionDescription);
-          //  echo "</pre>";
-            //die;
-            continue;
-        }
-      }
-    }
-    die;
-    /*
-    $tocompare = $tocompar;
-    $tocompare = preg_replace('!\s+!', ' ', $tocompare);
-    print($tocompare);
-    $compare = preg_split('/[\s\/]/', $tocompare);
-    $score = 0;
-    foreach ( $compareThing as $item )
-    {
-        if ( in_array($item, $compare) )
-        {
-            $score += 1;
-        }
-    }
-    if ( $score > count($compare)/2 ) {
-        echo "\n\n\n";
-        echo "$score out of ".count($compare).' '.round((($score*100)/count($compare)), 0)."% match \n";
-        var_dump($string);
-        var_dump($tocompar);
-        echo "\n\n\n";
-    }
-    */
-
-    var_dump($transactionDescription);
-    die;
-    var_dump($amount);
-    var_dump($data);
-    die;
-
-    return $data;
+    return array('data' => $data, 'transaction' => $transaction);
   }
 
   public function getDescriptionUsage($month, $year)

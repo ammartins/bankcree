@@ -19,49 +19,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class TransactionsController extends Controller
 {
   /**
-   * @Route("/shortDescription/{currentYear}/{currentMonth}/{id}", name="saveShortDescription")
-   *
-   * @param int $id
-   * @param Request $request
-   * @return \Symfony\Component\HttpFoundation\Response
-   */
-  public function shortDescriptionAction($currentYear, $currentMonth, $id, Request $request) {
-    $em               = $this->getDoctrine()->getManager();
-    $transaction      = $em->getRepository('AccountBundle:Transactions')->find($id);
-    // Build form in controller for now
-    $form             = $this->createFormBuilder($transaction)
-                        ->add('transaction_type', EntityType::class, array(
-                          'label'     => 'Transaction Type',
-                          'class'     => 'AccountBundle:TransactionType',
-                          'choice_label'  => 'name',
-                        ))->getForm();
-
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid())
-    {
-        var_dump($transaction);
-        $em->persist($transaction);
-        $em->flush();
-        $this->addFlash('notice', 'Transaction was successfully updated.');
-        return $this->redirectToRoute('home',
-          array(
-            'currentYear'   => $currentYear,
-            'currentMonth' => $currentMonth
-          ),301);
-    } elseif ($form->isSubmitted() && !$form->isValid()) {
-        $this->addFlash('notice', 'Transaction was not updated.');
-    }
-
-    return $this->render('AccountBundle:Tools:shortDescription.html.twig',
-      array(
-        'transaction'   => $id,
-        'form'          => $form->createView(),
-      )
-    );
-  }
-
-  /**
    *
    * @param int $currentYear
    * @param int $currentMonth
