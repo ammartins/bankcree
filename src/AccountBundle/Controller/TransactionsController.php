@@ -34,22 +34,24 @@ class TransactionsController extends Controller
 
     $em = $this->getDoctrine()->getManager();
 
-    $transactions     = $em->getRepository('AccountBundle:Transactions')
+    $transactions             = $em->getRepository('AccountBundle:Transactions')
       ->findAllByMonth($currentMonth, $currentYear);
-    $graphDataType    = $em->getRepository('AccountBundle:Transactions')
+    $graphDataType            = $em->getRepository('AccountBundle:Transactions')
       ->getDescriptionUsage($currentMonth, $currentYear);
-    $graphDataDay     = $em->getRepository('AccountBundle:Transactions')
+    $graphDataDay             = $em->getRepository('AccountBundle:Transactions')
       ->getDescriptionPerDayInMonth($currentMonth, $currentYear);
-    $monthsData       = $em->getRepository('AccountBundle:Transactions')
+    $monthsData               = $em->getRepository('AccountBundle:Transactions')
       ->getMonths($currentYear);
-    $allYears         = $em->getRepository('AccountBundle:Transactions')
+    $allYears                 = $em->getRepository('AccountBundle:Transactions')
       ->getAllYears();
-    $descriptionData  = $em->getRepository('AccountBundle:Transactions')
+    $descriptionData          = $em->getRepository('AccountBundle:Transactions')
       ->getDescriptionPerMonth($currentMonth, $currentYear);
-    $amountDay        = $em->getRepository('AccountBundle:Transactions')
+    $amountDay                = $em->getRepository('AccountBundle:Transactions')
       ->getAmountPerDay($currentMonth, $currentYear);
-    $transactionType  = $em->getRepository('AccountBundle:TransactionType')
+    $transactionType          = $em->getRepository('AccountBundle:TransactionType')
       ->findAll();
+    $getDescriptionUsageYear  = $em->getRepository('AccountBundle:Transactions')
+      ->getDescriptionUsageYear($currentYear);
 
     // serializer ... maybe should move this to Repository
     $serializer           = $this->get('jms_serializer');
@@ -62,18 +64,19 @@ class TransactionsController extends Controller
 
     return $this->render('AccountBundle:Default:index.html.twig',
       array(
-        'transactions'        => $transactions,
-        'data'                => $graphDataType,
-        'dataDay'             => $graphDataDay,
-        'months'              => $monthsData,
-        'currentMonth'        => $currentMonth,
-        'descriptionData'     => $descriptionData,
-        'descriptionDay'      => $amountDay,
-        'graphDay'            => $graphAmountDay,
-        'dataTransactionType' => $transactionType,
-        'currentMonth'        => $currentMonth,
-        'years'               => $allYears,
-        "currentYear"         => $currentYear,
+        'transactions'            => $transactions,
+        'data'                    => $graphDataType,
+        'dataDay'                 => $graphDataDay,
+        'months'                  => $monthsData,
+        'currentMonth'            => $currentMonth,
+        'descriptionData'         => $descriptionData,
+        'descriptionDay'          => $amountDay,
+        'graphDay'                => $graphAmountDay,
+        'dataTransactionType'     => $transactionType,
+        'currentMonth'            => $currentMonth,
+        'years'                   => $allYears,
+        "currentYear"             => $currentYear,
+        "getDescriptionUsageYear" => $getDescriptionUsageYear,
       )
     );
   }

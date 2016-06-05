@@ -56,12 +56,12 @@ class TransactionTypeController extends Controller
     $transaction  = $em->getRepository('AccountBundle:Transactions')->getMatchTransactions($id);
 
     $results = array();
-    $transactionDescription = preg_split('/[\s\/]/', $transaction['transaction'][0]['description']);
+    $transactionDescription = preg_split('/[\s\/\*]/', $transaction['transaction'][0]['description']);
     foreach ( $transaction['data'] as $item )
     {
       $itemDescription = $item['description'];
       $itemDescription = preg_replace('!\s+!', ' ', $itemDescription);
-      $itemDescription = preg_split('/[\s\/]/', $itemDescription);
+      $itemDescription = preg_split('/[\s\/\*]/', $itemDescription);
       $score = 0;
       $special = 0;
       foreach ( $itemDescription as $item1)
