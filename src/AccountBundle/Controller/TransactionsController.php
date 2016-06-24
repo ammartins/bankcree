@@ -28,6 +28,8 @@ class TransactionsController extends Controller
    */
   public function indexAction($currentYear, $currentMonth, Request $request)
   {
+
+    # TODO FFS CLEAN THIS MESS
     //$currentMonth = $request->query->get('currentMonth')
     //? str_replace('#', '', $request->query->get('currentMonth')) : date('m');
     $currentYear  = $currentYear ? $currentYear : date('Y');
@@ -111,16 +113,18 @@ class TransactionsController extends Controller
    */
   public function editAction($currentYear, $currentMonth, $id, Request $request)
   {
-    $em               = $this->getDoctrine()->getManager();
-    $transaction      = $em->getRepository('AccountBundle:Transactions')->find($id);
-    $form             = $this->createForm(TransactionsType::class, $transaction);
+    // Get Transaction
+    $transaction  = $this->get('account.account_repository')->find($id);
+    // Generate Form for Edit
+    $form         = $this->createForm(TransactionsType::class, $transaction);
     $form->handleRequest($request);
 
+    // If the form is being submitted and it is valid lets save this
     if ($form->isSubmitted() && $form->isValid())
     {
-        $em->persist($transaction);
-        $em->flush();
+        $this->get('account.account_service')->save($transaction);
         $this->addFlash('notice', 'Transaction was successfully updated.');
+
         return $this->redirectToRoute('home',
           array(
             'currentYear'   => $currentYear,

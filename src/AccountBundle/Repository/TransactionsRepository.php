@@ -16,10 +16,10 @@ class TransactionsRepository extends EntityRepository
   {
     $months = $this->getEntityManager()
       ->createQuery(
-        "SELECT DISTINCT Month(p.createAt) as months
+        "SELECT DISTINCT Month(p.createAt) as months, p.createAt as monthName
         FROM AccountBundle:Transactions p
         WHERE Year(p.createAt) = $year
-        ORDER BY months"
+        GROUP BY months"
       )->execute();
 
     return $months;

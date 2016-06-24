@@ -14,7 +14,7 @@
     {% for month in months %}
       <li {% if month.months == currentMonth%}class="active"{% endif %}>
         <a href="{{ path('home', {'currentYear' : currentYear,'currentMonth' : month.months}) }}">
-          {{ month.months }}
+          {{ month.monthName|date('F') }}
         </a>
       </li>
     {% endfor %}
