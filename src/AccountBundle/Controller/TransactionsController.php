@@ -37,45 +37,56 @@ class TransactionsController extends Controller
     $em = $this->getDoctrine()->getManager();
 
     $transactions     = $em->getRepository('AccountBundle:Transactions')
-      ->findAllByMonth($currentMonth, $currentYear);
+    ->findAllByMonth($currentMonth, $currentYear);
     $graphDataType    = $em->getRepository('AccountBundle:Transactions')
-      ->getDescriptionUsage($currentMonth, $currentYear);
+    ->getDescriptionUsage($currentMonth, $currentYear);
     $graphDataDay     = $em->getRepository('AccountBundle:Transactions')
-      ->getDescriptionPerDayInMonth($currentMonth, $currentYear);
+    ->getDescriptionPerDayInMonth($currentMonth, $currentYear);
     $monthsData       = $em->getRepository('AccountBundle:Transactions')
-      ->getMonths($currentYear);
+    ->getMonthsForName($currentYear);
+    $graphMonthYear   = $em->getRepository('AccountBundle:Transactions')
+    ->graphMonthYear($currentYear);
+    $graphMonthYear2  = $em->getRepository('AccountBundle:Transactions')
+    ->graphMonthYear($currentYear-1);
+    $monthsData       = $em->getRepository('AccountBundle:Transactions')
+    ->getMonths($currentYear);
     $allYears         = $em->getRepository('AccountBundle:Transactions')
-      ->getAllYears();
+    ->getAllYears();
     $descriptionData  = $em->getRepository('AccountBundle:Transactions')
-      ->getDescriptionPerMonth($currentMonth, $currentYear);
+    ->getDescriptionPerMonth($currentMonth, $currentYear);
     $amountDay        = $em->getRepository('AccountBundle:Transactions')
-      ->getAmountPerDay($currentMonth, $currentYear);
+    ->getAmountPerDay($currentMonth, $currentYear);
     $transactionType  = $em->getRepository('AccountBundle:TransactionType')
-      ->findAll();
+    ->findAll();
 
     // serializer ... maybe should move this to Repository
     $serializer           = $this->get('jms_serializer');
     $graphDataType        = $serializer->serialize($graphDataType, 'json');
     $graphDataDay         = $serializer->serialize($graphDataDay, 'json');
     $graphAmountDay       = $serializer->serialize($amountDay, 'json');
+    $graphMonthYear       = $serializer->serialize($graphMonthYear, 'json');
+    $graphMonthYear2      = $serializer->serialize($graphMonthYear2, 'json');
+
     //$dataTransactionType  = $serializer->serialize($transactionType, 'json');
     //$descriptionData  = $serializer->serialize($descriptionData, 'json');
     // serializer ... maybe should move this to Repository
 
     return $this->render('AccountBundle:Default:index.html.twig',
       array(
-        'transactions'        => $transactions,
-        'data'                => $graphDataType,
-        'dataDay'             => $graphDataDay,
-        'months'              => $monthsData,
-        'currentMonth'        => $currentMonth,
-        'descriptionData'     => $descriptionData,
-        'descriptionDay'      => $amountDay,
-        'graphDay'            => $graphAmountDay,
-        'dataTransactionType' => $transactionType,
-        'currentMonth'        => $currentMonth,
-        'years'               => $allYears,
-        "currentYear"         => $currentYear,
+        'transactions'            => $transactions,
+        'data'                    => $graphDataType,
+        'dataDay'                 => $graphDataDay,
+        'months'                  => $monthsData,
+        'currentMonth'            => $currentMonth,
+        'descriptionData'         => $descriptionData,
+        'descriptionDay'          => $amountDay,
+        'graphDay'                => $graphAmountDay,
+        'dataTransactionType'     => $transactionType,
+        'currentMonth'            => $currentMonth,
+        'years'                   => $allYears,
+        "currentYear"             => $currentYear,
+        "graphMonth"              => $graphMonthYear,
+        "graphMonth2"             => $graphMonthYear2,
       )
     );
   }
