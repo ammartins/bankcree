@@ -153,10 +153,10 @@ $(document).ready(function() {
           }
       },
       series: [{
-          name: 'Total 2016',
+          name: 'Total Current Year',
           data: perMonth
       }, {
-          name: 'Total 2015',
+          name: 'Total Previous Year',
           data: perMonth1
       }]
   });

@@ -85,6 +85,7 @@ class TransactionsController extends Controller
         'currentMonth'            => $currentMonth,
         'years'                   => $allYears,
         "currentYear"             => $currentYear,
+        //"getDescriptionUsageYear" => $getDescriptionUsageYear,
         "graphMonth"              => $graphMonthYear,
         "graphMonth2"             => $graphMonthYear2,
       )
