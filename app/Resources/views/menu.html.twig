@@ -1,14 +1,21 @@
-<ul id="myTabs" class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active">
-    <a href="#table" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Home</a>
-  </li>
-  <li role="presentation" class="">
-    <a href="#monthgraph" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Month Data</a>
-  </li>
-  <li role="presentation" class="">
-    <a href="#dailygraph" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Daily Data</a>
-  </li>
-  <li role="presentation" class="">
-    <a href="#transactiontype" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Types</a>
-  </li>
-</ul>
+{% block stylesheets %}
+    {% stylesheets '@AccountBundle/Resources/public/css/menu.css' %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+    {% stylesheets '@AccountBundle/Resources/public/css/style.css' %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+
+<div id="top-menu">
+  <div class="logo"></div>
+  <div class="nav-menu">
+    <a href="#table" data-toggle="tab">Home</a>
+    <a href="#monthgraph" data-toggle="tab">Expenses</a>
+    <a href="#dailygraph" data-toggle="tab">Graphs</a>
+    <a href="#transactiontype" data-toggle="tab">Types</a>
+    <a href="{{ path('contact') }}">Contact</a>
+    <a href="{{ path('logout') }}">Logout</a>
+  </div>
+</div>

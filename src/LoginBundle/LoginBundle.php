@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle;
+namespace LoginBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class AppBundle extends Bundle
+class LoginBundle extends Bundle
 {
 }

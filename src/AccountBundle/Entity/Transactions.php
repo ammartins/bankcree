@@ -78,7 +78,7 @@ class Transactions
     private $accountId;
 
     /**
-     * @ORM\OneToOne(targetEntity="TransactionType")
+     * @ORM\ManyToOne(targetEntity="TransactionType")
      * @ORM\JoinColumn(name="transaction_type", referencedColumnName="id")
      */
     private $transactionType;

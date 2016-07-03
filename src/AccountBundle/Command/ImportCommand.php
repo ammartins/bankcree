@@ -40,15 +40,21 @@ class ImportCommand extends ContainerAwareCommand
         $doctrine   = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
 
+        $skip = 1;
+
         if ( $fileContent )
         {
           foreach ( $fileContentArray as $line )
           {
+            if ( $skip ) {
+                $skip = FALSE;
+                continue;
+            }
             if ( empty($line) ) {
                 continue;
             }
             $info = explode(";", $line);
-            $correctDate = substr($info[2], 0,4).'-'.substr($info[2],5,1).'-'.substr($info[2],6,2);
+            $correctDate = substr($info[2],0,4).'-'.substr($info[2],4,2).'-'.substr($info[2],6,2);
             $Date = new \DateTime($correctDate);
 
             # Generate Hash

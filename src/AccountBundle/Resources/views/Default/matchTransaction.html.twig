@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+  <div style="text-center">{{ transaction.description }}</div>
+  <table class="table table-condensed table-hover table-responsive">
+    <tr>
+      <th class="text-left">Description</th>
+      <th class="text-left">Short Description</th>
+      <th class="text-left">Matching %</th>
+    </tr>
+    {% for transaction in transactions %}
+      <tr>
+        <td class="text-left">{{ transaction.description }}</td>
+        <td class="text-left">{{ transaction.name }}</td>
+        <td class="text-left">{{ transaction.percentage}}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  {{ form_start(form) }}
+      <div class="form-group">
+          <label for="short_description">{{ form_label(form.transaction_type) }}</label>
+          {% include '::errors.html.twig' with {'errors': form.transaction_type.vars.errors} %}
+          {{ form_widget(form.transaction_type, { 'attr': {'class': 'form-control'} }) }}
+      </div>
+
+      <div class="text-right">
+          <button type="submit" id="transactions_save" name="transactions[saveShortDescription]" class="btn btn-success">Save</button>
+          {#{{ form_widget(form.save, { 'attr': {'class': 'btn btn-success'}}) }}#}
+      </div>
+  {{ form_end(form) }}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var type   = jQuery.parseJSON('{{ type|raw }}');
+      $.each( type, function( key, value ) {
+        console.log(key);
+        $("#form_transaction_type option:contains(" + key + ")").attr('selected', 'selected');
+        //$('select[name="form_transaction_type"] option[value="'+key+'"]').attr("selected","selected");
+      });
+    });
+  </script>
+{% endblock %}

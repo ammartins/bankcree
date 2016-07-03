@@ -22,7 +22,10 @@
 
     <div class="text-right">
       {{ form_widget(form.save, { 'attr': {'class': 'btn btn-success'}}) }}
-      <a type="button" class="btn btn-primary" href="{{ path('home', {'currentMonth': currentMonth}) }}">Back</a>
+      <a type="button" class="btn btn-primary" href="{{ path('home', {
+        'currentMonth': currentMonth,
+        'currentYear': currentYear,
+      }) }}">Back</a>
     </div>
   {{ form_end(form) }}
 {% endblock %}

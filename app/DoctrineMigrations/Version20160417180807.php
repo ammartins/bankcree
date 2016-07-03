@@ -18,6 +18,8 @@ class Version20160417180807 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql("ALTER TABLE transactions ADD transactions_type integer");
         $this->addSql("ALTER TABLE transactions ADD FOREIGN KEY (transaction_type) REFERENCES transaction_type(id)");
+        $this->addSql("ALTER TABLE transaction_type DROP recurring");
+        $this->addSql("ALTER TABLE transaction_type ADD recurring bool");
     }
 
     /**

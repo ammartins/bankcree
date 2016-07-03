@@ -46,6 +46,9 @@
     </span>
   </div>
   <div class="text-right">
-    <a type="button" class="btn btn-primary" href="{{ path('home', {'currentMonth': currentMonth}) }}">Back</a>
+    <a type="button" class="btn btn-primary" href="{{ path('home', {
+      'currentMonth': currentMonth,
+      'currentYear': currentYear,
+    }) }}">Back</a>
   </div,
 {% endblock %}
