@@ -98,6 +98,22 @@ class TransactionsRepository extends EntityRepository
     return $data;
   }
 
+  public function getDescriptionUsageYear($year)
+  {
+    $data = $this->getEntityManager()
+      ->createQuery(
+        "SELECT t.name as shortDescription, sum(p.amount) as total, count(p.transactionType) as ocurrencies
+        FROM AccountBundle:Transactions p
+        JOIN AccountBundle:TransactionType t
+        WHERE p.transactionType = t.id
+        AND Year(p.createAt) = $year
+        AND t.name != ''
+        GROUP BY t.name"
+      )->execute();
+
+    return $data;
+  }
+
   public function  getDescriptionPerDayInMonth($month, $year)
   {
     $data = $this->getEntityManager()
