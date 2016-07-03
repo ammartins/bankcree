@@ -24,7 +24,7 @@ class TransactionsController extends Controller
    * @param int $currentMonth
    * @param Request $request
    *
-   * @Route("/{currentYear}/{currentMonth}", name="home")
+   * @Route("/account/{currentYear}/{currentMonth}", name="home")
    */
   public function indexAction($currentYear, $currentMonth, Request $request)
   {
@@ -93,7 +93,7 @@ class TransactionsController extends Controller
   }
 
   /**
-   * @Route("/show/{currentYear}/{currentMonth}/{id}", name="show")
+   * @Route("/account/show/{currentYear}/{currentMonth}/{id}", name="show")
    *
    * @param int $currentYear
    * @param int $id
@@ -115,7 +115,7 @@ class TransactionsController extends Controller
   }
 
   /**
-   * @Route("/edit/{currentYear}/{currentMonth}/{id}", name="edit")
+   * @Route("/account/edit/{currentYear}/{currentMonth}/{id}", name="edit")
    *
    * @param int $currentYear
    * @param int $currentMonth

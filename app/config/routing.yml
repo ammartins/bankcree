@@ -1,3 +1,8 @@
+login:
+    resource: "@LoginBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 account:
     resource: "@AccountBundle/Controller/"
     type:     annotation

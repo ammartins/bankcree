@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@AccountBundle/Resources/config/services.yml" }
+    - { resource: "@LoginBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -97,7 +98,7 @@ swiftmailer:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ 'AccountBundle' ]
+    bundles:        [ 'AccountBundle', 'LoginBundle' ]
 
     filters:
         cssrewrite: ~
@@ -130,4 +131,4 @@ assetic:
 
         jquery:
             inputs:
-                - %kernel.root_dir%/../vendor/components/jquery/jquery.js 
+                - %kernel.root_dir%/../vendor/components/jquery/jquery.js
