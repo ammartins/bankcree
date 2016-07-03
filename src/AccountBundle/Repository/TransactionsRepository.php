@@ -16,10 +16,10 @@ class TransactionsRepository extends EntityRepository
   {
     $months = $this->getEntityManager()
       ->createQuery(
-        "SELECT DISTINCT Month(p.createAt) as months
+        "SELECT DISTINCT Month(p.createAt) as months, p.createAt as monthName
         FROM AccountBundle:Transactions p
         WHERE Year(p.createAt) = $year
-        ORDER BY months"
+        GROUP BY months"
       )->execute();
 
     return $months;
@@ -113,11 +113,42 @@ class TransactionsRepository extends EntityRepository
     return $data;
   }
 
+  public function getMonthsForName($year)
+  {
+    $months = $this->getEntityManager()
+      ->createQuery(
+        "SELECT DISTINCT Month(p.createAt) as months
+        FROM AccountBundle:Transactions p
+        WHERE Year(p.createAt) = $year
+        AND p.shortDescription != 'savings'
+        ORDER BY months"
+      )->execute();
+
+    return $months;
+  }
+
+  public function graphMonthYear($year)
+  {
+    $data = $this->getEntityManager()
+      ->createQuery(
+        "SELECT sum(p.amount) as amount, Month(p.createAt) as month
+        FROM AccountBundle:Transactions p
+        WHERE
+        Year(p.createAt) = $year
+
+        GROUP BY month"
+      )->execute();
+
+    return $data;
+  }
+
   public function getDescriptionPerMonth($month, $year)
   {
     $data = $this->getEntityManager()
       ->createQuery(
-        "SELECT DISTINCT t.name  as description, sum(p.amount) as amount
+        "SELECT DISTINCT  t.name  as description,
+                          sum(p.amount) as amount,
+                          t.recurring as recurring
         FROM AccountBundle:Transactions p
         JOIN AccountBundle:TransactionType t
         WHERE p.transactionType = t.id

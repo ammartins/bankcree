@@ -129,7 +129,7 @@ class TransactionTypeController extends Controller
 
     $type = $serializer->serialize($type, 'json');
 
-    return $this->render('AccountBundle:tools:matchTransaction.html.twig',
+    return $this->render('AccountBundle:default:matchTransaction.html.twig',
       array(
         'type'          => $type,
         'form'          => $form->createView(),
