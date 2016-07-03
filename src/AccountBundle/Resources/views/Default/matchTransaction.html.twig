@@ -1,19 +1,21 @@
 {% extends 'base.html.twig' %}
 
-
 {% block body %}
   <div style="text-center">{{ transaction.description }}</div>
+  <div style="text-center">{{ transaction.amount }}</div>
   <table class="table table-condensed table-hover table-responsive">
     <tr>
       <th class="text-left">Description</th>
       <th class="text-left">Short Description</th>
       <th class="text-left">Matching %</th>
+      <th class="text-left">Amount</th>
     </tr>
     {% for transaction in transactions %}
       <tr>
         <td class="text-left">{{ transaction.description }}</td>
         <td class="text-left">{{ transaction.name }}</td>
         <td class="text-left">{{ transaction.percentage}}</td>
+        <td class="text-left">{{ transaction.amount}}</td>
       </tr>
     {% endfor %}
   </table>
