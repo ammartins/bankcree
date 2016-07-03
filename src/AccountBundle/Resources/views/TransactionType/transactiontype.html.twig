@@ -4,12 +4,14 @@
 <table class="table table-condensed table-hover table-responsive">
   <tr>
     <th class="text-left">Name</th>
+    <th class="text-right">Ignore</th>
     <th class="text-right">Recurring</th>
     <th class="text-right">Options</th>
   </tr>
   {% for type in dataTransactionType %}
     <tr>
       <td class="text-left">{{ type.name }}</td>
+      <th class="text-right">-</th>
       <td class="text-right">{{ type.recurring }}</td>
       <td class="text-right">
         <a href="{{ path('delete_type', {'currentYear' : currentYear, 'id': type.id, 'currentMonth': currentMonth}) }}">Delete</a>
