@@ -40,4 +40,12 @@ class DefaultController extends Controller
         $this->get('request')->getSession()->invalidate();
         return $this->redirect($this->generateUrl('login'));
      }
+
+    /**
+     * @Route("/contact", name="contact")
+     */
+    public function contactAction(Request $request)
+    {
+      return $this->render('LoginBundle:Default:contact.html.twig');
+    }
 }
