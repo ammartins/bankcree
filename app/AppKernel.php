@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new AccountBundle\AccountBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
+            new LoginBundle\LoginBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
