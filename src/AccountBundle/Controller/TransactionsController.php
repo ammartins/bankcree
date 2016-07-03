@@ -48,6 +48,10 @@ class TransactionsController extends Controller
     ->graphMonthYear($currentYear);
     $graphMonthYear2  = $em->getRepository('AccountBundle:Transactions')
     ->graphMonthYear($currentYear-1);
+    $income           = $em->getRepository('AccountBundle:Transactions')
+    ->getIncomeExpensiveYear($currentYear, 1);
+    $expenses         = $em->getRepository('AccountBundle:Transactions')
+    ->getIncomeExpensiveYear($currentYear, 0);
     $monthsData       = $em->getRepository('AccountBundle:Transactions')
     ->getMonths($currentYear);
     $allYears         = $em->getRepository('AccountBundle:Transactions')
@@ -66,6 +70,8 @@ class TransactionsController extends Controller
     $graphAmountDay       = $serializer->serialize($amountDay, 'json');
     $graphMonthYear       = $serializer->serialize($graphMonthYear, 'json');
     $graphMonthYear2      = $serializer->serialize($graphMonthYear2, 'json');
+    $income               = $serializer->serialize($income, 'json');
+    $expenses             = $serializer->serialize($expenses, 'json');
 
     //$dataTransactionType  = $serializer->serialize($transactionType, 'json');
     //$descriptionData  = $serializer->serialize($descriptionData, 'json');
@@ -88,6 +94,8 @@ class TransactionsController extends Controller
         //"getDescriptionUsageYear" => $getDescriptionUsageYear,
         "graphMonth"              => $graphMonthYear,
         "graphMonth2"             => $graphMonthYear2,
+        "income"                  => $income,
+        "expenses"                => $expenses,
       )
     );
   }

@@ -187,4 +187,34 @@ class TransactionsRepository extends EntityRepository
 
     return $data;
   }
+
+  // Get Income/Expenses per Month of current Year
+  public function getIncomeExpensiveYear($currentYear, $type = 0)
+  {
+    if ( $type == 1 ) {
+      $data = $this->getEntityManager()
+        ->createQuery(
+          "SELECT Month(p.createAt) as month, sum(p.amount) as amount
+          FROM AccountBundle:Transactions p
+          where
+            YEAR(p.createAt) = $currentYear
+            and
+            p.amount > $type
+          group by month"
+        )->execute();
+    } else {
+      $data = $this->getEntityManager()
+        ->createQuery(
+          "SELECT Month(p.createAt) as month, sum(p.amount) as amount
+          FROM AccountBundle:Transactions p
+          where
+            YEAR(p.createAt) = $currentYear
+            and
+            p.amount < $type
+          group by month"
+        )->execute();
+    }
+
+    return $data;
+  }
 }

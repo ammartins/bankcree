@@ -140,7 +140,7 @@ $(document).ready(function() {
           type: gtype
       },
       title: {
-          text: 'Monthly Expensives'
+          text: 'Year Expensives'
       },
       xAxis: {
           categories: [
@@ -157,6 +157,59 @@ $(document).ready(function() {
           data: perMonth
       }, {
           name: 'Total Previous Year',
+          data: perMonth1
+      }]
+  });
+
+  var perMonth    = [ 0,0,0,0,0,0,0,0,0,0,
+                      0,0];
+  var perMonth1   = [ 0,0,0,0,0,0,0,0,0,0,
+                      0,0];
+  // This is for the Month Income/Expenses Graph
+  idx = 0;
+  for(var key in objMI) {
+      if (objMI.hasOwnProperty(key))
+      {
+          if ( objMI.hasOwnProperty(key) ) {
+            perMonth[idx++] = parseInt(objMI[key]['amount']);
+          }
+      }
+  }
+
+  idx = 0;
+  for(var key in objME) {
+      if (objME.hasOwnProperty(key))
+      {
+          //console.log(key);
+          if ( objME.hasOwnProperty(key) ) {
+            perMonth1[idx++] = parseInt(objME[key]['amount']);
+          }
+      }
+  }
+
+  chart4 = new Highcharts.Chart({
+      chart: {
+          renderTo: 'container4',
+          type: gtype
+      },
+      title: {
+          text: 'Month Income/Expenses'
+      },
+      xAxis: {
+          categories: [
+              "Jan","Fev","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
+          ]
+      },
+      yAxis: {
+          title: {
+              text: 'Income'
+          }
+      },
+      series: [{
+          name: 'Total Income',
+          data: perMonth
+      }, {
+          name: 'Total Expenses',
           data: perMonth1
       }]
   });
