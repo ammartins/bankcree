@@ -24,40 +24,55 @@ class TransactionsController extends Controller
    * @param int $currentMonth
    * @param Request $request
    *
-   * @Route("/{currentYear}/{currentMonth}", name="home")
+   * @Route("/account/{currentYear}/{currentMonth}", name="home")
    */
   public function indexAction($currentYear, $currentMonth, Request $request)
   {
+
+    # TODO FFS CLEAN THIS MESS
     //$currentMonth = $request->query->get('currentMonth')
     //? str_replace('#', '', $request->query->get('currentMonth')) : date('m');
     $currentYear  = $currentYear ? $currentYear : date('Y');
 
     $em = $this->getDoctrine()->getManager();
 
-    $transactions             = $em->getRepository('AccountBundle:Transactions')
-      ->findAllByMonth($currentMonth, $currentYear);
-    $graphDataType            = $em->getRepository('AccountBundle:Transactions')
-      ->getDescriptionUsage($currentMonth, $currentYear);
-    $graphDataDay             = $em->getRepository('AccountBundle:Transactions')
-      ->getDescriptionPerDayInMonth($currentMonth, $currentYear);
-    $monthsData               = $em->getRepository('AccountBundle:Transactions')
-      ->getMonths($currentYear);
-    $allYears                 = $em->getRepository('AccountBundle:Transactions')
-      ->getAllYears();
-    $descriptionData          = $em->getRepository('AccountBundle:Transactions')
-      ->getDescriptionPerMonth($currentMonth, $currentYear);
-    $amountDay                = $em->getRepository('AccountBundle:Transactions')
-      ->getAmountPerDay($currentMonth, $currentYear);
-    $transactionType          = $em->getRepository('AccountBundle:TransactionType')
-      ->findAll();
-    $getDescriptionUsageYear  = $em->getRepository('AccountBundle:Transactions')
-      ->getDescriptionUsageYear($currentYear);
+    $transactions     = $em->getRepository('AccountBundle:Transactions')
+    ->findAllByMonth($currentMonth, $currentYear);
+    $graphDataType    = $em->getRepository('AccountBundle:Transactions')
+    ->getDescriptionUsage($currentMonth, $currentYear);
+    $graphDataDay     = $em->getRepository('AccountBundle:Transactions')
+    ->getDescriptionPerDayInMonth($currentMonth, $currentYear);
+    $monthsData       = $em->getRepository('AccountBundle:Transactions')
+    ->getMonthsForName($currentYear);
+    $graphMonthYear   = $em->getRepository('AccountBundle:Transactions')
+    ->graphMonthYear($currentYear);
+    $graphMonthYear2  = $em->getRepository('AccountBundle:Transactions')
+    ->graphMonthYear($currentYear-1);
+    $income           = $em->getRepository('AccountBundle:Transactions')
+    ->getIncomeExpensiveYear($currentYear, 1);
+    $expenses         = $em->getRepository('AccountBundle:Transactions')
+    ->getIncomeExpensiveYear($currentYear, 0);
+    $monthsData       = $em->getRepository('AccountBundle:Transactions')
+    ->getMonths($currentYear);
+    $allYears         = $em->getRepository('AccountBundle:Transactions')
+    ->getAllYears();
+    $descriptionData  = $em->getRepository('AccountBundle:Transactions')
+    ->getDescriptionPerMonth($currentMonth, $currentYear);
+    $amountDay        = $em->getRepository('AccountBundle:Transactions')
+    ->getAmountPerDay($currentMonth, $currentYear);
+    $transactionType  = $em->getRepository('AccountBundle:TransactionType')
+    ->findAll();
 
     // serializer ... maybe should move this to Repository
     $serializer           = $this->get('jms_serializer');
     $graphDataType        = $serializer->serialize($graphDataType, 'json');
     $graphDataDay         = $serializer->serialize($graphDataDay, 'json');
     $graphAmountDay       = $serializer->serialize($amountDay, 'json');
+    $graphMonthYear       = $serializer->serialize($graphMonthYear, 'json');
+    $graphMonthYear2      = $serializer->serialize($graphMonthYear2, 'json');
+    $income               = $serializer->serialize($income, 'json');
+    $expenses             = $serializer->serialize($expenses, 'json');
+
     //$dataTransactionType  = $serializer->serialize($transactionType, 'json');
     //$descriptionData  = $serializer->serialize($descriptionData, 'json');
     // serializer ... maybe should move this to Repository
@@ -76,13 +91,17 @@ class TransactionsController extends Controller
         'currentMonth'            => $currentMonth,
         'years'                   => $allYears,
         "currentYear"             => $currentYear,
-        "getDescriptionUsageYear" => $getDescriptionUsageYear,
+        //"getDescriptionUsageYear" => $getDescriptionUsageYear,
+        "graphMonth"              => $graphMonthYear,
+        "graphMonth2"             => $graphMonthYear2,
+        "income"                  => $income,
+        "expenses"                => $expenses,
       )
     );
   }
 
   /**
-   * @Route("/show/{currentYear}/{currentMonth}/{id}", name="show")
+   * @Route("/account/show/{currentYear}/{currentMonth}/{id}", name="show")
    *
    * @param int $currentYear
    * @param int $id
@@ -104,7 +123,7 @@ class TransactionsController extends Controller
   }
 
   /**
-   * @Route("/edit/{currentYear}/{currentMonth}/{id}", name="edit")
+   * @Route("/account/edit/{currentYear}/{currentMonth}/{id}", name="edit")
    *
    * @param int $currentYear
    * @param int $currentMonth
@@ -114,16 +133,18 @@ class TransactionsController extends Controller
    */
   public function editAction($currentYear, $currentMonth, $id, Request $request)
   {
-    $em               = $this->getDoctrine()->getManager();
-    $transaction      = $em->getRepository('AccountBundle:Transactions')->find($id);
-    $form             = $this->createForm(TransactionsType::class, $transaction);
+    // Get Transaction
+    $transaction  = $this->get('account.account_repository')->find($id);
+    // Generate Form for Edit
+    $form         = $this->createForm(TransactionsType::class, $transaction);
     $form->handleRequest($request);
 
+    // If the form is being submitted and it is valid lets save this
     if ($form->isSubmitted() && $form->isValid())
     {
-        $em->persist($transaction);
-        $em->flush();
+        $this->get('account.account_service')->save($transaction);
         $this->addFlash('notice', 'Transaction was successfully updated.');
+
         return $this->redirectToRoute('home',
           array(
             'currentYear'   => $currentYear,

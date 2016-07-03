@@ -1,16 +1,22 @@
-{% block javascripts %}
-    {% javascripts '@AccountBundle/Resources/public/js/pie.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
-
 {% block body %}
     <div class="col-md-3">
       {% include 'AccountBundle:Default:dailyTable.html.twig' %}
     </div>
-    <div id="containerGUI" class="col-md-4">
-        <div id="listagem">
-            <div id="container" style="width: 60%; height: 45%"></div>
-        </div>
+    <div class="col-md-9">
+      <div id="containerGUI">
+          <div id="listagem">
+              <div id="container" style="width: 60%; height: 45%"></div>
+          </div>
+      </div>
+      <div id="containerGUI">
+          <div id="listagem">
+              <div id="container4" style="width: 60%; height: 45%"></div>
+          </div>
+      </div>
+      <div id="containerGUI">
+          <div id="listagem">
+              <div id="container3" style="width: 60%; height: 45%"></div>
+          </div>
+      </div>
     </div>
 {% endblock %}

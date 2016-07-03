@@ -1,16 +1,15 @@
-{% block javascripts %}
-    {% javascripts '@AccountBundle/Resources/public/js/pie.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
-
 {% block body %}
+    <div class="page-header">
+        <h1>Expenses</h1>
+    </div>
     <div class="col-md-3">
       {% include 'AccountBundle:Default:monthTable.html.twig' %}
     </div>
-    <div id="containerGUI" class="col-md-4">
-        <div id="listagem">
-            <div id="container2" style="width: 65%; height: 65%"></div>
-        </div>
+    <div class="col-md-9">
+      <div id="containerGUI">
+          <div id="listagem">
+              <div id="container2" style="width: 65%; height: 65%"></div>
+          </div>
+      </div>
     </div>
 {% endblock %}

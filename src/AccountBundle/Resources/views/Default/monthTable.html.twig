@@ -5,9 +5,9 @@
   </tr>
   {% set total = 0 %}
   {% for description in descriptionData %}
-    <tr>
+    <tr {% if description.recurring == 1 %}class="warning"{% endif %}>
       <td>{{ description.description|capitalize }}</td>
-      <td class="text-right">{{ description.amount|round(1, 'floor') }} €</td>
+      <td class="text-right {% if description.amount|round(1, 'floor') < -500 %}danger{% endif %}">{{ description.amount|round(1, 'floor') }} €</td>
     </tr>
     {% set total = total + description.amount %}
   {% endfor %}
