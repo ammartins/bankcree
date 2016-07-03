@@ -98,7 +98,7 @@ swiftmailer:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ 'AccountBundle' ]
+    bundles:        [ 'AccountBundle', 'LoginBundle' ]
 
     filters:
         cssrewrite: ~
@@ -131,4 +131,4 @@ assetic:
 
         jquery:
             inputs:
-                - %kernel.root_dir%/../vendor/components/jquery/jquery.js 
+                - %kernel.root_dir%/../vendor/components/jquery/jquery.js
