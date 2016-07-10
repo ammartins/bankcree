@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends Controller
+class LoginController extends Controller
 {
     /**
      * @Route("/login", name="login")
@@ -46,6 +46,7 @@ class DefaultController extends Controller
      */
     public function contactAction(Request $request)
     {
-      return $this->render('LoginBundle:Default:contact.html.twig');
+      //var_dump($this->get('security.token_storage')->getToken()->getUser());
+      return $this->render('LoginBundle:Login:contact.html.twig');
     }
 }
