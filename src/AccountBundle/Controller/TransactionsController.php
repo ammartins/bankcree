@@ -90,6 +90,16 @@ class TransactionsController extends Controller
   }
 
   /**
+   * @Route("/contact", name="contact")
+   */
+  public function contactAction(Request $request)
+  {
+    $user = $this->get('security.token_storage')->getToken()->getUser();
+    $user->getId();
+    return $this->render('AccountBundle:Default:contact.html.twig');
+  }
+
+  /**
    * @Route("/account/show/{currentYear}/{currentMonth}/{id}", name="show")
    *
    * @param int $currentYear
