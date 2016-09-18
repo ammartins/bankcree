@@ -17,6 +17,9 @@ use AccountBundle\Form\TransactionTypeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+// For Ajax response
+use Symfony\Component\HttpFoundation\Response;
+
 class TransactionTypeController extends Controller
 {
   /**
@@ -28,12 +31,29 @@ class TransactionTypeController extends Controller
    */
   public function showAction($currentYear ,$currentMonth, $id, Request $request)
   {
-    $em           = $this->getDoctrine()->getManager();
-    $transaction  = $em->getRepository('AccountBundle:TransactionType')->find($id);
+    $em           	= $this->getDoctrine()->getManager();
+    $transaction  	= $em->getRepository('AccountBundle:TransactionType')->find($id);
+    //$possibleMatch 	= $em->getRepository('AccountBundle:Transactions')->findBy( array('transactionType' => null) );
+    $possibleMatch 	= $em->getRepository('AccountBundle:Transactions')->findAll();
+    $results[$id]       = array();
+
+    foreach ( $possibleMatch as $match )
+    {
+      if ( $match->getTransactionType() ) {
+        $matches =  $this->match($match, $possibleMatch);
+        if ( count($matches) > 0 ) {
+            $results[($match->getTransactionType())->getId()][] = $matches;
+        }
+        else {
+            continue;
+        }
+      }
+    }
 
     return $this->render('AccountBundle:TransactionType:show.html.twig',
       array(
-        'transaction'   => $transaction,
+        'transaction'    => $transaction,
+        'transactions'   => $results[$transaction->getId()] ? $results[$transaction->getId()] : array(),
         'currentMonth'  => $currentMonth,
         'currentYear'   => $currentYear,
       )
@@ -136,7 +156,7 @@ class TransactionTypeController extends Controller
 
     $type = $serializer->serialize($type, 'json');
 
-    return $this->render('AccountBundle:default:matchTransaction.html.twig',
+    return $this->render('AccountBundle:Default:matchTransaction.html.twig',
       array(
         'type'          => $type,
         'form'          => $form->createView(),
@@ -147,6 +167,59 @@ class TransactionTypeController extends Controller
       )
     );
   }
+
+  // TODO OMG PLEASE REMOVE THIS CODE FROM HERE
+  public function match($toBeSave, $transaction) { 
+    $em           = $this->getDoctrine()->getManager();
+    $serializer   = $this->get('jms_serializer');
+
+    $results = array();
+    $transactionDescription = preg_split('/[\s\/\*]/', $toBeSave->getDescription());
+    foreach ( $transaction as $item )
+    {
+      if ( $item->getTransactionType() ) {
+          continue;
+      }
+
+      $itemDescription = $item->getDescription();
+      $itemDescription = preg_replace('!\s+!', ' ', $itemDescription);
+      $itemDescription = preg_split('/[\s\/\*]/', $itemDescription);
+
+      $score = 0;
+      $special = 0;
+
+      foreach ( $itemDescription as $item1)
+      {
+        if (
+          $item1 == 'TRTP' || $item1 == 'IBAN' || $item1 == 'BIC' ||
+          $item1 == 'NAME' || $item1 == 'EREF' || $item1 == 'SEPA' ||
+          $item1 == 'REMI' || $item1 == 'CSID' || $item1 == 'Incasso' ||
+          $item1 == 'MARF' || $item1 == '' || $item1 == 'algemeen' ||
+          $item1 == 'doorlopend' || $item1 == 'IBAN:' ||
+          $item1 == 'Overboeking' || $item1 == 'INGBNL2A' ||
+          $item1 == 'BIC:' || $item1 == 'Omschrijving:' ||
+          $item1 == 'SEPA'
+        )
+        {
+          $special += 1;
+          continue;
+        }
+        if ( in_array($item1, $transactionDescription) )
+        {
+          $score += 1;
+        }
+        if ( $score > (count($itemDescription)-$special)/2 ) {
+          $results[] = $item;
+          $score = 0;
+          $special = 0;
+          continue;
+        }
+      }
+    }
+    // Even more hugly code :P
+    return $results;
+  }
+
 
   /**
    * @Route("/type/new/{currentYear}/{currentMonth}", name="type_new")
@@ -226,7 +299,7 @@ class TransactionTypeController extends Controller
   }
 
   /**
-   * @Route("/type/delete/{currentYear}/{currentMonth}/{id}", name="delete_type")
+   * @Route("/type/delete/{currentYear}/{currentMonth}/{id}", name="type_delete")
    *
    * @param int $currentYear
    * @param int $currentMonth
@@ -245,5 +318,42 @@ class TransactionTypeController extends Controller
         'currentMonth'  => $currentMonth,
         'currentYear'   => $currentYear,
       ),301);
+  }
+
+  /**
+    * @Route("/type/matching", defaults={"_format"="xml"}, name="matching")
+    */
+  public function matchingAction(Request $request)
+  {
+    $response = new Response();
+    if ($request->isXmlHttpRequest()) {
+        $em     =  $this->getDoctrine()->getManager();
+        $update = $request->request->get('selected');
+        $type   = $request->request->get('type');
+        $type   = $em->getRepository('AccountBundle:TransactionType')->find($type);
+
+        $response->setStatusCode(Response::HTTP_OK);
+        // set a HTTP response header
+        $response->headers->set('Content-Type', 'text/html');
+        // print the HTTP headers followed by the content
+        $response->send();
+
+        // TODO update all the IDs with type
+        foreach ( $update as $id ) {
+            $element = $em->getRepository('AccountBundle:Transactions')->find($id);
+            $element->setTransactionType($type);
+            $em->flush();
+        }
+
+        return $response;
+    } else {
+        $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        // set a HTTP response header
+        $response->headers->set('Content-Type', 'text/html');
+        // print the HTTP headers followed by the content
+        $response->send();
+
+        return $response;
+    }
   }
 }

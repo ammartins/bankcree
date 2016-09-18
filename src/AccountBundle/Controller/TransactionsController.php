@@ -160,4 +160,12 @@ class TransactionsController extends Controller
       )
     );
   }
+
+  /**
+   * @Route("/", name="/")
+   *
+   */
+  public function homeIndes() {
+    die;
+  }
 }
