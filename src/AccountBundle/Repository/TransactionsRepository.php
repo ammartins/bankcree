@@ -20,7 +20,7 @@ class TransactionsRepository extends EntityRepository
         FROM AccountBundle:Transactions p
         WHERE Year(p.createAt) = $year
         GROUP BY months"
-      )->execute();
+    )->execute();
 
     return $months;
   }

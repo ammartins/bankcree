@@ -1,20 +1,19 @@
 #top-menu {
   padding-top: 25px;
+  background-color: #3c8dbc;
   .logo {
 
   }
   .nav-menu {
     text-align: right;
+    transform: translateY(-50%);
     a, a:hover, a:visited,  {
-      //text-transform: uppercase;
-      font-size: 14px;
-      //font-weight: bold;
       line-height: 31px;
       display: inline;
       background: rgba(255,255,255,0);
       letter-spacing: 1px;
       text-decoration: none;
-      color: #000;
+      color: #FFF;
       padding: 15px 20px;
     }
   }

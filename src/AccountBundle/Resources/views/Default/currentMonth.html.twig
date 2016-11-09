@@ -1,4 +1,4 @@
-{% include 'AccountBundle:default:monthMenu.html.twig' %}
+{% include 'AccountBundle:Default:monthMenu.html.twig' %}
 
 <table class="table table-condensed table-hover table-responsive">
   <tr>
@@ -30,13 +30,14 @@
             'currentMonth': currentMonth,
             'currentYear': currentYear,
         }) }}">Show</a>
-        <a href="{{ path('edit', {
+        <!--a href="{{ path('edit', {
           'id': transaction.id,
           'currentMonth': currentMonth,
           'currentYear': currentYear,
-        }) }}">Edit</a>
+        }) }}">Edit</a-->
       </td>
     </tr>
   {% endfor %}
 </table>
-{% include 'AccountBundle:default:monthMenu.html.twig' %}
+
+{% include 'AccountBundle:Default:monthMenu.html.twig' %}

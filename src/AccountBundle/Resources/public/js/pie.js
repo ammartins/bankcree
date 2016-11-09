@@ -128,6 +128,11 @@ $(document).ready(function() {
               text: 'Income'
           }
       },
+      plotOptions: {
+        column: {
+          colorByPoint: true
+        }
+      },
       series: [{
           name: 'Total',
           data: frr
@@ -151,6 +156,11 @@ $(document).ready(function() {
           title: {
               text: 'Income'
           }
+      },
+      plotOptions: {
+        column: {
+          colorByPoint: true
+        }
       },
       series: [{
           name: 'Total Current Year',
@@ -204,6 +214,11 @@ $(document).ready(function() {
           title: {
               text: 'Income'
           }
+      },
+      plotOptions: {
+        column: {
+          colorByPoint: true
+        }
       },
       series: [{
           name: 'Total Income',

@@ -5,8 +5,10 @@ namespace LoginBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+// Sessions
+use Symfony\Component\HttpFoundation\Session\Session;
 
-class DefaultController extends Controller
+class LoginController extends Controller
 {
     /**
      * @Route("/login", name="login")
@@ -14,17 +16,14 @@ class DefaultController extends Controller
     public function loginAction(Request $request)
     {
         $authenticationUtils = $this->get('security.authentication_utils');
-
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('LoginBundle:Security:login.html.twig',
             array(
                 // last username entered by the user
-                'last_username' => $lastUsername,
                 'error'         => $error,
             )
         );
@@ -40,12 +39,4 @@ class DefaultController extends Controller
         $this->get('request')->getSession()->invalidate();
         return $this->redirect($this->generateUrl('login'));
      }
-
-    /**
-     * @Route("/contact", name="contact")
-     */
-    public function contactAction(Request $request)
-    {
-      return $this->render('LoginBundle:Default:contact.html.twig');
-    }
 }
