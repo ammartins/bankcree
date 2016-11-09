@@ -67,7 +67,7 @@ class TransactionsController extends Controller
     $income           = $serializer->serialize($income, 'json');
     $expenses         = $serializer->serialize($expenses, 'json');
 
-    return $this->render('AccountBundle:Default:index.html.twig',
+    return $this->render('AccountBundle:default:index.html.twig',
       array(
         'transactions'        => $transactions,
         'data'                => $graphDataType,
@@ -96,7 +96,7 @@ class TransactionsController extends Controller
   {
     $user = $this->get('security.token_storage')->getToken()->getUser();
     $user->getId();
-    return $this->render('AccountBundle:Default:contact.html.twig');
+    return $this->render('AccountBundle:default:contact.html.twig');
   }
 
   /**
@@ -112,7 +112,7 @@ class TransactionsController extends Controller
     $em           = $this->getDoctrine()->getManager();
     $transaction  = $em->getRepository('AccountBundle:Transactions')->find($id);
 
-    return $this->render('AccountBundle:Default:show.html.twig',
+    return $this->render('AccountBundle:default:show.html.twig',
       array(
           'transaction'   => $transaction,
           'currentMonth'  => $currentMonth,
@@ -151,7 +151,7 @@ class TransactionsController extends Controller
         ),301);
     }
 
-    return $this->render('AccountBundle:Default:edit.html.twig',
+    return $this->render('AccountBundle:default:edit.html.twig',
       array(
         'transaction'   => $transaction,
         'form'          => $form->createView(),
