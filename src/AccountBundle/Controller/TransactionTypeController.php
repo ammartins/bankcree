@@ -57,10 +57,9 @@ class TransactionTypeController extends Controller
     $transaction  = $em->getRepository('AccountBundle:Transactions')->getMatchTransactions($id);
 
     $results = array();
-    $transactionDescription = preg_split('/[\s\/\*]/', $transaction['transaction'][0]['description']);
+    $transacDescription = preg_split('/[\s\/\*]/', $transaction['transaction'][0]['description']);
 
-    foreach ($transaction['data'] as $item)
-    {
+    foreach ($transaction['data'] as $item) {
       $itemDescription = $item['description'];
       $itemDescription = preg_replace('!\s+!', ' ', $itemDescription);
       $itemDescription = preg_split('/[\s\/\*]/', $itemDescription);
@@ -68,8 +67,7 @@ class TransactionTypeController extends Controller
       $score = 0;
       $special = 0;
 
-      foreach ($itemDescription as $item1)
-      {
+      foreach ($itemDescription as $item1) {
         if (
           $item1 == 'TRTP' || $item1 == 'IBAN' || $item1 == 'BIC' ||
           $item1 == 'NAME' || $item1 == 'EREF' || $item1 == 'SEPA' ||
@@ -79,13 +77,11 @@ class TransactionTypeController extends Controller
           $item1 == 'Overboeking' || $item1 == 'INGBNL2A' ||
           $item1 == 'BIC:' || $item1 == 'Omschrijving:' ||
           $item1 == 'SEPA'
-        )
-        {
+        ) {
           $special += 1;
           continue;
         }
-        if (in_array($item1, $transactionDescription))
-        {
+        if (in_array($item1, $transacDescription)) {
           $score += 1;
         }
         if ($score > (count($itemDescription)-$special)/2) {
@@ -107,8 +103,7 @@ class TransactionTypeController extends Controller
 
     $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid())
-    {
+    if ($form->isSubmitted() && $form->isValid()) {
       $em->persist($toBeSave);
       $em->flush();
       $this->addFlash('notice', 'Transaction was successfully updated.');
@@ -125,13 +120,12 @@ class TransactionTypeController extends Controller
 
     // Even more hugly code :P
     $type = array();
-    foreach ( $results as $result )
-    {
+    foreach ( $results as $result ) {
       if ( array_key_exists($result['name'], $type) ) {
         $type[$result['name']] += 1;
-      } else {
-        $type[$result['name']] = 1;
-      }
+        continue;
+      } 
+      $type[$result['name']] = 1;
     }
 
     $type = $serializer->serialize($type, 'json');
@@ -164,8 +158,7 @@ class TransactionTypeController extends Controller
     $form         = $this->createForm(TransactionTypeType::class, $transaction);
     $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid())
-    {
+    if ($form->isSubmitted() && $form->isValid()) {
       $em->persist($transaction);
       $em->flush();
       $this->addFlash('notice', 'Transaction was successfully created.');

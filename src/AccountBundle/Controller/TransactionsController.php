@@ -91,6 +91,7 @@ class TransactionsController extends Controller
 
   /**
    * @Route("/contact", name="contact")
+   * @param Request $request
    */
   public function contactAction(Request $request)
   {
@@ -139,8 +140,7 @@ class TransactionsController extends Controller
     $form->handleRequest($request);
 
     // If the form is being submitted and it is valid lets save this
-    if ($form->isSubmitted() && $form->isValid())
-    {
+    if ($form->isSubmitted() && $form->isValid()) {
       $this->get('account.account_service')->save($transaction);
       $this->addFlash('notice', 'Transaction was successfully updated.');
 
