@@ -57,7 +57,7 @@ class TransactionTypeController extends Controller
     $transaction  = $em->getRepository('AccountBundle:Transactions')->getMatchTransactions($id);
 
     $results = array();
-    $transactionDescription = preg_split('/[\s\/\*]/', $transaction['transaction'][0]['description']);
+    $transacDescription = preg_split('/[\s\/\*]/', $transaction['transaction'][0]['description']);
 
     foreach ($transaction['data'] as $item) {
       $itemDescription = $item['description'];
@@ -81,7 +81,7 @@ class TransactionTypeController extends Controller
           $special += 1;
           continue;
         }
-        if (in_array($item1, $transactionDescription)) {
+        if (in_array($item1, $transacDescription)) {
           $score += 1;
         }
         if ($score > (count($itemDescription)-$special)/2) {
@@ -103,8 +103,7 @@ class TransactionTypeController extends Controller
 
     $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid())
-    {
+    if ($form->isSubmitted() && $form->isValid()) {
       $em->persist($toBeSave);
       $em->flush();
       $this->addFlash('notice', 'Transaction was successfully updated.');
@@ -124,9 +123,9 @@ class TransactionTypeController extends Controller
     foreach ( $results as $result ) {
       if ( array_key_exists($result['name'], $type) ) {
         $type[$result['name']] += 1;
-      } else {
-        $type[$result['name']] = 1;
-      }
+        continue;
+      } 
+      $type[$result['name']] = 1;
     }
 
     $type = $serializer->serialize($type, 'json');
