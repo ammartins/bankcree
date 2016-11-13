@@ -158,8 +158,7 @@ class TransactionTypeController extends Controller
     $form         = $this->createForm(TransactionTypeType::class, $transaction);
     $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid())
-    {
+    if ($form->isSubmitted() && $form->isValid()) {
       $em->persist($transaction);
       $em->flush();
       $this->addFlash('notice', 'Transaction was successfully created.');
