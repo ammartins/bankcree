@@ -81,10 +81,11 @@ class ImportCommand extends ContainerAwareCommand
 
             $em->persist($transaction);
             $em->flush();
+
+            return;
           }
-        } else {
-            print "Please use a csv file with content";
         }
+        print "Please use a csv file with content";
     }
 }
 
