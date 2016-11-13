@@ -91,6 +91,7 @@ class TransactionsController extends Controller
 
   /**
    * @Route("/contact", name="contact")
+   * @param Request $request
    */
   public function contactAction(Request $request)
   {
