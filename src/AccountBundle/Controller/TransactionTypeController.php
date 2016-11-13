@@ -59,8 +59,7 @@ class TransactionTypeController extends Controller
     $results = array();
     $transactionDescription = preg_split('/[\s\/\*]/', $transaction['transaction'][0]['description']);
 
-    foreach ($transaction['data'] as $item)
-    {
+    foreach ($transaction['data'] as $item) {
       $itemDescription = $item['description'];
       $itemDescription = preg_replace('!\s+!', ' ', $itemDescription);
       $itemDescription = preg_split('/[\s\/\*]/', $itemDescription);
@@ -68,8 +67,7 @@ class TransactionTypeController extends Controller
       $score = 0;
       $special = 0;
 
-      foreach ($itemDescription as $item1)
-      {
+      foreach ($itemDescription as $item1) {
         if (
           $item1 == 'TRTP' || $item1 == 'IBAN' || $item1 == 'BIC' ||
           $item1 == 'NAME' || $item1 == 'EREF' || $item1 == 'SEPA' ||
@@ -79,13 +77,11 @@ class TransactionTypeController extends Controller
           $item1 == 'Overboeking' || $item1 == 'INGBNL2A' ||
           $item1 == 'BIC:' || $item1 == 'Omschrijving:' ||
           $item1 == 'SEPA'
-        )
-        {
+        ) {
           $special += 1;
           continue;
         }
-        if (in_array($item1, $transactionDescription))
-        {
+        if (in_array($item1, $transactionDescription)) {
           $score += 1;
         }
         if ($score > (count($itemDescription)-$special)/2) {
@@ -125,8 +121,7 @@ class TransactionTypeController extends Controller
 
     // Even more hugly code :P
     $type = array();
-    foreach ( $results as $result )
-    {
+    foreach ( $results as $result ) {
       if ( array_key_exists($result['name'], $type) ) {
         $type[$result['name']] += 1;
       } else {
