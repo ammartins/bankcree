@@ -42,9 +42,9 @@ class ImportCommand extends ContainerAwareCommand
 
         $skip = 1;
 
-        if ( $fileContent )
+        if ($fileContent)
         {
-          foreach ( $fileContentArray as $line )
+          foreach ($fileContentArray as $line)
           {
             if ( $skip ) {
                 $skip = FALSE;
@@ -63,7 +63,7 @@ class ImportCommand extends ContainerAwareCommand
 
             // Check if this is already on DB and if so continue
             // Should probably clean this a bit
-            if ( $em->getRepository('AccountBundle:Transactions')->getTransactionByHash($hash) )
+            if ($em->getRepository('AccountBundle:Transactions')->getTransactionByHash($hash))
             {
                 continue;
             }
@@ -82,8 +82,7 @@ class ImportCommand extends ContainerAwareCommand
             $em->persist($transaction);
             $em->flush();
           }
-        }
-        else {
+        } else {
             print "Please use a csv file with content";
         }
     }

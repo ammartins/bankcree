@@ -59,7 +59,7 @@ class TransactionTypeController extends Controller
     $results = array();
     $transactionDescription = preg_split('/[\s\/\*]/', $transaction['transaction'][0]['description']);
 
-    foreach ( $transaction['data'] as $item )
+    foreach ($transaction['data'] as $item)
     {
       $itemDescription = $item['description'];
       $itemDescription = preg_replace('!\s+!', ' ', $itemDescription);
@@ -68,7 +68,7 @@ class TransactionTypeController extends Controller
       $score = 0;
       $special = 0;
 
-      foreach ( $itemDescription as $item1)
+      foreach ($itemDescription as $item1)
       {
         if (
           $item1 == 'TRTP' || $item1 == 'IBAN' || $item1 == 'BIC' ||
@@ -84,11 +84,11 @@ class TransactionTypeController extends Controller
           $special += 1;
           continue;
         }
-        if ( in_array($item1, $transactionDescription) )
+        if (in_array($item1, $transactionDescription))
         {
           $score += 1;
         }
-        if ( $score > (count($itemDescription)-$special)/2 ) {
+        if ($score > (count($itemDescription)-$special)/2) {
           $item['percentage'] = round((($score*100)/(count($itemDescription)-$special)), 0);
           $results[] = $item;
           $score = 0;
