@@ -14,7 +14,8 @@
       <th class="text-right">-</th>
       <td class="text-right">{{ type.recurring }}</td>
       <td class="text-right">
-        <a href="{{ path('delete_type', {'currentYear' : currentYear, 'id': type.id, 'currentMonth': currentMonth}) }}">Delete</a>
+        <a href="{{ path('type_show', {'currentYear' : currentYear, 'id': type.id, 'currentMonth': currentMonth}) }}">Show</a>
+        <a href="{{ path('type_delete', {'currentYear' : currentYear, 'id': type.id, 'currentMonth': currentMonth}) }}">Delete</a>
         <a href="{{ path('type_edit', {'currentYear' : currentYear, 'id': type.id, 'currentMonth': currentMonth}) }}">Edit</a>
       </td>
     </tr>
