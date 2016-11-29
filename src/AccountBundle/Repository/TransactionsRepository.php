@@ -199,7 +199,7 @@ class TransactionsRepository extends EntityRepository
         "SELECT p.id
         FROM AccountBundle:Transactions p
         WHERE p.transactionHash = '$hash'"
-      )->execute();
+      )->getOneOrNullResult();
 
     return $data;
   }
@@ -218,8 +218,10 @@ class TransactionsRepository extends EntityRepository
             p.amount > $type
           group by month"
         )->execute();
-    } else {
-      $data = $this->getEntityManager()
+
+        return $data;
+    }
+    $data = $this->getEntityManager()
         ->createQuery(
           "SELECT Month(p.createAt) as month, sum(p.amount) as amount
           FROM AccountBundle:Transactions p
@@ -229,7 +231,6 @@ class TransactionsRepository extends EntityRepository
             p.amount < $type
           group by month"
         )->execute();
-    }
 
     return $data;
   }

@@ -1,5 +1,3 @@
-var chart1; // globally available
-
 $(document).ready(function() {
   // Data For Graphs
   var sdF         = [];
