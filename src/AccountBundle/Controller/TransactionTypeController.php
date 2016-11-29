@@ -37,14 +37,13 @@ class TransactionTypeController extends Controller
     $possibleMatch 	= $em->getRepository('AccountBundle:Transactions')->findAll();
     $results[$id]       = array();
 
-    foreach ( $possibleMatch as $match )
+    foreach ($possibleMatch as $match)
     {
       if ( $match->getTransactionType() ) {
         $matches =  $this->match($match, $possibleMatch);
         if ( count($matches) > 0 ) {
-            $results[($match->getTransactionType())->getId()][] = $matches;
-        }
-        else {
+            $results[$match->getTransactionType()->getId()][] = $matches;
+        } else {
             continue;
         }
       }
@@ -144,7 +143,7 @@ class TransactionTypeController extends Controller
       if ( array_key_exists($result['name'], $type) ) {
         $type[$result['name']] += 1;
         continue;
-      } 
+      }
       $type[$result['name']] = 1;
     }
 
@@ -163,13 +162,13 @@ class TransactionTypeController extends Controller
   }
 
   // TODO OMG PLEASE REMOVE THIS CODE FROM HERE
-  public function match($toBeSave, $transaction) { 
+  public function match($toBeSave, $transaction) {
     $em           = $this->getDoctrine()->getManager();
     $serializer   = $this->get('jms_serializer');
 
     $results = array();
     $transactionDescription = preg_split('/[\s\/\*]/', $toBeSave->getDescription());
-    foreach ( $transaction as $item )
+    foreach ($transaction as $item)
     {
       if ( $item->getTransactionType() ) {
           continue;
@@ -182,8 +181,7 @@ class TransactionTypeController extends Controller
       $score = 0;
       $special = 0;
 
-      foreach ( $itemDescription as $item1)
-      {
+      foreach ($itemDescription as $item1) {
         if (
           $item1 == 'TRTP' || $item1 == 'IBAN' || $item1 == 'BIC' ||
           $item1 == 'NAME' || $item1 == 'EREF' || $item1 == 'SEPA' ||
@@ -193,13 +191,11 @@ class TransactionTypeController extends Controller
           $item1 == 'Overboeking' || $item1 == 'INGBNL2A' ||
           $item1 == 'BIC:' || $item1 == 'Omschrijving:' ||
           $item1 == 'SEPA'
-        )
-        {
+        ) {
           $special += 1;
           continue;
         }
-        if ( in_array($item1, $transactionDescription) )
-        {
+        if (in_array($item1, $transactionDescription)) {
           $score += 1;
         }
         if ( $score > (count($itemDescription)-$special)/2 ) {
@@ -269,8 +265,7 @@ class TransactionTypeController extends Controller
     $form         = $this->createForm(TransactionTypeType::class, $transaction);
     $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid())
-    {
+    if ($form->isSubmitted() && $form->isValid()) {
       $em->persist($transaction);
       $em->flush();
       $this->addFlash('notice', 'Transaction was successfully updated.');
