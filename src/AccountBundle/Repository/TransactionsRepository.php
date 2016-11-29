@@ -199,7 +199,7 @@ class TransactionsRepository extends EntityRepository
         "SELECT p.id
         FROM AccountBundle:Transactions p
         WHERE p.transactionHash = '$hash'"
-      )->execute();
+      )->getOneOrNullResult();
 
     return $data;
   }
@@ -219,7 +219,7 @@ class TransactionsRepository extends EntityRepository
           group by month"
         )->execute();
 
-        return data;
+        return $data;
     }
     $data = $this->getEntityManager()
         ->createQuery(
