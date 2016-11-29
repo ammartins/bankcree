@@ -44,6 +44,8 @@ class ImportCommand extends ContainerAwareCommand
 
         if ($fileContent) {
           foreach ($fileContentArray as $line) {
+            // Clean end of string
+            $line = rtrim($line);
             if ( $skip ) {
                 $skip = FALSE;
                 continue;
@@ -51,6 +53,7 @@ class ImportCommand extends ContainerAwareCommand
             if ( empty($line) ) {
                 continue;
             }
+
             $info = explode(";", $line);
             $correctDate = substr($info[2],0,4).'-'.substr($info[2],4,2).'-'.substr($info[2],6,2);
             $Date = new \DateTime($correctDate);
@@ -58,10 +61,12 @@ class ImportCommand extends ContainerAwareCommand
             # Generate Hash
             $hashString = $line;
             $hash = hash('md5', $hashString, False);
+            $verify = $em->getRepository('AccountBundle:Transactions')->getTransactionByHash($hash);
 
             // Check if this is already on DB and if so continue
             // Should probably clean this a bit
-            if ($em->getRepository('AccountBundle:Transactions')->getTransactionByHash($hash)) {
+            if ($verify['id'] > 0) {
+                $line = '';
                 continue;
             }
 
@@ -78,9 +83,8 @@ class ImportCommand extends ContainerAwareCommand
 
             $em->persist($transaction);
             $em->flush();
-
-            return;
           }
+          return;
         }
         print "Please use a csv file with content";
     }
