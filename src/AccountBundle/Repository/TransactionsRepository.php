@@ -234,4 +234,18 @@ class TransactionsRepository extends EntityRepository
 
     return $data;
   }
+
+  public function groupByYear()
+  {
+    $data = $this->getEntityManager()
+      ->createQuery(
+        "SELECT YEAR(p.createAt) as year, Month(p.createAt) as month, count(p.id), SUM(p.amount)
+        FROM AccountBundle:Transactions p
+        WHERE p.description not like '%A MENDES GRILO GOUVEIA M%'
+        GROUP BY month, year
+        ORDER BY Year(p.createAt), Month(p.createAt)"
+      )->execute();
+
+      return $data;
+  }
 }
