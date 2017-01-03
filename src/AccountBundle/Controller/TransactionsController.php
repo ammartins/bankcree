@@ -18,6 +18,32 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class TransactionsController extends Controller
 {
+
+  /**
+   * This is the landing dashboard for all UserRepository
+   *
+   * @param Request $request
+   *
+   * @Route("/", name="dashboard")
+   */
+  public function dashAction(Request $request)
+  {
+    /*
+     * Get all Months of the Current Year and Link to the Table tha shows
+     * all the transactions from that month
+     */
+
+    $currentYear  = date('Y');
+    $em = $this->getDoctrine()->getManager();
+
+    $data = $em->getRepository('AccountBundle:Transactions')
+      ->groupByYear();
+
+    return $this->render('AccountBundle:account:dash.html.twig', array(
+      'data' => $data,
+    ));
+  }
+
   /**
    *
    * @param int $currentYear
@@ -97,7 +123,7 @@ class TransactionsController extends Controller
   {
     $user = $this->get('security.token_storage')->getToken()->getUser();
     $user->getId();
-    return $this->render('AccountBundle:default:contact.html.twig');
+    return $this->render('AccountBundle:account:contact.html.twig');
   }
 
   /**
