@@ -1,22 +1,25 @@
 {% block body %}
     <div class="col-md-3">
-      {% include 'AccountBundle:default:dailyTable.html.twig' %}
+        <p class="text-center">
+            {{ spends|round(1, 'floor') }} € per day
+        </p>
+        {% include 'AccountBundle:default:dailyTable.html.twig' %}
     </div>
     <div class="col-md-9">
-      <div id="containerGUI">
-          <div id="listagem">
-              <div id="container" style="width: 60%; height: 45%"></div>
-          </div>
-      </div>
-      <div id="containerGUI">
-          <div id="listagem">
-              <div id="container4" style="width: 60%; height: 45%"></div>
-          </div>
-      </div>
-      <div id="containerGUI">
-          <div id="listagem">
-              <div id="container3" style="width: 60%; height: 45%"></div>
-          </div>
-      </div>
+        <div id="containerGUI">
+            <div id="listagem">
+                <div id="container" style="width: 60%; height: 45%"></div>
+            </div>
+        </div>
+        <div id="containerGUI">
+            <div id="listagem">
+                <div id="container4" style="width: 60%; height: 45%"></div>
+            </div>
+        </div>
+        <div id="containerGUI">
+            <div id="listagem">
+                <div id="container3" style="width: 60%; height: 45%"></div>
+            </div>
+        </div>
     </div>
 {% endblock %}
