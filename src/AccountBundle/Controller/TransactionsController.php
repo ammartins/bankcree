@@ -83,6 +83,11 @@ class TransactionsController extends Controller
       ->getAmountPerDay($currentMonth, $currentYear);
     $transactionType  = $em->getRepository('AccountBundle:TransactionType')
       ->findAll();
+    $spendsPerDay     = $em->getRepository('AccountBundle:Transactions')
+      ->getSpendsPerDay($currentMonth, $currentYear);
+
+    $numberOfDays = cal_days_in_month (CAL_GREGORIAN , $currentMonth , $currentYear);
+    $spends = $spendsPerDay[0][1]/$numberOfDays;
 
     $serializer       = $this->get('jms_serializer');
     $graphDataType    = $serializer->serialize($graphDataType, 'json');
@@ -111,6 +116,7 @@ class TransactionsController extends Controller
         "graphMonth2"         => $graphMonthYear2,
         "income"              => $income,
         "expenses"            => $expenses,
+        "spends"              => $spends,
       )
     );
   }
