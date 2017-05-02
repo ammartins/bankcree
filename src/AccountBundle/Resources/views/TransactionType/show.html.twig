@@ -22,26 +22,24 @@
             {% endif %}
         </span>
     </div>
-    {% for groups in transactions %}
-        <table class="table table-condensed table-hover table-responsive">
-            <tr>
-                <th class="text-left">Id</th>
-                <th class="text-left">Transaction Date</th>
-                <th class="text-right">Ammount</th>
-                <th class="text-right">Short Description</th>
-                <th class="text-right">Options</th>
+    <table class="table table-condensed table-hover table-responsive">
+        <tr>
+            <th class="text-left">Id</th>
+            <th class="text-left">Transaction Date</th>
+            <th class="text-right">Ammount</th>
+            <th class="text-right">Short Description</th>
+            <th class="text-right">Options</th>
+        </tr>
+        {% for item in transactions %}
+            <tr {% if item.amount > 0 %} class='success' {% endif %}>
+                <td>{{ item.id }}</td>
+                <td>{{ item.createAt|date("d/m/Y") }}</td>
+                <td class="text-right">{{ item.amount }} €</td>
+                <td class="text-right">{{ item.description  }}</td>
+                <td class="text-right"><input type="checkbox" name="{{ item.id }}" /></td>
             </tr>
-            {% for item in groups %}
-                <tr {% if item.amount > 0 %} class='success' {% endif %}>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.createAt|date("d/m/Y") }}</td>
-                    <td class="text-right">{{ item.amount }} €</td>
-                    <td class="text-right">{{ item.description  }}</td>
-                    <td class="text-right"><input type="checkbox" name="{{ item.id }}" /></td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% endfor %}
+        {% endfor %}
+    </table>
     <input type="submit" value="Match Transactions" name="match" id="match" />
     <input type="submit" value="Check All" name="select_all" id="select_all" />
 

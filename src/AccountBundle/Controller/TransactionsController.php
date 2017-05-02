@@ -32,8 +32,6 @@ class TransactionsController extends Controller
      * Get all Months of the Current Year and Link to the Table tha shows
      * all the transactions from that month
      */
-
-    $currentYear  = date('Y');
     $em = $this->getDoctrine()->getManager();
 
     $data = $em->getRepository('AccountBundle:Transactions')
@@ -48,11 +46,10 @@ class TransactionsController extends Controller
    *
    * @param int $currentYear
    * @param int $currentMonth
-   * @param Request $request
    *
    * @Route("/account/{currentYear}/{currentMonth}", name="home")
    */
-  public function indexAction($currentYear, $currentMonth, Request $request)
+  public function indexAction($currentYear, $currentMonth)
   {
     $currentYear  = $currentYear ? $currentYear : date('Y');
     $em = $this->getDoctrine()->getManager();
