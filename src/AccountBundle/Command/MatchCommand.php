@@ -37,6 +37,7 @@ class MatchCommand extends ContainerAwareCommand
 
         $doctrine   = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
+<<<<<<< HEAD
         $toMatch = $em->getRepository('AccountBundle:Transactions')->findBy(array('transactionType' => null ));
         $results[] = array();
 
@@ -68,6 +69,13 @@ class MatchCommand extends ContainerAwareCommand
     protected function cycleTransactions($verify, $toMatch, $typeId)
     {
         $results = array();
+=======
+
+        $verify = $em->getRepository('AccountBundle:Transactions')->findBy(array('transactionType' => $typeId));
+        $toMatch = $em->getRepository('AccountBundle:Transactions')->findBy(array('transactionType' => null ));
+        $results[] = array();
+
+>>>>>>> 8973792bf84d897e19878e3a9470319e202603df
         foreach ($verify as $match) {
             if ($match->getTransactionType()) {
                 $matches =  $this->match($match, $toMatch, $typeId);
@@ -80,8 +88,28 @@ class MatchCommand extends ContainerAwareCommand
                 }
             }
         }
+<<<<<<< HEAD
     }
 
+=======
+
+        /*
+        $transaction = new Transactions();
+        $transaction->setTransactionHash($hash);
+        $transaction->setCreateAt($Date);
+        $transaction->setAmount(floatval(str_replace(',', '.', str_replace('.', '', $info[6]))));
+        $transaction->setstartsaldo(floatval(str_replace(',', '.', str_replace('.', '', $info[4]))));
+        $transaction->setEndsaldo(floatval(str_replace(',', '.', str_replace('.', '', $info[5]))));
+        $transaction->setDescription($info[7]);
+        $transaction->setShortDescription('');
+        $transaction->setAccountId(1);
+
+        $em->persist($transaction);
+        $em->flush();
+        */
+//        print "Please use a csv file with content";
+    }
+>>>>>>> 8973792bf84d897e19878e3a9470319e202603df
 
     // TODO OMG PLEASE REMOVE THIS CODE FROM HERE
     public function match($toBeSave, $transaction, $typeId)
@@ -93,8 +121,11 @@ class MatchCommand extends ContainerAwareCommand
 
         foreach ($transaction as $item) {
             if ($item->getTransactionType()) {
+<<<<<<< HEAD
                 $item->setTransactionType(NULL);
                 $em->flush();
+=======
+>>>>>>> 8973792bf84d897e19878e3a9470319e202603df
                 continue;
             }
 
@@ -122,6 +153,7 @@ class MatchCommand extends ContainerAwareCommand
                 if (in_array($item1, $transactionDescription)) {
                     $score += 1;
                 }
+<<<<<<< HEAD
             }
 
             $matchPercent = round((($score*100)/(count($itemDescription)-$special)), 0);
@@ -136,10 +168,38 @@ class MatchCommand extends ContainerAwareCommand
                 $score = 0;
                 $special = 0;
                 continue;
+=======
+
+								$matchPercent = round((($score*100)/(count($itemDescription)-$special)), 0);
+                if ($matchPercent >= 75) {
+										$type = $em->getRepository('AccountBundle:TransactionType')->findById($typeId);
+										$item->setTransactionType($type[0]);
+
+										$em->persist($item);
+										$em->flush();
+//dump($item);
+//dump($score);
+//dump($item->getDescription());
+//dump($item->getId());
+//dump(round((($score*100)/(count($itemDescription)-$special)), 0));
+//die;
+                    $results[$item->getId()] = $item;
+                    $score = 0;
+                    $special = 0;
+                    continue;
+                }
+>>>>>>> 8973792bf84d897e19878e3a9470319e202603df
             }
         }
 
         // Even more hugly code :P
         return $results;
     }
+<<<<<<< HEAD
 }
+=======
+
+}
+
+?>
+>>>>>>> 8973792bf84d897e19878e3a9470319e202603df
