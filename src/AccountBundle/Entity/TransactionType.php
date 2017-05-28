@@ -43,6 +43,13 @@ class TransactionType
   private $recurring;
 
   /**
+   * @var boolean
+   *
+   * @ORM\Column(name="discard", type="boolean", nullable=true)
+   */
+  private $discard;
+
+  /**
    * Get id
    *
    * @return int
@@ -117,6 +124,28 @@ class TransactionType
   public function setRecurring($recurring)
   {
     $this->recurring = $recurring;
+    return $this;
+  }
+
+  /**
+   * Get discard
+   *
+   * @return boolean
+   */
+  public function getDiscard()
+  {
+    return $this->discard;
+  }
+
+  /**
+   * Set discard
+   *
+   * @param boolean $discard
+   * @return Transactions
+   */
+  public function setDiscard($discard)
+  {
+    $this->discard = $discard;
     return $this;
   }
 }

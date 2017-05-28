@@ -14,8 +14,7 @@ class MatchCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
-        $this
-            ->setName('match:payments')
+        $this->setName('match:payments')
             ->setDescription('Match Payments of a Certain Type')
             ->addArgument(
                 'transaction_type',
@@ -27,29 +26,32 @@ class MatchCommand extends ContainerAwareCommand
                 null,
                 InputOption::VALUE_NONE,
                 'If set, the task will yell in uppercase letters'
-            )
-        ;
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $typeId = $input->getArgument('transaction_type');
-
-        $doctrine   = $this->getContainer()->get('doctrine');
+        $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
-<<<<<<< HEAD
-        $toMatch = $em->getRepository('AccountBundle:Transactions')->findBy(array('transactionType' => null ));
+        $toMatch = $em->getRepository('AccountBundle:Transactions')->findBy(
+                array('transactionType' => null)
+        );
+
         $results[] = array();
 
         if ($typeId !== "all") {
-            $verify = $em->getRepository('AccountBundle:Transactions')->findBy(array('transactionType' => $typeId));
+            $verify = $em->getRepository('AccountBundle:Transactions')->findBy(
+                array('transactionType' => $typeId)
+            );
             $this->cycleTransactions($verify, $toMatch, $typeId);
         }
-        
+
         /*
-            ForEach TypeId check the entire list, if the item alreay as a Type in that case remove it since we should
-            not have multiple matches;
-        */
+         * ForEach TypeId check the entire list,
+         * if the item alreay as a Type in that case remove it since we should
+         * not have multiple matches;
+         */
         if ($typeId === "all") {
             dump('Mattching all Types');
             $type = $em->getRepository('AccountBundle:TransactionType')->findAll();
@@ -69,13 +71,6 @@ class MatchCommand extends ContainerAwareCommand
     protected function cycleTransactions($verify, $toMatch, $typeId)
     {
         $results = array();
-=======
-
-        $verify = $em->getRepository('AccountBundle:Transactions')->findBy(array('transactionType' => $typeId));
-        $toMatch = $em->getRepository('AccountBundle:Transactions')->findBy(array('transactionType' => null ));
-        $results[] = array();
-
->>>>>>> 8973792bf84d897e19878e3a9470319e202603df
         foreach ($verify as $match) {
             if ($match->getTransactionType()) {
                 $matches =  $this->match($match, $toMatch, $typeId);
@@ -88,46 +83,17 @@ class MatchCommand extends ContainerAwareCommand
                 }
             }
         }
-<<<<<<< HEAD
     }
-
-=======
-
-        /*
-        $transaction = new Transactions();
-        $transaction->setTransactionHash($hash);
-        $transaction->setCreateAt($Date);
-        $transaction->setAmount(floatval(str_replace(',', '.', str_replace('.', '', $info[6]))));
-        $transaction->setstartsaldo(floatval(str_replace(',', '.', str_replace('.', '', $info[4]))));
-        $transaction->setEndsaldo(floatval(str_replace(',', '.', str_replace('.', '', $info[5]))));
-        $transaction->setDescription($info[7]);
-        $transaction->setShortDescription('');
-        $transaction->setAccountId(1);
-
-        $em->persist($transaction);
-        $em->flush();
-        */
-//        print "Please use a csv file with content";
-    }
->>>>>>> 8973792bf84d897e19878e3a9470319e202603df
 
     // TODO OMG PLEASE REMOVE THIS CODE FROM HERE
     public function match($toBeSave, $transaction, $typeId)
     {
         $results = array();
         $transactionDescription = preg_split('/[\s\/\*]/', $toBeSave->getDescription());
-        $doctrine   = $this->getContainer()->get('doctrine');
+        $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
 
         foreach ($transaction as $item) {
-            if ($item->getTransactionType()) {
-<<<<<<< HEAD
-                $item->setTransactionType(NULL);
-                $em->flush();
-=======
->>>>>>> 8973792bf84d897e19878e3a9470319e202603df
-                continue;
-            }
 
             $score = 0;
             $special = 0;
@@ -135,6 +101,7 @@ class MatchCommand extends ContainerAwareCommand
             $itemDescription = $item->getDescription();
             $itemDescription = preg_replace('!\s+!', ' ', $itemDescription);
             $itemDescription = preg_split('/[\s\/\*]/', $itemDescription);
+            $transactionDescription = array_filter($transactionDescription);
 
             foreach ($itemDescription as $item1) {
                 if ($item1 == 'TRTP' || $item1 == 'IBAN' || $item1 == 'BIC' ||
@@ -153,12 +120,17 @@ class MatchCommand extends ContainerAwareCommand
                 if (in_array($item1, $transactionDescription)) {
                     $score += 1;
                 }
-<<<<<<< HEAD
             }
 
             $matchPercent = round((($score*100)/(count($itemDescription)-$special)), 0);
             if ($matchPercent >= 75) {
-                $type = $em->getRepository('AccountBundle:TransactionType')->findById($typeId);
+                // If amount value is not the same we will ignoe the match for now
+                if ($item->getAmount() !== $toBeSave->getAmount()) {
+                    // dump($item->getAmount()." - ".$toBeSave->getAmount());
+                    continue;
+                }
+                $type = $em->getRepository('AccountBundle:TransactionType')
+                    ->findById($typeId);
                 $item->setTransactionType($type[0]);
 
                 $em->persist($item);
@@ -168,38 +140,19 @@ class MatchCommand extends ContainerAwareCommand
                 $score = 0;
                 $special = 0;
                 continue;
-=======
-
-								$matchPercent = round((($score*100)/(count($itemDescription)-$special)), 0);
-                if ($matchPercent >= 75) {
-										$type = $em->getRepository('AccountBundle:TransactionType')->findById($typeId);
-										$item->setTransactionType($type[0]);
-
-										$em->persist($item);
-										$em->flush();
-//dump($item);
-//dump($score);
-//dump($item->getDescription());
-//dump($item->getId());
-//dump(round((($score*100)/(count($itemDescription)-$special)), 0));
-//die;
-                    $results[$item->getId()] = $item;
-                    $score = 0;
-                    $special = 0;
-                    continue;
-                }
->>>>>>> 8973792bf84d897e19878e3a9470319e202603df
             }
+
+            if ($matchPercent > 50) {
+                if ($item->getAmount() === $toBeSave->getAmount()) {
+                    $item->setPossibleMatch($toBeSave);
+
+                    $em->persist($item);
+                    $em->flush();
+                }
+            }
+
         }
 
-        // Even more hugly code :P
         return $results;
     }
-<<<<<<< HEAD
 }
-=======
-
-}
-
-?>
->>>>>>> 8973792bf84d897e19878e3a9470319e202603df
