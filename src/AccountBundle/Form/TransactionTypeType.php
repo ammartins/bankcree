@@ -18,7 +18,6 @@ class TransactionTypeType extends AbstractType
     $builder
       ->add('name')
       ->add('recurring')
-      ->add('accountId')
       ->add('save', SubmitType::class)
     ;
   }

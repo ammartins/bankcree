@@ -9,9 +9,11 @@
 /composer.phar
 /vendor/
 /web/bundles/
+/web/asstic/
 /components/
 .DS_Store
 web/js
 web/css
+web/fonts
 .sass-cache/
 data/

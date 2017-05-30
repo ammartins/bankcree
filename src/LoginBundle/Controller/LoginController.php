@@ -23,7 +23,6 @@ class LoginController extends Controller
 
         return $this->render('LoginBundle:Security:login.html.twig',
             array(
-                // last username entered by the user
                 'error'         => $error,
             )
         );
