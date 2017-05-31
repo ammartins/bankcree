@@ -44,7 +44,7 @@ class UserCommand extends ContainerAwareCommand
       $username = $input->getArgument('username');
       $email = $input->getArgument('email');
       $password = $input->getArgument('password');
-      $isActive = 1;
+      // $isActive = 1;
       $createdAt = new \DateTime();
 
       $doctrine   = $this->getContainer()->get('doctrine');

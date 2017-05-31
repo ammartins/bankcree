@@ -38,8 +38,6 @@ class MatchCommand extends ContainerAwareCommand
                 array('transactionType' => null)
         );
 
-        $results[] = array();
-
         if ($typeId !== "all") {
             $verify = $em->getRepository('AccountBundle:Transactions')->findBy(
                 array('transactionType' => $typeId)
