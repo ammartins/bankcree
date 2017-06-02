@@ -141,6 +141,7 @@ class MatchCommand extends ContainerAwareCommand
             }
       
             if ($matchPercent > 50 && $item->getAmount() === $toBeSave->getAmount()) {
+                  dump('Makring Possible Match');
                   $item->setPossibleMatch($toBeSave);
                   $em->persist($item);
                   $em->flush();

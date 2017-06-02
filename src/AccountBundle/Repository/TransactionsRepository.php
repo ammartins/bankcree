@@ -262,4 +262,17 @@ class TransactionsRepository extends EntityRepository
 
         return $data;
     }
+
+    public function getPossibleMatch($possibleMatch = null)
+    {
+        $data = $this->getEntityManager()
+            ->createQuery(
+                "SELECT (p.possibleMatch) as possibleMatch, count(p.id)
+                FROM AccountBundle:Transactions p
+                WHERE p.possibleMatch is not null
+                GROUP BY p.possibleMatch"
+            )->execute();
+
+        return $data;
+    }
 }
