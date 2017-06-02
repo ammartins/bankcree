@@ -97,7 +97,7 @@ class MatchCommand extends ContainerAwareCommand
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
   
-        foreach ($transaction as $item)   {
+        foreach ($transaction as $item) {
             $score   = 0;
             $special = 0;
   
