@@ -13,13 +13,13 @@ class LoginController extends Controller
     /**
      * @Route("/login", name="login")
      */
-    public function loginAction(Request $request)
+    public function loginAction()
     {
         $authenticationUtils = $this->get('security.authentication_utils');
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        # $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('LoginBundle:Security:login.html.twig',
             array(
@@ -31,7 +31,7 @@ class LoginController extends Controller
     /**
      * @Route("/logout", name="logout")
      */
-     public function logoutAction(Request $request)
+     public function logoutAction()
      {
         //clear the token, cancel session and redirect
         $this->get('security.context')->setToken(null);
