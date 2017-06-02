@@ -84,6 +84,14 @@ class Transactions
   private $transactionType;
 
   /**
+   * Feature to be Match
+   * @ORM\ManyToOne(targetEntity="Transactions")
+   * @ORM\JoinColumn(name="possible_match", referencedColumnName="id")
+   */
+  private $possibleMatch;
+
+
+  /**
    * Get id
    *
    * @return integer
@@ -290,4 +298,28 @@ class Transactions
   {
     return $this->transactionType;
   }
+
+  /**
+   * Set possibleMatch
+   *
+   * @param integer $possibleMatch
+   * @return Transactions
+   */
+  public function setPossibleMatch($possibleMatch)
+  {
+      $this->possibleMatch = $possibleMatch;
+
+      return $this;
+  }
+
+  /**
+   * Get possibleMatch
+   *
+   * @return Transactions
+   */
+  public function getPossibleMatch()
+  {
+      return $this->possibleMatch;
+  }
+
 }

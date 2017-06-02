@@ -29,7 +29,7 @@ class TransactionTypeController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction($currentYear, $currentMonth, $id, Request $request)
+    public function showAction($currentYear, $currentMonth, $id)
     {
         $em = $this->getDoctrine()->getManager();
         $transaction = $em->getRepository('AccountBundle:TransactionType')->find($id);
@@ -211,42 +211,46 @@ class TransactionTypeController extends Controller
     }
 
 
-/**
-* @Route("/type/new/{currentYear}/{currentMonth}", name="type_new")
-*
-* @param int $currentYear
-* @param int $currentMonth
-* @param Request $request
-* @return \Symfony\Component\HttpFoundation\Response
-*/
-public function newAction($currentYear, $currentMonth, Request $request)
-{
-$em           = $this->getDoctrine()->getManager();
-$transaction  = new TransactionType();
+    /**
+     * @Route("/type/new/{currentYear}/{currentMonth}", name="type_new")
+     *
+     * @param int $currentYear
+     * @param int $currentMonth
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function newAction($currentYear, $currentMonth, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $transaction  = new TransactionType();
 
-$form         = $this->createForm(TransactionTypeType::class, $transaction);
-$form->handleRequest($request);
+        $form = $this->createForm(TransactionTypeType::class, $transaction);
+        $form->handleRequest($request);
 
-if ($form->isSubmitted() && $form->isValid()) {
-$em->persist($transaction);
-$em->flush();
-$this->addFlash('notice', 'Transaction was successfully created.');
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Setting User
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $transaction->setAccountId($user->getId());
 
-return $this->redirectToRoute('home', array(
-'currentYear'   => $currentYear,
-'currentMonth'  => $currentMonth
-),301);
-}
+            $em->persist($transaction);
+            $em->flush();
+            $this->addFlash('notice', 'Transaction was successfully created.');
 
-return $this->render('AccountBundle:TransactionType:edit.html.twig',
-array(
-'transactionType' => $transaction,
-'form'            => $form->createView(),
-'currentMonth'    => $currentMonth,
-'currentYear'     => $currentYear,
-)
-);
-}
+            return $this->redirectToRoute('home', array(
+                'currentYear'   => $currentYear,
+                'currentMonth'  => $currentMonth
+            ),301);
+        }
+
+        return $this->render('AccountBundle:TransactionType:edit.html.twig',
+            array(
+                'transactionType' => $transaction,
+                'form' => $form->createView(),
+                'currentMonth' => $currentMonth,
+                'currentYear' => $currentYear,
+            )
+        );
+    }
 
 /**
 * @Route("/type/edit/{currentYear}/{currentMonth}/{id}", name="type_edit")
@@ -294,7 +298,7 @@ array(
 * @param int $id
 * @param Request $request
 */
-public function deleteAction($currentYear, $currentMonth, $id, Request $request)
+public function deleteAction($currentYear, $currentMonth, $id)
 {
 $em           = $this->getDoctrine()->getManager();
 $transaction  = $em->getRepository('AccountBundle:TransactionType')->find($id);

@@ -26,7 +26,7 @@ class TransactionsController extends Controller
    *
    * @Route("/", name="dashboard")
    */
-  public function dashAction(Request $request)
+  public function dashAction()
   {
     /*
      * Get all Months of the Current Year and Link to the Table tha shows
@@ -122,7 +122,7 @@ class TransactionsController extends Controller
    * @Route("/contact", name="contact")
    * @param Request $request
    */
-  public function contactAction(Request $request)
+  public function contactAction()
   {
     $user = $this->get('security.token_storage')->getToken()->getUser();
     $user->getId();
@@ -137,7 +137,7 @@ class TransactionsController extends Controller
    * @param int $currentMonth
    * @param Request $request
    */
-  public function showAction($currentYear, $currentMonth, $id, Request $request)
+  public function showAction($currentYear, $currentMonth, $id)
   {
     $em           = $this->getDoctrine()->getManager();
     $transaction  = $em->getRepository('AccountBundle:Transactions')->find($id);
@@ -190,11 +190,4 @@ class TransactionsController extends Controller
     );
   }
 
-  /**
-   * @Route("/", name="/")
-   *
-   */
-  public function homeIndes() {
-    die;
-  }
 }
