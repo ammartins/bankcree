@@ -17,12 +17,12 @@ class UserFilter extends SQLFilter
     */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        // dump($targetTableAlias);
-        // dump($targetEntity);
-        // dump($this);
-        // dump(sprintf('%s.discontinued = %s', $targetTableAlias, $this->getParameter('discontinued')));
-        // exit;
-        return "";
-        // return sprintf('%s.discontinued = %s', $targetTableAlias, $this->getParameter('discontinued'));
+        if ($this->getParameter('userId')) {
+            return sprintf(
+                '%s.account_id = %s',
+                $targetTableAlias,
+                $this->getParameter('userId')
+            );
+        }
     }
 }
