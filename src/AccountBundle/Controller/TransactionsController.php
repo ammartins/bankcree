@@ -26,7 +26,7 @@ class TransactionsController extends Controller
    *
    * @Route("/account/{currentYear}/{currentMonth}", name="home")
    */
-  public function indexAction($currentYear, $currentMonth, Request $request)
+  public function indexAction($currentYear, $currentMonth)
   {
     $currentYear  = $currentYear ? $currentYear : date('Y');
     $em = $this->getDoctrine()->getManager();
@@ -93,7 +93,7 @@ class TransactionsController extends Controller
    * @Route("/contact", name="contact")
    * @param Request $request
    */
-  public function contactAction(Request $request)
+  public function contactAction()
   {
     $user = $this->get('security.token_storage')->getToken()->getUser();
     $user->getId();
@@ -108,7 +108,7 @@ class TransactionsController extends Controller
    * @param int $currentMonth
    * @param Request $request
    */
-  public function showAction($currentYear, $currentMonth, $id, Request $request)
+  public function showAction($currentYear, $currentMonth, $id)
   {
     $em           = $this->getDoctrine()->getManager();
     $transaction  = $em->getRepository('AccountBundle:Transactions')->find($id);

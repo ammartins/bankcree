@@ -26,7 +26,7 @@ class TransactionTypeController extends Controller
    * @param Request $request
    * @return \Symfony\Component\HttpFoundation\Response
    */
-  public function showAction($currentYear ,$currentMonth, $id, Request $request)
+  public function showAction($currentYear ,$currentMonth, $id)
   {
     $em           = $this->getDoctrine()->getManager();
     $transaction  = $em->getRepository('AccountBundle:TransactionType')->find($id);
@@ -226,7 +226,7 @@ class TransactionTypeController extends Controller
    * @param int $id
    * @param Request $request
    */
-  public function deleteAction($currentYear, $currentMonth, $id, Request $request)
+  public function deleteAction($currentYear, $currentMonth, $id)
   {
     $em           = $this->getDoctrine()->getManager();
     $transaction  = $em->getRepository('AccountBundle:TransactionType')->find($id);
