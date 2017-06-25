@@ -8,12 +8,12 @@
 /bin/
 /composer.phar
 /vendor/
-/web/bundles/
-/web/asstic/
 /components/
+/web/js
+/web/css
+/web/fonts
+/web/bundles/
+/web/assetic/
 .DS_Store
-web/js
-web/css
-web/fonts
 .sass-cache/
 data/
