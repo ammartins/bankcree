@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class TransactionsController extends Controller
 {
-
   /**
    * This is the landing dashboard for all UserRepository
    *
@@ -189,5 +188,4 @@ class TransactionsController extends Controller
       )
     );
   }
-
 }
