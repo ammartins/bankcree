@@ -42,7 +42,7 @@ class ImportCommand extends ContainerAwareCommand
         $fileContent = file_get_contents($fileLocation);
         $fileContentArray = explode( "\n", $fileContent);
 
-        $doctrine   = $this->getContainer()->get('doctrine');
+        $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
 
         $skip = 1;
@@ -61,7 +61,7 @@ class ImportCommand extends ContainerAwareCommand
                     continue;
                 }
 
-                $info = explode(";", $line);
+                $info = explode("\t", $line);
                 $correctDate = substr($info[2],0,4).'-'.substr($info[2],4,2).'-'.substr($info[2],6,2);
                 $Date = new \DateTime($correctDate);
 
