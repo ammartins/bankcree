@@ -191,7 +191,7 @@ class CategoriesController extends Controller
     public function match($toBeSave, $transaction)
     {
         $results = array();
-        $transactionDescription = preg_split(
+        $categorieDesc = preg_split(
             '/[\s\/\*]/',
             $toBeSave->getDescription()
         );
@@ -220,7 +220,7 @@ class CategoriesController extends Controller
                     $special += 1;
                     continue;
                 }
-                if (in_array($item1, $transactionDescription)) {
+                if (in_array($item1, $categorieDesc)) {
                     $score += 1;
                 }
                 if ($score > (count($itemDescription)-$special)/2) {

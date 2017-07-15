@@ -127,7 +127,7 @@ class TransactionsController extends Controller
     */
     public function contactAction()
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
+        // $user = $this->get('security.token_storage')->getToken()->getUser();
         // $user->getId();
 
         return $this->render('AccountBundle:account:contact.html.twig');
