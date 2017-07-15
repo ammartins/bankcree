@@ -7,5 +7,3 @@ use AccountBundle\Entity\Transactions;
 interface TransactionsRepositoryInterface
 {
 }
-
-?>
