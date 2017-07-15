@@ -3,6 +3,7 @@
 namespace AccountBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use CategoriesBundle\Entity\Categories;
 
 /**
 * TransactionsRepository
@@ -74,9 +75,8 @@ class TransactionsRepository extends EntityRepository
             ->createQuery(
                 "SELECT p.id, p.createAt, p.amount, p.description, t.name
                 FROM AccountBundle:Transactions p
-                JOIN AccountBundle:TransactionType t
-                WHERE
-                p.transactionType = t.id"
+                JOIN CategoriesBundle:Categories t
+                WHERE p.Categories = t.id"
             )->execute();
 
         return array('data' => $data, 'transaction' => $transaction);
@@ -86,10 +86,10 @@ class TransactionsRepository extends EntityRepository
     {
         $data = $this->getEntityManager()
             ->createQuery(
-                "SELECT t.name as shortDescription, sum(p.amount) as total, count(p.transactionType) as ocurrencies
+                "SELECT t.name as shortDescription, sum(p.amount) as total, count(p.Categories) as ocurrencies
                 FROM AccountBundle:Transactions p
-                JOIN AccountBundle:TransactionType t
-                WHERE p.transactionType = t.id
+                JOIN CategoriesBundle:Categories t
+                WHERE p.Categories = t.id
                 AND Month(p.createAt) = $month
                 AND Year(p.createAt) = $year
                 AND t.name != ''
@@ -103,10 +103,10 @@ class TransactionsRepository extends EntityRepository
     {
         $data = $this->getEntityManager()
             ->createQuery(
-                "SELECT t.name as shortDescription, sum(p.amount) as total, count(p.transactionType) as ocurrencies
+                "SELECT t.name as shortDescription, sum(p.amount) as total, count(p.Categories) as ocurrencies
                 FROM AccountBundle:Transactions p
-                JOIN AccountBundle:TransactionType t
-                WHERE p.transactionType = t.id
+                JOIN CategoriesBundle:Categories t
+                WHERE p.Categories = t.id
                 AND Year(p.createAt) = $year
                 AND t.name != ''
                 GROUP BY t.name"
@@ -166,8 +166,8 @@ class TransactionsRepository extends EntityRepository
                 sum(p.amount) as amount,
                 t.recurring as recurring
                 FROM AccountBundle:Transactions p
-                JOIN AccountBundle:TransactionType t
-                WHERE p.transactionType = t.id
+                JOIN CategoriesBundle:Categories t
+                WHERE p.Categories = t.id
                 AND Month(p.createAt) = $month
                 AND Year(p.createAt) = $year
                 GROUP BY description
