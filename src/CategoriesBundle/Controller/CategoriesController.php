@@ -1,6 +1,6 @@
 <?php
 
-namespace AccountBundle\Controller;
+namespace CategoriesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -10,8 +10,8 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
-use AccountBundle\Entity\TransactionType;
-use AccountBundle\Form\TransactionTypeType;
+use CategoriesBundle\Entity\Categories;
+use CategoriesBundle\Form\CategoriesType;
 
 // For forms
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 // For Ajax response
 use Symfony\Component\HttpFoundation\Response;
 
-class TransactionTypeController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * @Route("/type/show/{currentYear}/{currentMonth}/{id}", name="type_show")
@@ -32,17 +32,21 @@ class TransactionTypeController extends Controller
     public function showAction($currentYear, $currentMonth, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $transaction = $em->getRepository('AccountBundle:TransactionType')->find($id);
-        $possibleMatch = $em->getRepository('AccountBundle:Transactions')->findBy(array('transactionType' => $id));
-        $toMatch = $em->getRepository('AccountBundle:Transactions')->findBy(array('transactionType' => null ));
+        $transaction = $em->getRepository('CategoriesBundle:Categories')
+            ->find($id);
+        $possibleMatch = $em->getRepository('AccountBundle:Transactions')
+            ->findBy(array('Categories' => $id));
+        $toMatch = $em->getRepository('AccountBundle:Transactions')
+            ->findBy(array('Categories' => null ));
         $results[$id] = array();
 
         foreach ($possibleMatch as $match) {
-            if ($match->getTransactionType()) {
+            if ($match->getCategories()) {
                 $matches =  $this->match($match, $toMatch);
                 if (count($matches) > 0) {
                     foreach ($matches as $matchR) {
-                        $results[$match->getTransactionType()->getId()][$matchR->getId()] = $matchR;
+                        $categorieId = $match->getCategories()->getId();
+                        $results[$categorieId][$matchR->getId()] = $matchR;
                     }
                 } else {
                     continue;
@@ -50,11 +54,13 @@ class TransactionTypeController extends Controller
             }
         }
 
+        $tranId = $transaction->getId();
+
         return $this->render(
-            'AccountBundle:TransactionType:show.html.twig',
+            'CategoriesBundle:Categories:show.html.twig',
             array(
                 'transaction' => $transaction,
-                'transactions' => $results[$transaction->getId()] ? $results[$transaction->getId()] : array(),
+                'transactions' => $results[$tranId] ? $results[$tranId] : [],
                 'currentMonth' => $currentMonth,
                 'currentYear' => $currentYear,
             )
@@ -74,11 +80,16 @@ class TransactionTypeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->get('jms_serializer');
-        $toBeSave = $em->getRepository('AccountBundle:Transactions')->find($id);
-        $transaction = $em->getRepository('AccountBundle:Transactions')->getMatchTransactions($id);
+        $toBeSave = $em->getRepository('AccountBundle:Transactions')
+            ->find($id);
+        $transaction = $em->getRepository('AccountBundle:Transactions')
+            ->getMatchTransactions($id);
 
         $results = array();
-        $transacDescription = preg_split('/[\s\/\*]/', $transaction['transaction'][0]['description']);
+        $transacDescription = preg_split(
+            '/[\s\/\*]/',
+            $transaction['transaction'][0]['description']
+        );
 
         foreach ($transaction['data'] as $item) {
             $itemDescription = $item['description'];
@@ -91,8 +102,9 @@ class TransactionTypeController extends Controller
             foreach ($itemDescription as $item1) {
                 if ($item1 == 'TRTP' || $item1 == 'IBAN' || $item1 == 'BIC' ||
                     $item1 == 'NAME' || $item1 == 'EREF' || $item1 == 'SEPA' ||
-                    $item1 == 'REMI' || $item1 == 'CSID' || $item1 == 'Incasso' ||
-                    $item1 == 'MARF' || $item1 == '' || $item1 == 'algemeen' ||
+                    $item1 == 'REMI' || $item1 == 'CSID' ||
+                    $item1 == 'Incasso' || $item1 == 'MARF' ||
+                    $item1 == '' || $item1 == 'algemeen' ||
                     $item1 == 'doorlopend' || $item1 == 'IBAN:' ||
                     $item1 == 'Overboeking' || $item1 == 'INGBNL2A' ||
                     $item1 == 'BIC:' || $item1 == 'Omschrijving:' ||
@@ -105,7 +117,17 @@ class TransactionTypeController extends Controller
                     $score += 1;
                 }
                 if ($score > (count($itemDescription)-$special)/2) {
-                    $item['percentage'] = round((($score*100)/(count($itemDescription)-$special)), 0);
+                    $item['percentage'] = round(
+                        (
+                            (
+                                $score*100
+                            )/
+                            (
+                                count($itemDescription)-$special
+                            )
+                        ),
+                        0
+                    );
                     $results[] = $item;
                     $score = 0;
                     $special = 0;
@@ -117,7 +139,7 @@ class TransactionTypeController extends Controller
         $form = $this->createFormBuilder($toBeSave)
             ->add('transaction_type', EntityType::class, array(
                 'label' => 'Transaction Type',
-                'class' => 'AccountBundle:TransactionType',
+                'class' => 'CategoriesBundle:Categories',
                 'choice_label' => 'name',
             ))->getForm();
 
@@ -169,9 +191,12 @@ class TransactionTypeController extends Controller
     public function match($toBeSave, $transaction)
     {
         $results = array();
-        $transactionDescription = preg_split('/[\s\/\*]/', $toBeSave->getDescription());
+        $categorieDesc = preg_split(
+            '/[\s\/\*]/',
+            $toBeSave->getDescription()
+        );
         foreach ($transaction as $item) {
-            if ($item->getTransactionType()) {
+            if ($item->getCategories()) {
                 continue;
             }
 
@@ -185,17 +210,17 @@ class TransactionTypeController extends Controller
             foreach ($itemDescription as $item1) {
                 if ($item1 == 'TRTP' || $item1 == 'IBAN' || $item1 == 'BIC' ||
                     $item1 == 'NAME' || $item1 == 'EREF' || $item1 == 'SEPA' ||
-                    $item1 == 'REMI' || $item1 == 'CSID' || $item1 == 'Incasso' ||
-                    $item1 == 'MARF' || $item1 == '' || $item1 == 'algemeen' ||
-                    $item1 == 'doorlopend' || $item1 == 'IBAN:' ||
-                    $item1 == 'Overboeking' || $item1 == 'INGBNL2A' ||
-                    $item1 == 'BIC:' || $item1 == 'Omschrijving:' ||
-                    $item1 == 'SEPA'
+                    $item1 == 'REMI' || $item1 == 'CSID' ||
+                    $item1 == 'Incasso' || $item1 == 'MARF' || $item1 == '' ||
+                    $item1 == 'algemeen' ||$item1 == 'doorlopend' ||
+                    $item1 == 'IBAN:' || $item1 == 'Overboeking' ||
+                    $item1 == 'INGBNL2A' || $item1 == 'BIC:' ||
+                    $item1 == 'Omschrijving:' || $item1 == 'SEPA'
                 ) {
                     $special += 1;
                     continue;
                 }
-                if (in_array($item1, $transactionDescription)) {
+                if (in_array($item1, $categorieDesc)) {
                     $score += 1;
                 }
                 if ($score > (count($itemDescription)-$special)/2) {
@@ -222,9 +247,9 @@ class TransactionTypeController extends Controller
     public function newAction($currentYear, $currentMonth, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $transaction  = new TransactionType();
+        $transaction  = new Categories();
 
-        $form = $this->createForm(TransactionTypeType::class, $transaction);
+        $form = $this->createForm(CategoriesType::class, $transaction);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -236,15 +261,20 @@ class TransactionTypeController extends Controller
             $em->flush();
             $this->addFlash('notice', 'Transaction was successfully created.');
 
-            return $this->redirectToRoute('home', array(
-                'currentYear'   => $currentYear,
-                'currentMonth'  => $currentMonth
-            ),301);
+            return $this->redirectToRoute(
+                'home',
+                array(
+                    'currentYear'   => $currentYear,
+                    'currentMonth'  => $currentMonth
+                ),
+                301
+            );
         }
 
-        return $this->render('AccountBundle:TransactionType:edit.html.twig',
+        return $this->render(
+            'CategoriesBundle:Categories:edit.html.twig',
             array(
-                'transactionType' => $transaction,
+                'Categories' => $transaction,
                 'form' => $form->createView(),
                 'currentMonth' => $currentMonth,
                 'currentYear' => $currentYear,
@@ -252,100 +282,117 @@ class TransactionTypeController extends Controller
         );
     }
 
-/**
-* @Route("/type/edit/{currentYear}/{currentMonth}/{id}", name="type_edit")
-*
-* @param int $currentYear
-* @param int $currentMonth
-* @param int $id
-* @param Request $request
-* @return \Symfony\Component\HttpFoundation\Response
-*/
-public function editAction($currentYear, $currentMonth, $id, Request $request)
-{
-$em           = $this->getDoctrine()->getManager();
-$transaction  = $em->getRepository('AccountBundle:TransactionType')->find($id);
+    /**
+     * @Route("/type/edit/{currentYear}/{currentMonth}/{id}", name="type_edit")
+     *
+     * @param int $currentYear
+     * @param int $currentMonth
+     * @param int $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(
+        $currentYear,
+        $currentMonth,
+        $id,
+        Request $request
+    ) {
+        $em = $this->getDoctrine()->getManager();
+        $transaction  = $em->getRepository('CategoriesBundle:Categories')
+            ->find($id);
 
-$form         = $this->createForm(TransactionTypeType::class, $transaction);
-$form->handleRequest($request);
+        $form = $this->createForm(CategoriesType::class, $transaction);
+        $form->handleRequest($request);
 
-if ($form->isSubmitted() && $form->isValid()) {
-$em->persist($transaction);
-$em->flush();
-$this->addFlash('notice', 'Transaction was successfully updated.');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($transaction);
+            $em->flush();
+            $this->addFlash('notice', 'Transaction was successfully updated.');
 
-return $this->redirectToRoute('home', array(
-'currentYear'   => $currentYear,
-'currentMonth'  => $currentMonth
-),301);
-}
+            return $this->redirectToRoute(
+                'home',
+                array(
+                    'currentYear' => $currentYear,
+                    'currentMonth' => $currentMonth
+                ),
+                301
+            );
+        }
 
-return $this->render('AccountBundle:TransactionType:edit.html.twig',
-array(
-'transactionType' => $transaction,
-'form'            => $form->createView(),
-'currentMonth'    => $currentMonth,
-'currentYear'     => $currentYear,
-)
-);
-}
+        return $this->render(
+            'CategoriesBundle:Categories:edit.html.twig',
+            array(
+                'Categories' => $transaction,
+                'form' => $form->createView(),
+                'currentMonth' => $currentMonth,
+                'currentYear' => $currentYear,
+            )
+        );
+    }
 
-/**
-* @Route("/type/delete/{currentYear}/{currentMonth}/{id}", name="type_delete")
-*
-* @param int $currentYear
-* @param int $currentMonth
-* @param int $id
-* @param Request $request
-*/
-public function deleteAction($currentYear, $currentMonth, $id)
-{
-$em           = $this->getDoctrine()->getManager();
-$transaction  = $em->getRepository('AccountBundle:TransactionType')->find($id);
-$em->remove($transaction);
-$em->flush();
+    /**
+     * @Route("/type/delete/{currentYear}/{currentMonth}/{id}", name="type_delete")
+     *
+     * @param int $currentYear
+     * @param int $currentMonth
+     * @param int $id
+     * @param Request $request
+     */
+    public function deleteAction($currentYear, $currentMonth, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $transaction  = $em->getRepository('CategoriesBundle:Categories')
+            ->find($id);
+        $em->remove($transaction);
+        $em->flush();
 
-return $this->redirectToRoute('home',
-array(
-'currentMonth'  => $currentMonth,
-'currentYear'   => $currentYear,
-),301);
-}
+        return $this->redirectToRoute(
+            'home',
+            array(
+                'currentMonth'  => $currentMonth,
+                'currentYear'   => $currentYear,
+            ),
+            301
+        );
+    }
 
-/**
-* @Route("/type/matching", defaults={"_format"="xml"}, name="matching")
-*/
-public function matchingAction(Request $request)
-{
-$response = new Response();
-if ($request->isXmlHttpRequest()) {
-$em     =  $this->getDoctrine()->getManager();
-$update = $request->request->get('selected');
-$type   = $request->request->get('type');
-$type   = $em->getRepository('AccountBundle:TransactionType')->find($type);
+    /**
+     * @Route("/type/matching", defaults={"_format"="xml"}, name="matching")
+     */
+    public function matchingAction(Request $request)
+    {
+        $response = new Response();
+        if ($request->isXmlHttpRequest()) {
+            $em =  $this->getDoctrine()->getManager();
+            $update = $request->request->get('selected');
+            $type = $request->request->get('type');
+            $type = $em->getRepository('CategoriesBundle:Categories')
+                ->find($type);
 
-$response->setStatusCode(Response::HTTP_OK);
-// set a HTTP response header
-$response->headers->set('Content-Type', 'text/html');
-// print the HTTP headers followed by the content
-$response->send();
+            $response->setStatusCode(Response::HTTP_OK);
 
-// TODO update all the IDs with type
-foreach ( $update as $id ) {
-$element = $em->getRepository('AccountBundle:Transactions')->find($id);
-$element->setTransactionType($type);
-$em->flush();
-}
+            // set a HTTP response header
+            $response->headers->set('Content-Type', 'text/html');
+            // print the HTTP headers followed by the content
+            $response->send();
 
-return $response;
-} else {
-$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-// set a HTTP response header
-$response->headers->set('Content-Type', 'text/html');
-// print the HTTP headers followed by the content
-$response->send();
+            // TODO update all the IDs with type
+            foreach ($update as $id) {
+                $element = $em->getRepository('AccountBundle:Transactions')
+                    ->find($id);
+                $element->setCategories($type);
+                $em->flush();
+            }
 
-return $response;
-}
-}
+            return $response;
+        } else {
+            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+            // set a HTTP response header
+            $response->headers->set('Content-Type', 'text/html');
+            // print the HTTP headers followed by the content
+            $response->send();
+
+            return $response;
+        }
+    }
 }
