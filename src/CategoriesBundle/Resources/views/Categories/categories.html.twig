@@ -1,5 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block menu %}
+  {% include 'menu.html.twig' %}
+{% endblock %}
+{% block body %}
 <div class="text-right">
-  <a class="btn btn-success" href="{{ path('type_new', {'currentYear' : currentYear, 'currentMonth': currentMonth}) }}">New</a>
+  <a class="btn btn-success" href="{{ path('type_new') }}">New</a>
 </div>
 <table class="table table-condensed table-hover table-responsive">
   <tr>
@@ -8,16 +14,17 @@
     <th class="text-right">Recurring</th>
     <th class="text-right">Options</th>
   </tr>
-  {% for type in dataCategories %}
+  {% for type in categories %}
     <tr>
       <td class="text-left">{{ type.name }}</td>
       <th class="text-right">-</th>
       <td class="text-right">{{ type.recurring }}</td>
       <td class="text-right">
-        <a href="{{ path('type_show', {'currentYear' : currentYear, 'id': type.id, 'currentMonth': currentMonth}) }}">Show</a>
-        <a href="{{ path('type_delete', {'currentYear' : currentYear, 'id': type.id, 'currentMonth': currentMonth}) }}">Delete</a>
-        <a href="{{ path('type_edit', {'currentYear' : currentYear, 'id': type.id, 'currentMonth': currentMonth}) }}">Edit</a>
+        <a href="{{ path('type_show', {"id": type.id}) }}">Show</a>
+        <a href="{{ path('type_delete', {"id": type.id}) }}">Delete</a>
+        <a href="{{ path('type_edit', {"id": type.id}) }}">Edit</a>
       </td>
     </tr>
   {% endfor %}
 </table>
+{% endblock %}

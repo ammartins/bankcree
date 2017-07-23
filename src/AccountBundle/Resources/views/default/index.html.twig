@@ -16,11 +16,6 @@
   {% javascripts '@AccountBundle/Resources/public/js/pie.js' %}
       <script type="text/javascript" src="{{ asset_url }}"></script>
   {% endjavascripts %}
-  {% for flash_message in app.session.flashBag.get('notice') %}
-    <div class="alert alert-success">
-      {{ flash_message }}
-    </div>
-  {% endfor %}
   <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="table">
           {% include 'AccountBundle:default:currentMonth.html.twig' %}
@@ -30,9 +25,6 @@
       </div>
       <div role="tabpanel" class="tab-pane" id="dailygraph">
           {% include 'AccountBundle:default:dailygraph.html.twig' %}
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Categories">
-          {% include 'CategoriesBundle:Categories:categories.html.twig' %}
       </div>
   </div>
 {% endblock %}

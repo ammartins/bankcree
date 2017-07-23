@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% block menu %}
+  {% include 'menu.html.twig' %}
+{% endblock %}
 {% block body %}
     <div id="{{ transaction.id }}">
         <h1>Description</h1>
@@ -26,7 +29,7 @@
         <tr>
             <th class="text-left">Id</th>
             <th class="text-left">Transaction Date</th>
-            <th class="text-right">Ammount</th>
+            <th class="text-right">Amount</th>
             <th class="text-right">Short Description</th>
             <th class="text-right">Options</th>
         </tr>

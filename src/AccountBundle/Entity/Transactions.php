@@ -90,7 +90,6 @@ class Transactions
      */
     private $possibleMatch;
 
-
     /**
      * Get id
      *
