@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+// use Categories\Entity\Categories;
+
 class BudgetType extends AbstractType
 {
     /**
@@ -16,7 +18,12 @@ class BudgetType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('goal')
+            ->add('budgetLimit')
+            ->add('name', 'entity', array(
+                'label'     => 'Transaction Type',
+                'class'     => 'CategoriesBundle:Categories',
+                'choice_label'  => 'name',
+            ))
             ->add('save', SubmitType::class);
     }
 
@@ -37,6 +44,4 @@ class BudgetType extends AbstractType
     {
         return 'budgetbundle_budget';
     }
-
-
 }

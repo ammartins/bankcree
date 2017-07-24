@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% block menu %}
+  {% include 'menu.html.twig' %}
+{% endblock %}
 {% block body %}
     {{ form_start(form) }}
     <div class="form-group">
@@ -16,10 +19,7 @@
 
     <div class="text-right">
       {{ form_widget(form.save, { 'attr': {'class': 'btn btn-success'}}) }}
-      <a type="button" class="btn btn-primary" href="{{ path('home', {
-        'currentMonth': currentMonth,
-        'currentYear': currentYear,
-      }) }}">Back</a>
+      <a type="button" class="btn btn-primary" href="{{ path('dashboard') }}">Back</a>
     </div>
   {{ form_end(form) }}
 {% endblock %}

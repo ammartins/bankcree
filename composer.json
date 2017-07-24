@@ -26,7 +26,9 @@
         "symfony/assetic-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "oro/doctrine-extensions": "dev-master",
-        "jms/serializer-bundle": "^1.1"
+        "jms/serializer-bundle": "^1.1",
+        "sentry/sentry": "^1.7",
+        "sentry/sentry-symfony": "^0.8.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

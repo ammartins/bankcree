@@ -20,18 +20,39 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 // For Ajax response
 use Symfony\Component\HttpFoundation\Response;
 
+// Transactions For Match Form
+use AccountBundle\Entity\Transactions;
+use AccountBundle\Form\TransactionsType;
+
 class CategoriesController extends Controller
 {
+
     /**
-     * @Route("/type/show/{currentYear}/{currentMonth}/{id}", name="type_show")
-     * @param int $currentYear
-     * @param int $currentMonth
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/categories", name="categories")
      */
-    public function showAction($currentYear, $currentMonth, $id)
+    public function categoriesAction()
     {
         $em = $this->getDoctrine()->getManager();
+
+        $categories  = $em->getRepository('CategoriesBundle:Categories')
+            ->findAll();
+
+        return $this->render(
+            'CategoriesBundle:Categories:categories.html.twig',
+            array(
+                'categories' => $categories,
+            )
+        );
+    }
+
+    /**
+     * @Route("/type/show/{id}", name="type_show")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
         $transaction = $em->getRepository('CategoriesBundle:Categories')
             ->find($id);
         $possibleMatch = $em->getRepository('AccountBundle:Transactions')
@@ -61,8 +82,6 @@ class CategoriesController extends Controller
             array(
                 'transaction' => $transaction,
                 'transactions' => $results[$tranId] ? $results[$tranId] : [],
-                'currentMonth' => $currentMonth,
-                'currentYear' => $currentYear,
             )
         );
     }
@@ -78,6 +97,9 @@ class CategoriesController extends Controller
      */
     public function matchAction($currentYear, $currentMonth, $id, Request $request)
     {
+        ini_set('display_startup_errors', 1);
+        ini_set('display_errors', 1);
+        error_reporting(-1);
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->get('jms_serializer');
         $toBeSave = $em->getRepository('AccountBundle:Transactions')
@@ -136,13 +158,7 @@ class CategoriesController extends Controller
             }
         }
 
-        $form = $this->createFormBuilder($toBeSave)
-            ->add('transaction_type', EntityType::class, array(
-                'label' => 'Transaction Type',
-                'class' => 'CategoriesBundle:Categories',
-                'choice_label' => 'name',
-            ))->getForm();
-
+        $form = $this->createForm(TransactionsType::class, $toBeSave);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -175,7 +191,7 @@ class CategoriesController extends Controller
         $type = $serializer->serialize($type, 'json');
 
         return $this->render(
-            'AccountBundle:default:matchTransaction.html.twig',
+            'CategoriesBundle:Categories:match.html.twig',
             array(
                 'type' => $type,
                 'form' => $form->createView(),
@@ -237,14 +253,12 @@ class CategoriesController extends Controller
 
 
     /**
-     * @Route("/type/new/{currentYear}/{currentMonth}", name="type_new")
+     * @Route("/type/new/", name="type_new")
      *
-     * @param int $currentYear
-     * @param int $currentMonth
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function newAction($currentYear, $currentMonth, Request $request)
+    public function newAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $transaction  = new Categories();
@@ -262,11 +276,8 @@ class CategoriesController extends Controller
             $this->addFlash('notice', 'Transaction was successfully created.');
 
             return $this->redirectToRoute(
-                'home',
-                array(
-                    'currentYear'   => $currentYear,
-                    'currentMonth'  => $currentMonth
-                ),
+                'categories',
+                array(),
                 301
             );
         }
@@ -276,27 +287,19 @@ class CategoriesController extends Controller
             array(
                 'Categories' => $transaction,
                 'form' => $form->createView(),
-                'currentMonth' => $currentMonth,
-                'currentYear' => $currentYear,
             )
         );
     }
 
     /**
-     * @Route("/type/edit/{currentYear}/{currentMonth}/{id}", name="type_edit")
+     * @Route("/type/edit/{id}", name="type_edit")
      *
-     * @param int $currentYear
-     * @param int $currentMonth
      * @param int $id
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(
-        $currentYear,
-        $currentMonth,
-        $id,
-        Request $request
-    ) {
+    public function editAction($id, Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
         $transaction  = $em->getRepository('CategoriesBundle:Categories')
             ->find($id);
@@ -310,11 +313,8 @@ class CategoriesController extends Controller
             $this->addFlash('notice', 'Transaction was successfully updated.');
 
             return $this->redirectToRoute(
-                'home',
-                array(
-                    'currentYear' => $currentYear,
-                    'currentMonth' => $currentMonth
-                ),
+                'categories',
+                array(),
                 301
             );
         }
@@ -324,21 +324,17 @@ class CategoriesController extends Controller
             array(
                 'Categories' => $transaction,
                 'form' => $form->createView(),
-                'currentMonth' => $currentMonth,
-                'currentYear' => $currentYear,
             )
         );
     }
 
     /**
-     * @Route("/type/delete/{currentYear}/{currentMonth}/{id}", name="type_delete")
+     * @Route("/type/delete/{id}", name="type_delete")
      *
-     * @param int $currentYear
-     * @param int $currentMonth
      * @param int $id
      * @param Request $request
      */
-    public function deleteAction($currentYear, $currentMonth, $id)
+    public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $transaction  = $em->getRepository('CategoriesBundle:Categories')
@@ -347,11 +343,8 @@ class CategoriesController extends Controller
         $em->flush();
 
         return $this->redirectToRoute(
-            'home',
-            array(
-                'currentMonth'  => $currentMonth,
-                'currentYear'   => $currentYear,
-            ),
+            'categories',
+            array(),
             301
         );
     }

@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Budget
  *
  * @ORM\Table(name="budget")
- * @ORM\Entity(repositoryClass="AccountBundle\Repository\BudgetRepository")
+ * @ORM\Entity(repositoryClass="BudgetBundle\Repository\BudgetRepository")
  */
 class Budget
 {
@@ -34,14 +34,14 @@ class Budget
      *
      * @ORM\OneToMany(targetEntity="CategoriesBundle\Entity\Categories", mappedBy="name")
      */
-    private $Categoriess;
+    private $categories;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="goal", type="integer")
+     * @ORM\Column(name="budgetLimit", type="integer")
      */
-    private $goal;
+    private $budgetLimit;
 
     public function __construct()
     {
@@ -86,13 +86,13 @@ class Budget
     /**
      * Set Categoriess
      *
-     * @param array $Categoriess
+     * @param array $categories
      *
      * @return Budget
      */
-    public function setCategoriess($Categoriess)
+    public function setCategoriess($categories)
     {
-        $this->Categoriess = $Categoriess;
+        $this->Categoriess = $categories;
 
         return $this;
     }
@@ -108,26 +108,26 @@ class Budget
     }
 
     /**
-     * Set goal
+     * Set budgetLimit
      *
-     * @param integer $goal
+     * @param integer $budgetLimit
      *
      * @return Budget
      */
-    public function setGoal($goal)
+    public function setBudgetLimit($budgetLimit)
     {
-        $this->goal = $goal;
+        $this->budgetLimit = $budgetLimit;
 
         return $this;
     }
 
     /**
-     * Get goal
+     * Get budgetLimit
      *
      * @return int
      */
-    public function getGoal()
+    public function getBudgetLimit()
     {
-        return $this->goal;
+        return $this->budgetLimit;
     }
 }
