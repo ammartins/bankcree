@@ -39,6 +39,10 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    cache:            "%kernel.root_dir%/cache/twig/"
+
+sentry:
+    dsn: "https://77758367d983466699d44ff67ba52cf6:4d9b75a75f9d4f35858e69a1c831f6e1@sentry.io/188029"
 
 # Doctrine Configuration
 doctrine:

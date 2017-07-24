@@ -35,9 +35,12 @@ class TransactionsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $data = $em->getRepository('AccountBundle:Transactions')->groupByYear();
 
-        return $this->render('AccountBundle:account:dash.html.twig', array(
-            'data' => $data,
-        ));
+        return $this->render(
+            'AccountBundle:account:dash.html.twig',
+            array(
+                'data' => $data,
+            )
+        );
     }
 
     /**
@@ -52,33 +55,31 @@ class TransactionsController extends Controller
         $currentYear  = $currentYear ? $currentYear : date('Y');
         $em = $this->getDoctrine()->getManager();
 
-        $transactions     = $em->getRepository('AccountBundle:Transactions')
+        $transactions = $em->getRepository('AccountBundle:Transactions')
             ->findAllByMonth($currentMonth, $currentYear);
-        $graphDataType    = $em->getRepository('AccountBundle:Transactions')
+        $graphDataType = $em->getRepository('AccountBundle:Transactions')
             ->getDescriptionUsage($currentMonth, $currentYear);
-        $graphDataDay     = $em->getRepository('AccountBundle:Transactions')
+        $graphDataDay = $em->getRepository('AccountBundle:Transactions')
             ->getDescriptionPerDayInMonth($currentMonth, $currentYear);
-        $monthsData       = $em->getRepository('AccountBundle:Transactions')
+        $monthsData = $em->getRepository('AccountBundle:Transactions')
             ->getMonthsForName($currentYear);
-        $graphMonthYear   = $em->getRepository('AccountBundle:Transactions')
+        $graphMonthYear = $em->getRepository('AccountBundle:Transactions')
             ->graphMonthYear($currentYear);
-        $graphMonthYear2  = $em->getRepository('AccountBundle:Transactions')
+        $graphMonthYear2 = $em->getRepository('AccountBundle:Transactions')
             ->graphMonthYear($currentYear-1);
-        $income           = $em->getRepository('AccountBundle:Transactions')
+        $income = $em->getRepository('AccountBundle:Transactions')
             ->getIncomeExpensiveYear($currentYear, 1);
-        $expenses         = $em->getRepository('AccountBundle:Transactions')
+        $expenses = $em->getRepository('AccountBundle:Transactions')
             ->getIncomeExpensiveYear($currentYear, 0);
-        $monthsData       = $em->getRepository('AccountBundle:Transactions')
+        $monthsData = $em->getRepository('AccountBundle:Transactions')
             ->getMonths($currentYear);
-        $allYears         = $em->getRepository('AccountBundle:Transactions')
+        $allYears = $em->getRepository('AccountBundle:Transactions')
             ->getAllYears();
-        $descriptionData  = $em->getRepository('AccountBundle:Transactions')
+        $descriptionData = $em->getRepository('AccountBundle:Transactions')
             ->getDescriptionPerMonth($currentMonth, $currentYear);
-        $amountDay        = $em->getRepository('AccountBundle:Transactions')
+        $amountDay = $em->getRepository('AccountBundle:Transactions')
             ->getAmountPerDay($currentMonth, $currentYear);
-        $Categories  = $em->getRepository('CategoriesBundle:Categories')
-            ->findAll();
-        $spendsPerDay     = $em->getRepository('AccountBundle:Transactions')
+        $spendsPerDay = $em->getRepository('AccountBundle:Transactions')
             ->getSpendsPerDay($currentMonth, $currentYear);
 
         $numberOfDays = cal_days_in_month(
@@ -88,42 +89,41 @@ class TransactionsController extends Controller
         );
         $spends = $spendsPerDay[0][1]/$numberOfDays;
 
-        $serializer       = $this->get('jms_serializer');
-        $graphDataType    = $serializer->serialize($graphDataType, 'json');
-        $graphDataDay     = $serializer->serialize($graphDataDay, 'json');
-        $graphAmountDay   = $serializer->serialize($amountDay, 'json');
-        $graphMonthYear   = $serializer->serialize($graphMonthYear, 'json');
-        $graphMonthYear2  = $serializer->serialize($graphMonthYear2, 'json');
-        $income           = $serializer->serialize($income, 'json');
-        $expenses         = $serializer->serialize($expenses, 'json');
+        $serializer = $this->get('jms_serializer');
+        $graphDataType = $serializer->serialize($graphDataType, 'json');
+        $graphDataDay = $serializer->serialize($graphDataDay, 'json');
+        $graphAmountDay = $serializer->serialize($amountDay, 'json');
+        $graphMonthYear = $serializer->serialize($graphMonthYear, 'json');
+        $graphMonthYear2 = $serializer->serialize($graphMonthYear2, 'json');
+        $income = $serializer->serialize($income, 'json');
+        $expenses = $serializer->serialize($expenses, 'json');
 
         return $this->render(
             'AccountBundle:default:index.html.twig',
             array(
-                'transactions'        => $transactions,
-                'data'                => $graphDataType,
-                'dataDay'             => $graphDataDay,
-                'months'              => $monthsData,
-                'currentMonth'        => $currentMonth,
-                'descriptionData'     => $descriptionData,
-                'descriptionDay'      => $amountDay,
-                'graphDay'            => $graphAmountDay,
-                'dataCategories' => $Categories,
-                'currentMonth'        => $currentMonth,
-                'years'               => $allYears,
-                "currentYear"         => $currentYear,
-                "graphMonth"          => $graphMonthYear,
-                "graphMonth2"         => $graphMonthYear2,
-                "income"              => $income,
-                "expenses"            => $expenses,
-                "spends"              => $spends,
+                'transactions' => $transactions,
+                'data' => $graphDataType,
+                'dataDay' => $graphDataDay,
+                'months' => $monthsData,
+                'currentMonth' => $currentMonth,
+                'descriptionData' => $descriptionData,
+                'descriptionDay' => $amountDay,
+                'graphDay' => $graphAmountDay,
+                'currentMonth' => $currentMonth,
+                'years' => $allYears,
+                "currentYear" => $currentYear,
+                "graphMonth" => $graphMonthYear,
+                "graphMonth2" => $graphMonthYear2,
+                "income" => $income,
+                "expenses" => $expenses,
+                "spends" => $spends,
+                "menu" => 1,
             )
         );
     }
 
     /**
     * @Route("/contact", name="contact")
-    * @param Request $request
     */
     public function contactAction()
     {
@@ -192,10 +192,10 @@ class TransactionsController extends Controller
         return $this->render(
             'AccountBundle:default:edit.html.twig',
             array(
-                'transaction'   => $transaction,
-                'form'          => $form->createView(),
-                'currentMonth'  => $currentMonth,
-                "currentYear"   => $currentYear,
+                'transaction' => $transaction,
+                'form' => $form->createView(),
+                'currentMonth' => $currentMonth,
+                "currentYear" => $currentYear,
             )
         );
     }

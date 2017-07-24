@@ -1,6 +1,6 @@
 <?php
 
-namespace AccountBundle\Repository;
+namespace BudgetBundle\Repository;
 
 /**
  * BudgetRepository

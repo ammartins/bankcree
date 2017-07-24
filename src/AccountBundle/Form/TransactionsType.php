@@ -7,18 +7,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-
 class TransactionsType extends AbstractType
 {
-
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('transactionHash')
@@ -33,7 +27,7 @@ class TransactionsType extends AbstractType
             ->add('endsaldo')
             ->add('amount')
             ->add('description')
-            ->add('transaction_type', EntityType::class, array(
+            ->add('name', 'entity', array(
                 'label'     => 'Transaction Type',
                 'class'     => 'CategoriesBundle:Categories',
                 'choice_label'  => 'name',
@@ -43,7 +37,7 @@ class TransactionsType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

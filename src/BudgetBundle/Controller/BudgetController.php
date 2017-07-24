@@ -14,9 +14,8 @@ use BudgetBundle\Form\BudgetType;
 
 class BudgetController extends Controller
 {
+
     /**
-     * This is the landing dashboard for all UserRepository
-     *
      * @param Request $request
      *
      * @Route("/budget", name="budget")
@@ -24,38 +23,41 @@ class BudgetController extends Controller
     public function budgetAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $budgets = $em->getRepository('BudgetBundle:Budget')->findAll();
+
+        return $this->render(
+            'BudgetBundle:Budget:budgetIndex.html.twig',
+            array(
+                'budgets' => $budgets,
+            )
+        );
+    }
+
+    /**
+     * This is the landing dashboard for all UserRepository
+     *
+     * @param Request $request
+     *
+     * @Route("/new/budget", name="budget_new")
+     */
+    public function newBudgetAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
         $budget = new Budget();
 
         $form = $this->createForm(BudgetType::class, $budget);
-        // $form->add('transaction_type', EntityType::class, array(
-        //     'label' => 'Transaction Type',
-        //     'class' => 'CategoriesBundle:Categories',
-        //     'choice_label' => 'name',
-        // ));
-        // dump($form);
-        // exit;
         $form->handleRequest($request);
 
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     // Setting User
-        //     $user = $this->get('security.token_storage')->getToken()->getUser();
-        //     $transaction->setAccountId($user->getId());
-        //
-        //     $em->persist($transaction);
-        //     $em->flush();
-        //     $this->addFlash('notice', 'Transaction was successfully created.');
-        //
-        //     return $this->redirectToRoute(
-        //         'home',
-        //         array(
-        //             'currentYear'   => $currentYear,
-        //             'currentMonth'  => $currentMonth
-        //         ),
-        //         301
-        //     );
-        // }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $budget->setName($budget->getName()->getName());
 
+            $em->persist($budget);
+            $em->flush();
 
+            $this->addFlash('notice', 'Budget created with success.');
+
+            return $this->redirectToRoute('budget', array(), 301);
+        }
 
         return $this->render(
             'BudgetBundle:Budget:budget.html.twig',
@@ -63,27 +65,5 @@ class BudgetController extends Controller
                 'form' => $form->createView()
             )
         );
-
-        // $em = $this->getDoctrine()->getManager();
-        //
-        // $budget = new Budget();
-        //
-        // $budget->setName('Home');
-        // $budget->setGoal(1200);
-        // $Categories = $em->getRepository('CategoriesBundle:Categories')->findAll();
-        // $Categories = $Categories[0];
-        // dump($Categories);
-        // $budget->setCategoriess(array($Categories));
-        //
-        // $em->persist($budget);
-        // $em->flush();
-        //
-        // dump($budget);
-        //
-        // $data = $em->getRepository('AccountBundle:Budget')
-        //     ->findAll();
-        //
-        // dump($data);
-        // exit;
     }
 }
