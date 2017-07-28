@@ -5,7 +5,7 @@
     <th class="text-left">Transaction Date</th>
     <th class="text-right">Saldo</th>
     <th class="text-right">Amount</th>
-    <!-- <th class="text-right">Short Description</th> -->
+    <th class="text-right">Short Description</th>
     <th class="text-right">Options</th>
   </tr>
   {% for transaction in transactions %}
@@ -13,7 +13,7 @@
       <td>{{ transaction.createAt|date("d/m/Y") }}</td>
       <td class="text-right">{{ transaction.endsaldo }} €</td>
       <td class="text-right">{{ transaction.amount }} €</td>
-      <!-- <td class="text-right">
+      <td class="text-right">
           {% if transaction.Categories %}
             {{ transaction.Categories.name|capitalize }}
           {% else %}
@@ -23,18 +23,18 @@
                 'currentYear': currentYear,
               }) }}">Match</a>
           {% endif %}
-      </td> -->
+      </td>
       <td class="text-right">
         <a href="{{ path('show', {
             'id': transaction.id,
             'currentMonth': currentMonth,
             'currentYear': currentYear,
         }) }}">Show</a>
-        <!--a href="{{ path('edit', {
+        <a href="{{ path('edit', {
           'id': transaction.id,
           'currentMonth': currentMonth,
           'currentYear': currentYear,
-        }) }}">Edit</a-->
+        }) }}">Edit</a>
       </td>
     </tr>
   {% endfor %}
