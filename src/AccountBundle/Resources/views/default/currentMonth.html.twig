@@ -14,8 +14,8 @@
       <td class="text-right">{{ transaction.endsaldo }} €</td>
       <td class="text-right">{{ transaction.amount }} €</td>
       <td class="text-right">
-          {% if transaction.Categories %}
-            {{ transaction.Categories.name|capitalize }}
+          {% if transaction.categories %}
+            {{ transaction.categories.name|capitalize }}
           {% else %}
               <a href="{{ path('match', {
                 'id': transaction.id,

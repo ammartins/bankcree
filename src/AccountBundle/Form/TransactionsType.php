@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 // use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use CategoriesBundle\Entity\Categories;
+use CategoriesBundle\Repository\CategoriesRepository;
 
 class TransactionsType extends AbstractType
 {
@@ -19,41 +20,34 @@ class TransactionsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // $builder
-        //     ->add('transactionHash')
-        //     ->add('createAt', 'datetime', array(
-        //         'widget'        => 'single_text',
-        //         'format'        => 'yyyy-MM-dd',
-        //         'with_minutes'  => false,
-        //         'with_seconds'  => false,
-        //         'disabled'      => true,
-        //     ))
-        //     ->add('startsaldo')
-        //     ->add('endsaldo')
-        //     ->add('amount')
-        //     ->add('description')
-        //     ->add('name', 'entity', array(
-        //         'label'     => 'Transaction Type',
-        //         'class'     => 'CategoriesBundle:Categories',
-        //         'choice_label'  => 'name',
-        //     ))
-        //     ->add('accountId')
-        //     ->add('save', SubmitType::class);
+        $builder
+            // ->add('transactionHash')
+            // ->add('createAt', 'datetime', array(
+                // 'widget'        => 'single_text',
+                // 'format'        => 'yyyy-MM-dd',
+                // 'with_minutes'  => false,
+                // 'with_seconds'  => false,
+                // 'disabled'      => true,
+            // ))
+            // ->add('startsaldo')
+            // ->add('endsaldo')
+            // ->add('amount')
+            // ->add('description')
+            ->add('categories','entity',array(
+                'class'=>'CategoriesBundle:Categories',
+                'query_builder' => function (CategoriesRepository $categories) {
+                    return $categories->findCategories();
+                },
+                'property' => 'name'
+            ))
+            // ->add('name', 'entity', array(
+            //     'label'     => 'Transaction Type',
+            //     'class'     => 'CategoriesBundle:Categories',
+            //     'choice_label'  => 'name',
+            // ))
+            // ->add('accountId')
+            ->add('save', SubmitType::class);
 
-        $builder->add('motherFocker', 'entity', array(new Categories()));
-
-            // $builder->add('name', EntityType::class, array(
-            //     'class' => 'CategoriesBundle:Categories',
-            //     'query_builder' => function ($er) {
-            //         // dump(get_class($er));
-            //         return $er->createQueryBuilder('u')
-            //             ->orderBy('u.id', 'ASC');
-            //     },
-            //     'choice_label' => 'name',
-            // ));
-
-            // dump($builder);
-            // exit;
     }
 
     /**
