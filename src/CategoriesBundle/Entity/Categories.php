@@ -51,6 +51,51 @@ class Categories
     private $discard;
 
     /**
+     * @ORM\OneToMany(targetEntity="Categories", mappedBy="parent")
+     */
+    private $children;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Categories", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    private $parent;
+
+    /**
+     * @ORM\Column(name="is_parent", type="boolean", nullable=true)
+     */
+    private $isParent;
+
+    public function __construct()
+    {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    public function getIsParent()
+    {
+        return $this->isParent;
+    }
+
+    public function setIsParent($isParent)
+    {
+        $this->isParent = $isParent;
+
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return int

@@ -76,7 +76,7 @@ class TransactionsRepository extends EntityRepository
                 "SELECT p.id, p.createAt, p.amount, p.description, t.name
                 FROM AccountBundle:Transactions p
                 JOIN CategoriesBundle:Categories t
-                WHERE p.Categories = t.id"
+                WHERE p.categories = t.id"
             )->execute();
 
         return array('data' => $data, 'transaction' => $transaction);
@@ -86,10 +86,10 @@ class TransactionsRepository extends EntityRepository
     {
         $data = $this->getEntityManager()
             ->createQuery(
-                "SELECT t.name as shortDescription, sum(p.amount) as total, count(p.Categories) as ocurrencies
+                "SELECT t.name as shortDescription, sum(p.amount) as total, count(p.categories) as ocurrencies
                 FROM AccountBundle:Transactions p
                 JOIN CategoriesBundle:Categories t
-                WHERE p.Categories = t.id
+                WHERE p.categories = t.id
                 AND Month(p.createAt) = $month
                 AND Year(p.createAt) = $year
                 AND t.name != ''
@@ -103,10 +103,10 @@ class TransactionsRepository extends EntityRepository
     {
         $data = $this->getEntityManager()
             ->createQuery(
-                "SELECT t.name as shortDescription, sum(p.amount) as total, count(p.Categories) as ocurrencies
+                "SELECT t.name as shortDescription, sum(p.amount) as total, count(p.categories) as ocurrencies
                 FROM AccountBundle:Transactions p
                 JOIN CategoriesBundle:Categories t
-                WHERE p.Categories = t.id
+                WHERE p.categories = t.id
                 AND Year(p.createAt) = $year
                 AND t.name != ''
                 GROUP BY t.name"
@@ -167,7 +167,7 @@ class TransactionsRepository extends EntityRepository
                 t.recurring as recurring
                 FROM AccountBundle:Transactions p
                 JOIN CategoriesBundle:Categories t
-                WHERE p.Categories = t.id
+                WHERE p.categories = t.id
                 AND Month(p.createAt) = $month
                 AND Year(p.createAt) = $year
                 GROUP BY description

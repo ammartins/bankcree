@@ -5,26 +5,30 @@
 {% endblock %}
 {% block body %}
 <div class="text-right">
-  <a class="btn btn-success" href="{{ path('type_new') }}">New</a>
+  <a class="btn btn-success" href="{{ path('categories_new') }}">New</a>
 </div>
 <table class="table table-condensed table-hover table-responsive">
   <tr>
     <th class="text-left">Name</th>
+    <th class="text-left">Parent</th>
     <th class="text-right">Ignore</th>
     <th class="text-right">Recurring</th>
     <th class="text-right">Options</th>
   </tr>
   {% for type in categories %}
-    <tr>
-      <td class="text-left">{{ type.name }}</td>
-      <th class="text-right">-</th>
-      <td class="text-right">{{ type.recurring }}</td>
-      <td class="text-right">
-        <a href="{{ path('type_show', {"id": type.id}) }}">Show</a>
-        <a href="{{ path('type_delete', {"id": type.id}) }}">Delete</a>
-        <a href="{{ path('type_edit', {"id": type.id}) }}">Edit</a>
-      </td>
-    </tr>
+    {% if type.parent %}
+        <tr>
+          <td class="text-left">{{ type.name }}</td>
+          <td class="text-left">{{ type.parent ? type.parent.name : "" }}</td>
+          <th class="text-right">-</th>
+          <td class="text-right">{{ type.recurring }}</td>
+          <td class="text-right">
+            <a href="{{ path('categories_show', {"id": type.id}) }}">Show</a>
+            <a href="{{ path('categories_delete', {"id": type.id}) }}">Delete</a>
+            <a href="{{ path('categories_edit', {"id": type.id}) }}">Edit</a>
+          </td>
+        </tr>
+    {% endif %}
   {% endfor %}
 </table>
 {% endblock %}

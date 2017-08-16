@@ -35,7 +35,7 @@ class CategoriesController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $categories  = $em->getRepository('CategoriesBundle:Categories')
-            ->findAll();
+            ->findBy(array(), array('parent' => 'ASC'));
 
         return $this->render(
             'CategoriesBundle:Categories:categories.html.twig',
@@ -46,7 +46,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * @Route("/type/show/{id}", name="type_show")
+     * @Route("/categories/show/{id}", name="categories_show")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction($id)
@@ -56,9 +56,9 @@ class CategoriesController extends Controller
         $transaction = $em->getRepository('CategoriesBundle:Categories')
             ->find($id);
         $possibleMatch = $em->getRepository('AccountBundle:Transactions')
-            ->findBy(array('Categories' => $id));
+            ->findBy(array('categories' => $id));
         $toMatch = $em->getRepository('AccountBundle:Transactions')
-            ->findBy(array('Categories' => null ));
+            ->findBy(array('categories' => null ));
         $results[$id] = array();
 
         foreach ($possibleMatch as $match) {
@@ -97,9 +97,6 @@ class CategoriesController extends Controller
      */
     public function matchAction($currentYear, $currentMonth, $id, Request $request)
     {
-        ini_set('display_startup_errors', 1);
-        ini_set('display_errors', 1);
-        error_reporting(-1);
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->get('jms_serializer');
         $toBeSave = $em->getRepository('AccountBundle:Transactions')
@@ -164,6 +161,7 @@ class CategoriesController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($toBeSave);
             $em->flush();
+
             $this->addFlash('notice', 'Transaction was successfully updated.');
 
             return $this->redirectToRoute(
@@ -175,6 +173,7 @@ class CategoriesController extends Controller
                 301
             );
         } elseif ($form->isSubmitted() && !$form->isValid()) {
+            // $this->addFlash('notice', $form->getError());
             $this->addFlash('notice', 'Transaction was not updated.');
         }
 
@@ -253,7 +252,7 @@ class CategoriesController extends Controller
 
 
     /**
-     * @Route("/type/new/", name="type_new")
+     * @Route("/categories/new/", name="categories_new")
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -270,6 +269,10 @@ class CategoriesController extends Controller
             // Setting User
             $user = $this->get('security.token_storage')->getToken()->getUser();
             $transaction->setAccountId($user->getId());
+
+            if ($form->getData()->getIsParent()) {
+                $transaction->setParent(NULL);
+            }
 
             $em->persist($transaction);
             $em->flush();
@@ -292,7 +295,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * @Route("/type/edit/{id}", name="type_edit")
+     * @Route("/categories/edit/{id}", name="categories_edit")
      *
      * @param int $id
      * @param Request $request
@@ -329,7 +332,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * @Route("/type/delete/{id}", name="type_delete")
+     * @Route("/categories/delete/{id}", name="categories_delete")
      *
      * @param int $id
      * @param Request $request
@@ -350,7 +353,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * @Route("/type/matching", defaults={"_format"="xml"}, name="matching")
+     * @Route("/categories/matching", defaults={"_format"="xml"}, name="matching")
      */
     public function matchingAction(Request $request)
     {
