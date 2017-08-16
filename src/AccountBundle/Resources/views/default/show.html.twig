@@ -17,8 +17,8 @@
         <br />
         <br />
         <h4>Short Description:</h5>
-        {% if transaction.Categories %}
-          <h5>{{ transaction.Categories.name }}</h5>
+        {% if transaction.categories %}
+          <h5>{{ transaction.categories.name }}</h5>
         {% else %}
           <h5>{{ transaction.shortDescription }}</h5>
         {% endif %}
@@ -38,7 +38,7 @@
     <br />
     <span>
       Recurring Payment:
-      {% if transaction.Categories and transaction.Categories.recurring %}
+      {% if transaction.categories and transaction.categories.recurring %}
         <span class="glyphicon glyphicon-ok"></span>
       {% else %}
         <span class="glyphicon glyphicon-remove"></span>

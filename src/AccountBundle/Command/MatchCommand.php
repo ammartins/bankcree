@@ -37,12 +37,12 @@ class MatchCommand extends ContainerAwareCommand
         $em = $doctrine->getManager();
 
         $toMatch = $em->getRepository('AccountBundle:Transactions')->findBy(
-            array('Categories' => null)
+            array('categories' => null)
         );
 
         if ($typeId !== "all") {
             $verify = $em->getRepository('AccountBundle:Transactions')->findBy(
-                array('Categories' => $typeId)
+                array('categories' => $typeId)
             );
             $this->cycleTransactions($verify, $toMatch, $typeId);
         }
@@ -60,7 +60,7 @@ class MatchCommand extends ContainerAwareCommand
                 dump("Matching ".$typeId->getName()." : ");
                 $verify = $em->getRepository('AccountBundle:Transactions')->findBy(
                     array(
-                        'Categories' => $typeId->getId()
+                        'categories' => $typeId->getId()
                     )
                 );
 

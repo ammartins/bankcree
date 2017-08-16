@@ -92,7 +92,7 @@ class Budget
      */
     public function setCategoriess($categories)
     {
-        $this->Categoriess = $categories;
+        $this->categoriess = $categories;
 
         return $this;
     }
@@ -104,7 +104,7 @@ class Budget
      */
     public function getCategoriess()
     {
-        return $this->Categoriess;
+        return $this->categoriess;
     }
 
     /**

@@ -10,4 +10,10 @@ namespace CategoriesBundle\Repository;
  */
 class CategoriesRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findCategories()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb;
+    }
 }

@@ -81,7 +81,7 @@ class Transactions
      * @ORM\ManyToOne(targetEntity="CategoriesBundle\Entity\Categories")
      * @ORM\JoinColumn(name="transaction_type", referencedColumnName="id")
      */
-    private $Categories;
+    private $categories;
 
     /**
      * Feature to be Match
@@ -279,12 +279,12 @@ class Transactions
     /**
      * Set Categories
      *
-     * @param integer $Categories
+     * @param integer $categories
      * @return Transactions
      */
-    public function setCategories($Categories)
+    public function setCategories($categories)
     {
-        $this->Categories = $Categories;
+        $this->categories = $categories;
         return $this;
     }
 
@@ -295,7 +295,7 @@ class Transactions
      */
     public function getCategories()
     {
-        return $this->Categories;
+        return $this->categories;
     }
 
     /**
