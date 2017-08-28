@@ -90,9 +90,9 @@ class Budget
      *
      * @return Budget
      */
-    public function setCategoriess($categories)
+    public function setCategories($categories)
     {
-        $this->categoriess = $categories;
+        $this->categories = $categories;
 
         return $this;
     }
@@ -102,9 +102,9 @@ class Budget
      *
      * @return array
      */
-    public function getCategoriess()
+    public function getCategories()
     {
-        return $this->categoriess;
+        return $this->categories;
     }
 
     /**

@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CategoriesType extends AbstractType
 {
@@ -16,17 +17,30 @@ class CategoriesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $em = $options['entity_manager'];
+        $parents = $em
+            ->getRepository('CategoriesBundle:Categories')
+            ->findBy(
+                array(),
+                array(
+                    'name' => 'ASC'
+                )
+            );
+
+        $parent = [NULL];
+
+        foreach ($parents as $par) {
+            if ($par->getParent()) {
+                continue;
+            }
+            $parent[$par->getId()] = $par->getName();
+        }
+
         $builder
             ->add('name')
             ->add('recurring')
-            ->add('parent', 'entity', array(
-                'label' => 'Transaction Type',
-                'class' => 'CategoriesBundle:Categories',
-                'choice_label' => 'name',
-            ))
-            ->add('isParent', CheckboxType::class, array(
-                'label' => 'Parent category?',
-                'required' => false,
+            ->add('parent', ChoiceType::class, array(
+                'choices' => $parent
             ))
             ->add('save', SubmitType::class);
     }
@@ -40,5 +54,7 @@ class CategoriesType extends AbstractType
             'allow_extra_fields' => true,
             'data_class' => 'CategoriesBundle\Entity\Categories'
         ));
+
+        $resolver->setRequired('entity_manager');
     }
 }

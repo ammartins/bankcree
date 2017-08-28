@@ -5,7 +5,7 @@ parameters:
 
 services:
     filter_listener:
-        class: AccountBundle\EventListener\FilterListener
+        class: TransactionsBundle\EventListener\FilterListener
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@security.token_storage"

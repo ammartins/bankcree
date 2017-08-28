@@ -2,7 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-    - { resource: "@AccountBundle/Resources/config/services.yml" }
+    - { resource: "@TransactionsBundle/Resources/config/services.yml" }
     - { resource: "@LoginBundle/Resources/config/services.yml" }
     - { resource: "@BudgetBundle/Resources/config/services.yml" }
     - { resource: "@CategoriesBundle/Resources/config/services.yml" }
@@ -63,7 +63,7 @@ doctrine:
 
     orm:
         filters:
-            user_filter: AccountBundle\Filter\UserFilter
+            user_filter: TransactionsBundle\Filter\UserFilter
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
@@ -106,7 +106,7 @@ swiftmailer:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ 'AccountBundle', 'LoginBundle' ]
+    bundles:        [ 'TransactionsBundle', 'LoginBundle' ]
 
     filters:
         cssrewrite: ~
