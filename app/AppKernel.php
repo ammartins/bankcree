@@ -19,7 +19,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new LoginBundle\LoginBundle(),
-            new AccountBundle\AccountBundle(),
+            new TransactionsBundle\TransactionsBundle(),
             new BudgetBundle\BudgetBundle(),
             new CategoriesBundle\CategoriesBundle(),
             new Sentry\SentryBundle\SentryBundle(),

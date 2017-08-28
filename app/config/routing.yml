@@ -14,6 +14,6 @@ login:
     prefix:   /
 
 account:
-    resource: "@AccountBundle/Controller/"
+    resource: "@TransactionsBundle/Controller/"
     type:     annotation
     prefix:   /

@@ -1,16 +1,16 @@
 <?php
 
-namespace BudgetBundle\Form;
+namespace TransactionsBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use CategoriesBundle\Entity\Categories;
+use CategoriesBundle\Repository\CategoriesRepository;
 
-// use Categories\Entity\Categories;
-
-class BudgetType extends AbstractType
+class TransactionsType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -27,7 +27,7 @@ class BudgetType extends AbstractType
                 )
             );
 
-        $parent = [];
+        $parent = [NULL];
 
         foreach ($parents as $par) {
             if (!$par->getParent()) {
@@ -41,12 +41,13 @@ class BudgetType extends AbstractType
         ksort($parent);
 
         $builder
-            ->add('name')
-            ->add('budgetLimit')
-            ->add('name', ChoiceType::class, array(
-                'choices' => $parent,
-                'required' => false
-            ))
+            ->add(
+                'categories',
+                ChoiceType::class,
+                array(
+                    'choices' => $parent
+                )
+            )
             ->add('save', SubmitType::class);
     }
 
@@ -56,18 +57,9 @@ class BudgetType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BudgetBundle\Entity\Budget',
-            'allow_extra_fields' => true
+            'data_class' => 'TransactionsBundle\Entity\Transactions'
         ));
 
         $resolver->setRequired('entity_manager');
-    }
-
-    /**
-    * {@inheritdoc}
-    */
-    public function getBlockPrefix()
-    {
-        return 'budgetbundle_budget';
     }
 }

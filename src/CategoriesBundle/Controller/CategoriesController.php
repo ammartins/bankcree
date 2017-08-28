@@ -21,8 +21,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 
 // Transactions For Match Form
-use AccountBundle\Entity\Transactions;
-use AccountBundle\Form\TransactionsType;
+use TransactionsBundle\Entity\Transactions;
+use TransactionsBundle\Form\TransactionsType;
 
 class CategoriesController extends Controller
 {
@@ -35,12 +35,32 @@ class CategoriesController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $categories  = $em->getRepository('CategoriesBundle:Categories')
-            ->findBy(array(), array('parent' => 'ASC'));
+            ->findBy(array(), array('name' => 'ASC'));
 
+        $organizedC = [];
+        foreach ($categories as $category) {
+            if (!is_null($category->getParent())) {
+                continue;
+            }
+            $organizedC[$category->getId()][] = $category;
+            foreach ($categories as $categor) {
+                if ($categor->getId() === $category->getId()) {
+                    continue;
+                }
+                if (is_null($categor->getParent())) {
+                    continue;
+                }
+                if ($categor->getParent()->getId() === $category->getId()) {
+                    $organizedC[$category->getId()][] = $categor;
+                }
+            }
+        }
+
+        ksort($organizedC);
         return $this->render(
             'CategoriesBundle:Categories:categories.html.twig',
             array(
-                'categories' => $categories,
+                'categories' => $organizedC,
             )
         );
     }
@@ -55,9 +75,9 @@ class CategoriesController extends Controller
 
         $transaction = $em->getRepository('CategoriesBundle:Categories')
             ->find($id);
-        $possibleMatch = $em->getRepository('AccountBundle:Transactions')
+        $possibleMatch = $em->getRepository('TransactionsBundle:Transactions')
             ->findBy(array('categories' => $id));
-        $toMatch = $em->getRepository('AccountBundle:Transactions')
+        $toMatch = $em->getRepository('TransactionsBundle:Transactions')
             ->findBy(array('categories' => null ));
         $results[$id] = array();
 
@@ -99,9 +119,9 @@ class CategoriesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->get('jms_serializer');
-        $toBeSave = $em->getRepository('AccountBundle:Transactions')
+        $toBeSave = $em->getRepository('TransactionsBundle:Transactions')
             ->find($id);
-        $transaction = $em->getRepository('AccountBundle:Transactions')
+        $transaction = $em->getRepository('TransactionsBundle:Transactions')
             ->getMatchTransactions($id);
 
         $results = array();
@@ -155,10 +175,24 @@ class CategoriesController extends Controller
             }
         }
 
-        $form = $this->createForm(TransactionsType::class, $toBeSave);
+
+        $form = $this->createForm(
+            TransactionsType::class,
+            $toBeSave,
+            array(
+                'entity_manager' => $em
+            )
+        );
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $categoryId = $form->getData()->getCategories();
+            $category = $em
+                ->getRepository('CategoriesBundle:Categories')
+                ->findById($categoryId);
+            $toBeSave->setCategories($category[0]);
+
             $em->persist($toBeSave);
             $em->flush();
 
@@ -262,7 +296,14 @@ class CategoriesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $transaction  = new Categories();
 
-        $form = $this->createForm(CategoriesType::class, $transaction);
+        $form = $this->createForm(
+            CategoriesType::class,
+            $transaction,
+            array(
+                'entity_manager' => $em
+            )
+        );
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -270,8 +311,14 @@ class CategoriesController extends Controller
             $user = $this->get('security.token_storage')->getToken()->getUser();
             $transaction->setAccountId($user->getId());
 
-            if ($form->getData()->getIsParent()) {
+            if ($form->getData()->getParent() == 0) {
                 $transaction->setParent(NULL);
+            }
+
+            if ($form->getData()->getParent() > 0) {
+                $parent = $em->getRepository('CategoriesBundle:Categories')
+                    ->findBy(array('id' => $form->getData()->getParent()));
+                $transaction->setParent($parent[0]);
             }
 
             $em->persist($transaction);
@@ -307,10 +354,19 @@ class CategoriesController extends Controller
         $transaction  = $em->getRepository('CategoriesBundle:Categories')
             ->find($id);
 
-        $form = $this->createForm(CategoriesType::class, $transaction);
+        $form = $this->createForm(
+            CategoriesType::class,
+            $transaction,
+            array(
+                'entity_manager' => $em
+            )
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->getData()->getParent() === 0) {
+                  $transaction->setParent(NULL);
+            }
             $em->persist($transaction);
             $em->flush();
             $this->addFlash('notice', 'Transaction was successfully updated.');
@@ -374,7 +430,7 @@ class CategoriesController extends Controller
 
             // TODO update all the IDs with type
             foreach ($update as $id) {
-                $element = $em->getRepository('AccountBundle:Transactions')
+                $element = $em->getRepository('TransactionsBundle:Transactions')
                     ->find($id);
                 $element->setCategories($type);
                 $em->flush();

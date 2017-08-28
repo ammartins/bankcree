@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20170723181426 extends AbstractMigration
+class Version20170827141622 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -16,9 +16,8 @@ class Version20170723181426 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql("CREATE TABLE budget (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, budgetLimit INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
-        $this->addSql("DROP INDEX IDX_6E9D6988727ACA70 ON transaction_type");
-        $this->addSql("ALTER TABLE transaction_type DROP parent_id");
+        $this->addSql("DROP INDEX IDX_EAA81A4C664F7A0B ON transactions");
+        $this->addSql("ALTER TABLE transactions DROP possible_match");
     }
 
     /**
