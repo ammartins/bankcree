@@ -1,0 +1,15 @@
+{% block body %}
+    <div class="page-header">
+        <h1>Expenses</h1>
+    </div>
+    <div class="col-md-3">
+      {% include 'TransactionsBundle:default:monthTable.html.twig' %}
+    </div>
+    <div class="col-md-9">
+      <div id="containerGUI">
+          <div id="listagem">
+              <div id="container2" style="width: 65%; height: 65%"></div>
+          </div>
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+services:
+  account.account_service:
+      class: TransactionsBundle\Service\AccountService
+      arguments:
+          - @account.account_repository
+          - @event_dispatcher
+  account.account_repository:
+    class: Doctrine\ORM\EntityRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [ TransactionsBundle\Entity\Transactions]
+  account.menu:
+    class: TransactionsBundle\Service\MenuService
+#    account.example:
+#        class: \Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
