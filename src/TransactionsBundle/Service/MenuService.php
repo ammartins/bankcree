@@ -2,6 +2,7 @@
 
 namespace TransactionsBundle\Service;
 
-class AccountService implements AccountServiceInterface {
+class AccountService implements AccountServiceInterface
+{
 
 }

@@ -16,7 +16,7 @@ class Version20170827142913 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql("ALTER TABLE transactions ADD possible_match INT NOT NULL");
+        // $this->addSql("ALTER TABLE transactions ADD possible_match INT NOT NULL");
     }
 
     /**

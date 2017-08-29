@@ -48,7 +48,7 @@ class TransactionsController extends Controller
      * @param int $currentYear
      * @param int $currentMonth
      *
-     * @Route("/account/{currentYear}/{currentMonth}", name="home")
+     * @Route("/transactions/{currentYear}/{currentMonth}", name="home")
      */
     public function indexAction($currentYear, $currentMonth)
     {
@@ -134,7 +134,7 @@ class TransactionsController extends Controller
     }
 
     /**
-    * @Route("/account/show/{currentYear}/{currentMonth}/{id}", name="show")
+    * @Route("/transactions/show/{currentYear}/{currentMonth}/{id}", name="show")
     *
     * @param int $currentYear
     * @param int $id
@@ -144,7 +144,7 @@ class TransactionsController extends Controller
     public function showAction($currentYear, $currentMonth, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $transaction = $em->getRepository('')->find($id);
+        $transaction = $em->getRepository('TransactionsBundle:Transactions')->find($id);
 
         return $this->render(
             'TransactionsBundle:default:show.html.twig',
@@ -157,7 +157,7 @@ class TransactionsController extends Controller
     }
 
     /**
-    * @Route("/account/edit/{currentYear}/{currentMonth}/{id}", name="edit")
+    * @Route("/transactions/edit/{currentYear}/{currentMonth}/{id}", name="edit")
     *
     * @param int $currentYear
     * @param int $currentMonth
