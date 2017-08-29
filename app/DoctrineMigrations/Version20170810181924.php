@@ -22,6 +22,7 @@ class Version20170810181924 extends AbstractMigration
         // $this->addSql("ALTER TABLE transaction_type DROP FOREIGN KEY FK_6E9D6988727ACA70");
         // $this->addSql("DROP INDEX UNIQ_6E9D6988727ACA70 ON transaction_type");
         // $this->addSql("ALTER TABLE transaction_type ADD CONSTRAINT FK_6E9D6988727ACA70 FOREIGN KEY (parent_id) REFERENCES transaction_type (id)");
+        // $this->addSql("ALTER TABLE transaction_type ADD CONSTRAINT FK_6E9D6988727ACA70 FOREIGN KEY (parent_id) REFERENCES transaction_type (id)");
         // $this->addSql("CREATE UNIQUE INDEX UNIQ_6E9D6988727ACA70 ON transaction_type (parent_id)");
     }
 

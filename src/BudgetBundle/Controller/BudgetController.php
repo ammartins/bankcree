@@ -56,9 +56,6 @@ class BudgetController extends Controller
             }
         }
 
-//        dump($result);
-//        exit;
-
         return $this->render(
             'BudgetBundle:Budget:budgetIndex.html.twig',
             array(

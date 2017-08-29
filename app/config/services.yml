@@ -14,3 +14,25 @@ services:
                 name: kernel.event_listener
                 event: kernel.request
                 method: onKernelRequest
+    transactions.match:
+        class: TransactionsBundle\Service\MatchService
+        arguments:
+            - @account.account_repository
+            - @account.category_repository
+            - @doctrine.orm.entity_manager
+            - @event_dispatcher
+    account.account_service:
+        class: TransactionsBundle\Service\AccountService
+        arguments:
+            - @account.account_repository
+            - @event_dispatcher
+    account.account_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments: [ TransactionsBundle\Entity\Transactions]
+    account.category_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments: [ CategoriesBundle\Entity\Categories]
+    account.menu:
+        class: TransactionsBundle\Service\MenuService
