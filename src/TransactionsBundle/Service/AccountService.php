@@ -9,12 +9,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class AccountService implements AccountServiceInterface
 {
   /**
-   * @var \\Repository\TransactionsRepository
+   * @var \TransactionsBundle\Repository\TransactionsRepository
    */
   protected $transactionsRepository;
 
   /**
-   * @param \\Repository\TransactionsRepository $transactionsRepository
+   * @param \TransactionsBundle\Repository\TransactionsRepository $transactionsRepository
    */
   public function __construct(
     PromoRepositoryInterface $transactionsRepository

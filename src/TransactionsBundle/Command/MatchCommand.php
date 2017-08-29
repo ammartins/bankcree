@@ -92,13 +92,18 @@ class MatchCommand extends ContainerAwareCommand
         $category
     ) {
         $results = array();
+        $matchService = $this
+            ->getApplication()
+            ->getKernel()
+            ->getContainer()
+            ->get('transactions.match');
 
         foreach ($matchedT as $match) {
             if (!$match->getCategories()) {
                 continue;
             }
 
-            $matches =  $this->match($match, $transactions, $category);
+            $matches = $matchService->match($match, $transactions, $category);
 
             if (count($matches) === 0) {
                 continue;
@@ -115,100 +120,5 @@ class MatchCommand extends ContainerAwareCommand
                     ] = $matchR;
             }
         }
-    }
-
-    // TODO OMG PLEASE REMOVE THIS CODE FROM HERE
-    public function match($match, $transaction, $category)
-    {
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $results = array();
-
-        $matchDescription = array_filter(preg_split(
-            '/[\s\/\*]/',
-            $match->getDescription()
-        ));
-
-        foreach ($transaction as $item) {
-            $score   = 0;
-            $special = 0;
-
-            $itemDescription = preg_split(
-                '/[\s\/\*]/',
-                preg_replace(
-                    '!\s+!',
-                    ' ',
-                    $item->getDescription()
-                )
-            );
-
-            foreach ($itemDescription as $item1) {
-                if ($item1 == 'TRTP' || $item1 == 'IBAN' ||
-                    $item1 == 'BIC' || $item1 == 'NAME' ||
-                    $item1 == 'EREF' || $item1 == 'SEPA' ||
-                    $item1 == 'REMI' || $item1 == 'CSID' ||
-                    $item1 == 'Incasso' || $item1 == 'MARF' ||
-                    $item1 == '' || $item1 == 'algemeen' ||
-                    $item1 == 'doorlopend' || $item1 == 'IBAN:' ||
-                    $item1 == 'Overboeking' || $item1 == 'INGBNL2A' ||
-                    $item1 == 'BIC:' || $item1 == 'Omschrijving:' ||
-                    $item1 == 'SEPA' || $item1 == 'OVERBOEKING' ||
-                    $item1 == 'BEA'
-                ) {
-                    $special += 1;
-                    continue;
-                }
-
-                if (in_array($item1, $matchDescription)) {
-                    $score += 1;
-                }
-            }
-
-            $matchPercent = round(
-                (($score*100)/(count($itemDescription)-$special)),
-                0
-            );
-
-            $type = $em
-                ->getRepository('CategoriesBundle:Categories')
-                ->findById($category);
-
-            if ($item->getPossibleMatch() || $item->getCategories()) {
-                continue;
-            }
-
-            if ($matchPercent >= 90) {
-                $item->setCategories($type[0]);
-
-                $em->persist($item);
-                $em->flush();
-
-                $results[$item->getId()] = $item;
-                $score = 0;
-                $special = 0;
-
-                continue;
-            }
-
-            if (
-                $matchPercent > 50
-                // && $item->getAmount() === $match->getAmount()
-                && !$item->getPossibleMatch()
-            ) {
-                dump(
-                    "Match for "
-                    .$matchPercent
-                    ." Marking as Possible "
-                    .$item->getDescription()
-                    ." to "
-                    .$match->getDescription()
-                );
-
-                $item->setPossibleMatch($type[0]->getId());
-                $em->persist($item);
-                $em->flush();
-                continue;
-            }
-        }
-        return $results;
     }
 }

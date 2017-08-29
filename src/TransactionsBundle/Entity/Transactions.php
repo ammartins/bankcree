@@ -59,7 +59,7 @@ class Transactions
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
@@ -87,6 +87,11 @@ class Transactions
      * @ORM\Column(name="possible_match", type="integer", nullable=true)
      */
     private $possibleMatch;
+
+    /**
+     * @ORM\Column(name="match_percentage", type="integer", nullable=true, options={"default":NULL}))
+     */
+    private $matchPercentage;
 
     /**
      * Get id
@@ -317,5 +322,28 @@ class Transactions
     public function getPossibleMatch()
     {
         return $this->possibleMatch;
+    }
+
+    /**
+     * Set matchPercentage
+     *
+     * @param integer $matchPercentage
+     * @return Transactions
+     */
+    public function setMatchPercentage($matchPercentage)
+    {
+        $this->matchPercentage = $matchPercentage;
+
+        return $this;
+    }
+
+    /**
+     * Get matchPercentage
+     *
+     * @return Transactions
+     */
+    public function getMatchPercentage()
+    {
+        return $this->matchPercentage;
     }
 }
