@@ -274,4 +274,13 @@ class TransactionsRepository extends EntityRepository
 
         return $data;
     }
+
+    // public function getToBeMatched()
+    // {
+    //     $qb = $this->createQueryBuilder('p');
+    //     $qb->where($qb->expr()->not($qb->expr()->eq('p.possibleMatch', '?1')));
+    //     $qb->setParameter(1, null);
+    //
+    //     return $qb->getQuery();
+    // }
 }

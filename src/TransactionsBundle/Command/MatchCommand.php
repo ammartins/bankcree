@@ -36,9 +36,25 @@ class MatchCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
 
         // List of Transactions Without Category
-        $transactions = $em->getRepository('TransactionsBundle:Transactions')->findBy(
-            array('categories' => null)
-        );
+        $transactions = $em
+            ->getRepository('TransactionsBundle:Transactions')
+            ->findBy(array('categories' => null));
+
+        foreach ($transactions as $key => $transaction) {
+            if (
+                (
+                    $transaction->getPossibleMatch()
+                    // && $transaction->getMatchPercentage() > 75
+                )
+                || $transaction->getCategories()
+            ) {
+                $possibleMatch = $em
+                    ->getRepository('CategoriesBundle:Categories')
+                    ->findById($transaction->getPossibleMatch())[0];
+                unset($transactions[$key]);
+                continue;
+            }
+        }
 
         if ($category === "all") {
             dump('Mattching all Types');
