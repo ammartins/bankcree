@@ -80,11 +80,8 @@ class MatchService implements AccountServiceInterface
             $type = $this->transactionsRepository->findById($category);
             $type = $this->categoryRepository->findById($category);
 
-            if ($item->getPossibleMatch() || $item->getCategories()) {
-                continue;
-            }
-
             if ($matchPercent >= 100) {
+                dump("Match for 100% ".$item->getId());
                 $item->setCategories($type[0]);
 
                 $this->entityManager->persist($item);
