@@ -95,9 +95,6 @@ class MatchService implements AccountServiceInterface
 
             if (
                 $matchPercent > 50
-                // && $item->getId() == 5913
-                // && $item->getAmount() === $match->getAmount()
-                // && !$item->getPossibleMatch()
             ) {
                 dump(
                     "Match for "
