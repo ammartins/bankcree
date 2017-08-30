@@ -4,6 +4,7 @@
   {% include 'menu.html.twig' %}
 {% endblock %}
 {% block body %}
+    <!-- {{ dump() }} -->
     <div id="{{ transaction.id }}">
         <h1>Description</h1>
         <div class="row">
@@ -34,12 +35,15 @@
             <th class="text-right">Options</th>
         </tr>
         {% for item in transactions %}
-            <tr {% if item.amount > 0 %} class='success' {% endif %}>
+            <tr class='
+                {% if item.amount > 0 %}success{% endif %}
+                {% if matchAgainst[0].amount == item.amount %}success{% endif %}
+            '>
                 <td>{{ item.id }}</td>
                 <td>{{ item.createAt|date("d/m/Y") }}</td>
                 <td class="text-right">{{ item.amount }} €</td>
                 <td class="text-right">{{ item.description  }}</td>
-                <td class="text-right"><input type="checkbox" name="{{ item.id }}" /></td>
+                <td class="text-right"><input type="checkbox" {% if matchAgainst[0].amount == item.amount %}checked{% endif %} name="{{ item.id }}" /></td>
             </tr>
         {% endfor %}
     </table>

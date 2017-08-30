@@ -75,8 +75,10 @@ class CategoriesController extends Controller
 
         $transaction = $em->getRepository('CategoriesBundle:Categories')
             ->find($id);
+
         $possibleMatch = $em->getRepository('TransactionsBundle:Transactions')
             ->findBy(array('categories' => $id));
+
         $toMatch = $em->getRepository('TransactionsBundle:Transactions')
             ->findBy(array('categories' => null ));
         $results[$id] = array();
@@ -102,6 +104,7 @@ class CategoriesController extends Controller
             array(
                 'transaction' => $transaction,
                 'transactions' => $results[$tranId] ? $results[$tranId] : [],
+                'matchAgainst' => $possibleMatch,
             )
         );
     }
@@ -139,15 +142,17 @@ class CategoriesController extends Controller
             $special = 0;
 
             foreach ($itemDescription as $item1) {
-                if ($item1 == 'TRTP' || $item1 == 'IBAN' || $item1 == 'BIC' ||
-                    $item1 == 'NAME' || $item1 == 'EREF' || $item1 == 'SEPA' ||
+                if ($item1 == 'TRTP' || $item1 == 'IBAN' ||
+                    $item1 == 'BIC' || $item1 == 'NAME' ||
+                    $item1 == 'EREF' || $item1 == 'SEPA' ||
                     $item1 == 'REMI' || $item1 == 'CSID' ||
                     $item1 == 'Incasso' || $item1 == 'MARF' ||
                     $item1 == '' || $item1 == 'algemeen' ||
                     $item1 == 'doorlopend' || $item1 == 'IBAN:' ||
                     $item1 == 'Overboeking' || $item1 == 'INGBNL2A' ||
                     $item1 == 'BIC:' || $item1 == 'Omschrijving:' ||
-                    $item1 == 'SEPA'
+                    $item1 == 'SEPA' || $item1 == 'OVERBOEKING' ||
+                    $item1 == 'BEA'
                 ) {
                     $special += 1;
                     continue;
@@ -167,6 +172,10 @@ class CategoriesController extends Controller
                         ),
                         0
                     );
+
+                    // if ($item['amount'] === $toBeSave->getAmount()) {
+                    //     $item['percentage'] += 50;
+                    // }
                     $results[] = $item;
                     $score = 0;
                     $special = 0;
@@ -174,7 +183,6 @@ class CategoriesController extends Controller
                 }
             }
         }
-
 
         $form = $this->createForm(
             TransactionsType::class,
