@@ -9,7 +9,7 @@ use TransactionsBundle\Repository\TransactionsRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\ORM\EntityManager;
 
-class MatchService implements AccountServiceInterface
+class MatchService
 {
     /**
      * @var \TransactionsBundle\Repository\TransactionsRepository
