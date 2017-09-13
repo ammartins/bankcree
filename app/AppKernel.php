@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new BudgetBundle\BudgetBundle(),
             new CategoriesBundle\CategoriesBundle(),
             new Sentry\SentryBundle\SentryBundle(),
+            new AccountBundle\AccountBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
