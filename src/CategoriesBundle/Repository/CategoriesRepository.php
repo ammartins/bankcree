@@ -16,4 +16,16 @@ class CategoriesRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb;
     }
+
+    public function findAllNotNUll()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select('p')
+            ->from('CategoriesBundle:Categories', 'c')
+            ->where($qb->expr()->isNull('p.isParent'))
+            ->orWhere($qb->expr()->eq('p.isParent', 'false'));
+
+        return $qb->getQuery()->getResult();
+    }
 }
