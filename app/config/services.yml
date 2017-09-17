@@ -22,7 +22,7 @@ services:
             - @doctrine.orm.entity_manager
             - @event_dispatcher
     account.account_service:
-        class: TransactionsBundle\Service\AccountService
+        class: AccountBUndle\Service\AccountService
         arguments:
             - @account.account_repository
             - @event_dispatcher

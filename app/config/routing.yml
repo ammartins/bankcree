@@ -1,3 +1,8 @@
+account:
+    resource: "@AccountBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 categories:
     resource: "@CategoriesBundle/Controller/"
     type:     annotation
@@ -13,7 +18,7 @@ login:
     type:     annotation
     prefix:   /
 
-account:
+transactions:
     resource: "@TransactionsBundle/Controller/"
     type:     annotation
     prefix:   /
