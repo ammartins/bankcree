@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class MatchCommand extends ContainerAwareCommand
 {
@@ -42,15 +43,9 @@ class MatchCommand extends ContainerAwareCommand
 
         foreach ($transactions as $key => $transaction) {
             if (
-                (
-                    $transaction->getPossibleMatch()
-                    // && $transaction->getMatchPercentage() > 75
-                )
+                $transaction->getPossibleMatch()
                 || $transaction->getCategories()
             ) {
-                $possibleMatch = $em
-                    ->getRepository('CategoriesBundle:Categories')
-                    ->findById($transaction->getPossibleMatch())[0];
                 unset($transactions[$key]);
                 continue;
             }
@@ -60,13 +55,9 @@ class MatchCommand extends ContainerAwareCommand
             dump('Mattching all Types');
             $categories = $em
                 ->getRepository('CategoriesBundle:Categories')
-                ->findAll();
+                ->findAllNotNUll();
 
             foreach ($categories as $category) {
-                if ($category->getParent() === null) {
-                    continue;
-                }
-
                 dump("Matching ".$category->getName()." : ");
 
                 $matchedT = $em
@@ -80,7 +71,8 @@ class MatchCommand extends ContainerAwareCommand
                 $this->cycleTransactions(
                     $matchedT,
                     $transactions,
-                    $category->getId()
+                    $category->getId(),
+                    $output
                 );
             }
         }
@@ -97,7 +89,8 @@ class MatchCommand extends ContainerAwareCommand
             $this->cycleTransactions(
                 $matchedT,
                 $transactions,
-                $category
+                $category,
+                $output
             );
         }
     }
@@ -105,36 +98,43 @@ class MatchCommand extends ContainerAwareCommand
     protected function cycleTransactions(
         $matchedT,
         $transactions,
-        $category
+        $category,
+        $output
     ) {
+        dump('Starting '.date('h:i:s A'));
+
+        $progress = new ProgressBar($output, count($matchedT));
+        $progress->setFormat('verbose');
+
         $results = array();
+
         $matchService = $this
             ->getApplication()
             ->getKernel()
             ->getContainer()
             ->get('transactions.match');
 
+        $progress->start();
         foreach ($matchedT as $match) {
+            $progress->advance();
             if (!$match->getCategories()) {
                 continue;
             }
 
-            $matches = $matchService->match($match, $transactions, $category);
+            $matches = $matchService
+                ->match($match, $transactions, $category, $output);
 
             if (count($matches) === 0) {
                 continue;
             }
 
             foreach ($matches as $matchR) {
-                $results[
-                        $match
-                            ->getCategories()
-                            ->getId()
-                    ]
-                    [
-                        $matchR->getId()
-                    ] = $matchR;
+                $results
+                    [$match->getCategories()->getId()]
+                    [$matchR->getId()] = $matchR;
             }
         }
+        $progress->finish();
+        dump('Ended '.date('h:i:s A'));
     }
 }

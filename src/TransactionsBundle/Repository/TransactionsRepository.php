@@ -262,6 +262,20 @@ class TransactionsRepository extends EntityRepository
         return $data;
     }
 
+    public function getMatched()
+    {
+        $data = $this->getEntityManager()
+            ->createQuery(
+                "SELECT YEAR(p.createAt) as year, Month(p.createAt) as month, count(p.id), SUM(p.amount)
+                FROM TransactionsBundle:Transactions p
+                WHERE p.categories is not null
+                GROUP BY month, year
+                ORDER BY Year(p.createAt), Month(p.createAt)"
+            )->execute();
+
+        return $data;
+    }
+
     public function getPossibleMatch($possibleMatch = null)
     {
         $data = $this->getEntityManager()

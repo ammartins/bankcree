@@ -35,12 +35,19 @@ class TransactionsController extends Controller
          * all the transactions from that month
          */
         $em = $this->getDoctrine()->getManager();
-        $data = $em->getRepository('TransactionsBundle:Transactions')->groupByYear();
+        $data = $em
+            ->getRepository('TransactionsBundle:Transactions')
+            ->groupByYear();
+
+        $matched = $em
+            ->getRepository('TransactionsBundle:Transactions')
+            ->getMatched();
 
         return $this->render(
             'TransactionsBundle:account:dash.html.twig',
             array(
                 'data' => $data,
+                'matched' => $matched,
             )
         );
     }
