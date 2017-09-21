@@ -9,10 +9,13 @@
     <a href="{{ path('home', {'currentYear' : info.year,'currentMonth' : info.month}) }}">
       <div class="text-center col-md-2 {% if info[2] > 0 %}bg-success{% else %}bg-danger{% endif %}">
         <h3>{{ info.month }}-{{ info.year }}</h3>
-        {% if info[1]-matched[key][1]  == 0 %}
+
+        {% if matched[key] is defined and info[1]-matched[key][1]  == 0 %}
             <span class="glyphicon glyphicon-ok"></span>
-        {% else %}
+        {% elseif matched[key] is defined %}
             <span>Open Transactions: {{ info[1]-matched[key][1] }}</span>
+        {% else %}
+            <span>Transactions: {{ info[1] }}</span>
         {% endif %}
         <p>{{ info.2|round(2, 'floor') }} €</p>
       </div>
