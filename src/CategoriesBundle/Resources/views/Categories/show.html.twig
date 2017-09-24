@@ -29,6 +29,7 @@
     <table class="table table-condensed table-hover table-responsive">
         <tr>
             <th class="text-left">Id</th>
+            <th class="text-left">Percentage</th>
             <th class="text-left">Transaction Date</th>
             <th class="text-right">Amount</th>
             <th class="text-right">Short Description</th>
@@ -40,6 +41,7 @@
                 {% if matchAgainst[0].amount == item.amount %}success{% endif %}
             '>
                 <td>{{ item.id }}</td>
+                <td>{{ item.matchPercentage }}</td>
                 <td>{{ item.createAt|date("d/m/Y") }}</td>
                 <td class="text-right">{{ item.amount }} €</td>
                 <td class="text-right">{{ item.description  }}</td>
