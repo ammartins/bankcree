@@ -122,65 +122,37 @@ class CategoriesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->get('jms_serializer');
+        $matchService = $this->get('transactions.match');
+
         $toBeSave = $em->getRepository('TransactionsBundle:Transactions')
             ->find($id);
         $transaction = $em->getRepository('TransactionsBundle:Transactions')
             ->getMatchTransactions($id);
 
         $results = array();
-        $transacDescription = preg_split(
-            '/[\s\/\*]/',
-            $transaction['transaction'][0]['description']
-        );
+        $transacDescription = $transaction['transaction'][0]['description'];
+        $transacDescription = $matchService->cleanUp($transacDescription);
 
         foreach ($transaction['data'] as $item) {
-            $itemDescription = $item['description'];
-            $itemDescription = preg_replace('!\s+!', ' ', $itemDescription);
-            $itemDescription = preg_split('/[\s\/\*]/', $itemDescription);
-
             $score = 0;
-            $special = 0;
 
-            foreach ($itemDescription as $item1) {
-                if ($item1 == 'TRTP' || $item1 == 'IBAN' ||
-                    $item1 == 'BIC' || $item1 == 'NAME' ||
-                    $item1 == 'EREF' || $item1 == 'SEPA' ||
-                    $item1 == 'REMI' || $item1 == 'CSID' ||
-                    $item1 == 'Incasso' || $item1 == 'MARF' ||
-                    $item1 == '' || $item1 == 'algemeen' ||
-                    $item1 == 'doorlopend' || $item1 == 'IBAN:' ||
-                    $item1 == 'Overboeking' || $item1 == 'INGBNL2A' ||
-                    $item1 == 'BIC:' || $item1 == 'Omschrijving:' ||
-                    $item1 == 'SEPA' || $item1 == 'OVERBOEKING' ||
-                    $item1 == 'BEA'
-                ) {
-                    $special += 1;
-                    continue;
-                }
-                if (in_array($item1, $transacDescription)) {
+            $itemDescription = $matchService->cleanUp($item['description']);
+
+            foreach ($itemDescription as $key => $value) {
+                if (in_array($value, $transacDescription)) {
                     $score += 1;
                 }
-                if ($score > (count($itemDescription)-$special)/2) {
-                    $item['percentage'] = round(
-                        (
-                            (
-                                $score*100
-                            )/
-                            (
-                                count($itemDescription)-$special
-                            )
-                        ),
-                        0
-                    );
+            }
 
-                    // if ($item['amount'] === $toBeSave->getAmount()) {
-                    //     $item['percentage'] += 50;
-                    // }
-                    $results[] = $item;
-                    $score = 0;
-                    $special = 0;
-                    continue;
-                }
+            if ($score > (count($itemDescription))/2) {
+                $item['percentage'] = round(
+                    (($score*100)/(count($transacDescription))),
+                    0
+                );
+
+                $results[] = $item;
+                $score = 0;
+                continue;
             }
         }
 
@@ -264,17 +236,22 @@ class CategoriesController extends Controller
             $itemDescription = preg_replace('!\s+!', ' ', $itemDescription);
             $itemDescription = preg_split('/[\s\/\*]/', $itemDescription);
 
-            foreach ($itemDescription as $item1) {
-                if ($item1 == 'TRTP' || $item1 == 'IBAN' || $item1 == 'BIC' ||
-                    $item1 == 'NAME' || $item1 == 'EREF' || $item1 == 'SEPA' ||
+            foreach ($itemDescription as $key => $item1) {
+                if ($item1 == 'TRTP' || $item1 == 'IBAN' ||
+                    $item1 == 'BIC' || $item1 == 'NAME' ||
+                    $item1 == 'EREF' || $item1 == 'SEPA' ||
                     $item1 == 'REMI' || $item1 == 'CSID' ||
-                    $item1 == 'Incasso' || $item1 == 'MARF' || $item1 == '' ||
-                    $item1 == 'algemeen' ||$item1 == 'doorlopend' ||
-                    $item1 == 'IBAN:' || $item1 == 'Overboeking' ||
-                    $item1 == 'INGBNL2A' || $item1 == 'BIC:' ||
-                    $item1 == 'Omschrijving:' || $item1 == 'SEPA'
+                    $item1 == 'Incasso' || $item1 == 'MARF' ||
+                    $item1 == '' || $item1 == 'algemeen' ||
+                    $item1 == 'doorlopend' || $item1 == 'IBAN:' ||
+                    $item1 == 'Overboeking' || $item1 == 'INGBNL2A' ||
+                    $item1 == 'BIC:' || $item1 == 'Omschrijving:' ||
+                    $item1 == 'SEPA' || $item1 == 'OVERBOEKING' ||
+                    $item1 == 'BEA' || $item1 == 'NOTPROVIDED' ||
+                    $item1 == 'Naam:'
                 ) {
                     $special += 1;
+                    $itemDescription[$key] = NULL;
                     continue;
                 }
                 if (in_array($item1, $categorieDesc)) {
