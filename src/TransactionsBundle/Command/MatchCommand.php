@@ -122,7 +122,7 @@ class MatchCommand extends ContainerAwareCommand
             }
 
             $matches = $matchService
-                ->match($match, $transactions, $category, $output);
+                ->match($match, $transactions, $category);
 
             if (count($matches) === 0) {
                 continue;
