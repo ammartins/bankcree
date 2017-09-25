@@ -289,6 +289,21 @@ class TransactionsRepository extends EntityRepository
         return $data;
     }
 
+    public function getPrevision()
+    {
+        $data = $this->getEntityManager()
+            ->createQuery(
+                "SELECT t, c
+                FROM TransactionsBundle:Transactions t
+                JOIN CategoriesBundle:Categories c
+                WHERE t.categories = c.id
+                AND c.recurring = 1
+                ORDER BY t.createAt ASC"
+            )->execute();
+
+        return $data;
+    }
+
     // public function getToBeMatched()
     // {
     //     $qb = $this->createQueryBuilder('p');

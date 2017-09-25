@@ -12,10 +12,16 @@
   <div class="logo"></div>
   <div class="nav-menu">
     <a href="{{ path('dashboard') }}">Home</a>
+    {% if menu is defined and currentMonth is defined and currentYear is defined %}
+        <a href="{{ path('home', {'currentYear' : currentYear,'currentMonth' : currentMonth}) }}">
+            Month
+        </a>
+    {% endif %}
     {% if menu is defined %}
         <a href="#monthgraph" data-toggle="tab">Expenses</a>
         <a href="#dailygraph" data-toggle="tab">Graphs</a>
     {% endif %}
+    <a href="{{ path('prevision') }}">Prevision</a>
     <a href="{{ path('categories') }}">Categories</a>
     <a href="{{ path('budget')}}">Budgets</a>
     <a href="{{ path('contact') }}">Contact</a>

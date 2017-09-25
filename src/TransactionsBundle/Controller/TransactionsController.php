@@ -53,6 +53,33 @@ class TransactionsController extends Controller
     }
 
     /**
+     * Prevision of upcoming month
+     *
+     * @Route("/prevision", name="prevision")
+     */
+    public function previsionAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = $em
+            ->getRepository('TransactionsBundle:Transactions')
+            ->getPrevision();
+
+        $test = [];
+        ini_set('display_startup_errors',1);
+        ini_set('display_errors',1);
+        error_reporting(-1);
+
+        foreach ($data as $transaction) {
+            if (get_class($transaction) === "TransactionsBundle\Entity\Transactions") {
+                $test[$transaction->getCategories()->getName()][] = $transaction;
+            }
+        }
+
+        dump($test);
+        exit;
+    }
+
+    /**
      *
      * @param int $currentYear
      * @param int $currentMonth
