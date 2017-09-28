@@ -14,7 +14,7 @@ $(document).ready(function() {
     // TODO ajax call to get the content for the month and reload the table :)
     $.ajax({
       url: "/",
-      data: { currentMonth: $(this).attr('href') }
+      data: { month: $(this).attr('href') }
     }).done(function() {
       console.log('Fix this later by getting the table redesigned :)');
     });

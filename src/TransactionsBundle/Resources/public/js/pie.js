@@ -1,9 +1,6 @@
 $(document).ready(function() {
   // Data For Graphs
   var sdF         = [];
-  var frr         = [ 0,0,0,0,0,0,0,0,0,0,
-                      0,0,0,0,0,0,0,0,0,0,
-                      0,0,0,0,0,0,0,0,0,0,0];
   var perMonth    = [ 0,0,0,0,0,0,0,0,0,0,
                       0,0];
   var perMonth1   = [ 0,0,0,0,0,0,0,0,0,0,
@@ -65,17 +62,69 @@ $(document).ready(function() {
       }
   }
 
-  idx = 0;
-  for(var key in objD) {
-      if (objD.hasOwnProperty(key))
-      {
-          while (objD[key]['days'] != idx)
-          {
-              frr[idx++] = 0;
-          }
-          frr[idx++] = parseInt(objD[key]['amount']);
-      }
-  }
+    frr = [];
+    for(var key in objD) {
+        if (objD[key].hasOwnProperty('days')) {
+            frr[objD[key]['days']] = parseInt(objD[key]['amount']);
+        }
+    }
+
+    /**
+     * Net Worth Graph Used
+     * @Route("finance/{year}/{month}", name="home")
+     */
+    netWorth = new Highcharts.Chart({
+        chart: {
+            renderTo: 'container',
+            zoomType: 'x'
+        },
+        title: {
+            text: 'Net Worth'
+        },
+        xAxis: {
+            categories: [
+                1,2,3,4,5,6,7,8,9,10,
+                11,12,13,14,15,16,17,18,19,20,
+                21,22,23,24,25,26,27,28,29,30,31
+            ]
+        },
+        yAxis: {
+            title: {
+                text: 'Income'
+            }
+        },
+        plotOptions: {
+            area: {
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
+                marker: {
+                    radius: 2
+                },
+                lineWidth: 1,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+                threshold: null
+            }
+        },
+        series: [{
+            type: 'area',
+            name: 'Total',
+            data: frr
+        }]
+    });
 
   chart1 = new Highcharts.Chart({
       chart: {
@@ -103,37 +152,6 @@ $(document).ready(function() {
       },
       series: [{
           data: sdF
-      }]
-  });
-
-  chart2 = new Highcharts.Chart({
-      chart: {
-          renderTo: 'container',
-          type: gtype
-      },
-      title: {
-          text: 'Daily Expensives'
-      },
-      xAxis: {
-          categories: [
-              1,2,3,4,5,6,7,8,9,10,
-              11,12,13,14,15,16,17,18,19,20,
-              21,22,23,24,25,26,27,28,29,30,31
-          ]
-      },
-      yAxis: {
-          title: {
-              text: 'Income'
-          }
-      },
-      plotOptions: {
-        column: {
-          colorByPoint: true
-        }
-      },
-      series: [{
-          name: 'Total',
-          data: frr
       }]
   });
 

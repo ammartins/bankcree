@@ -1,0 +1,20 @@
+{% include 'TransactionsBundle:default:monthMenu.html.twig' %}
+
+{% block body %}
+    <div class="">
+        <div>
+            <div id="container"></div>
+            <div class="donuts">
+                <div id="income">
+                </div>
+                <div id="spending">
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-righ">
+            {% include 'TransactionsBundle:default:_month.html.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% include 'TransactionsBundle:default:monthMenu.html.twig' %}
