@@ -12,8 +12,8 @@
 /web/js
 /web/css
 /web/fonts
-/web/bundles/
-/web/assetic/
+/web/bundles
+/web/assetic
 .DS_Store
 .sass-cache/
 data/
