@@ -18,3 +18,5 @@
 .sass-cache/
 data/
 tests/
+help/
+watch/
