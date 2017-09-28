@@ -1,30 +1,33 @@
 {% extends 'base.html.twig' %}
 
 {% block menu %}
-  {% include 'menu.html.twig' %}
+    {% include 'menu.html.twig' %}
 {% endblock %}
+
 {% block body %}
-  <script type="text/javascript">
-      obj   = jQuery.parseJSON('{{ data|raw }}');
-      objD  = jQuery.parseJSON('{{ graphDay|raw }}');
-      objM  = jQuery.parseJSON('{{ graphMonth|raw }}');
-      objM2 = jQuery.parseJSON('{{ graphMonth2|raw }}');
-      day   = jQuery.parseJSON('{{ dataDay|raw }}');
-      objMI = jQuery.parseJSON('{{ income|raw }}');
-      objME = jQuery.parseJSON('{{ expenses|raw }}');
-  </script>
-  {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}
-      <script type="text/javascript" src="{{ asset_url }}"></script>
-  {% endjavascripts %}
-  <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="table">
-          {% include 'TransactionsBundle:default:monthNew.html.twig' %}
-      </div>
-      <div role="tabpanel" class="tab-pane" id="monthgraph">
-          {% include 'TransactionsBundle:default:montGraph.html.twig' %}
-      </div>
-      <div role="tabpanel" class="tab-pane" id="dailygraph">
-          {% include 'TransactionsBundle:default:dailygraph.html.twig' %}
-      </div>
-  </div>
+    <script type="text/javascript">
+        obj = jQuery.parseJSON('{{ data|raw }}');
+        objD = jQuery.parseJSON('{{ graphDay|raw }}');
+        objM = jQuery.parseJSON('{{ graphMonth|raw }}');
+        objM2 = jQuery.parseJSON('{{ graphMonth2|raw }}');
+        day = jQuery.parseJSON('{{ dataDay|raw }}');
+        objMI = jQuery.parseJSON('{{ income|raw }}');
+        objME = jQuery.parseJSON('{{ expenses|raw }}');
+    </script>
+
+    {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="table">
+            {% include 'TransactionsBundle:default:monthNew.html.twig' %}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="monthgraph">
+            {% include 'TransactionsBundle:default:montGraph.html.twig' %}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="dailygraph">
+            {% include 'TransactionsBundle:default:dailygraph.html.twig' %}
+        </div>
+    </div>
 {% endblock %}
