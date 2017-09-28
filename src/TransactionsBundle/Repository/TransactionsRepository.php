@@ -225,7 +225,8 @@ class TransactionsRepository extends EntityRepository
                 FROM TransactionsBundle:Transactions p
                 WHERE YEAR(p.createAt) = $year
                 AND MONTH(p.createAt) = $month
-                GROUP BY days"
+                GROUP BY days
+                ORDER BY p.id DESC"
             )->execute();
 
         return $data;
