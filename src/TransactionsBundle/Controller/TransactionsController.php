@@ -75,8 +75,8 @@ class TransactionsController extends Controller
             }
         }
 
-        dump($test);
-        exit;
+        return new RedirectResponse($this->generateUrl('home'));
+
     }
 
     /**
