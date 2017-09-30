@@ -91,10 +91,10 @@ class TransactionsController extends Controller
         $year  = $year ? $year : date('Y');
         $em = $this->getDoctrine()->getManager();
 
-        $monthIncome = $em->getRepository('TransactionsBundle:Transactions')
-        ->getMonthIncome($month, $year);
-        $monthSpending = $em->getRepository('TransactionsBundle:Transactions')
-        ->getMonthSpending($month, $year);
+        // $monthIncome = $em->getRepository('TransactionsBundle:Transactions')
+        // ->getMonthIncome($month, $year);
+        // $monthSpending = $em->getRepository('TransactionsBundle:Transactions')
+        // ->getMonthSpending($month, $year);
 
         // dump($monthIncome);
         // dump($monthSpending);

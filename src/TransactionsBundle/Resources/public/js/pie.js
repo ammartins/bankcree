@@ -3,6 +3,9 @@ $(document).ready(function() {
     var sdF = [];
     var perMonth = [ 0,0,0,0,0,0,0,0,0,0,0,0];
     var perMonth1 = [ 0,0,0,0,0,0,0,0,0,0,0,0];
+    var months = [
+        "Jan","Fev","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
+    ];
     var idx = 0;
     var total = 0;
 
@@ -129,7 +132,7 @@ $(document).ready(function() {
     frr = [];
     for(var key in objD) {
         if (objD[key].hasOwnProperty('days')) {
-            frr[objD[key]['days']] = parseInt(objD[key]['amount']);
+            frr[objD[key].days] = parseInt(objD[key].amount);
         }
     }
 
@@ -198,17 +201,14 @@ $(document).ready(function() {
     /***************************************************************************
      *              This is for the Month Income/Expenses Graph                *
      **************************************************************************/
-    var perMonth = [ 0,0,0,0,0,0,0,0,0,0,0,0];
-    var perMonth1 = [ 0,0,0,0,0,0,0,0,0,0,0,0];
-    var months = [
-        "Jan","Fev","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
-    ];
+    perMonth = [ 0,0,0,0,0,0,0,0,0,0,0,0];
+    perMonth1 = [ 0,0,0,0,0,0,0,0,0,0,0,0];
     idx = 0;
 
     for(var key in objMI) {
         if (objMI.hasOwnProperty(key)) {
             if ( objMI.hasOwnProperty(key) ) {
-                perMonth[idx++] = parseInt(objMI[key]['amount']);
+                perMonth[idx++] = parseInt(objMI[key].amount);
             }
         }
     }
@@ -217,7 +217,7 @@ $(document).ready(function() {
     for(var key in objME) {
         if (objME.hasOwnProperty(key)) {
             if ( objME.hasOwnProperty(key) ) {
-                perMonth1[idx++] = parseInt(objME[key]['amount'])*-1;
+                perMonth1[idx++] = parseInt(objME[key].amount)*-1;
             }
         }
     }
