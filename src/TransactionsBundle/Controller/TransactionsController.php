@@ -5,6 +5,7 @@ namespace TransactionsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -75,7 +76,7 @@ class TransactionsController extends Controller
             }
         }
 
-        return new RedirectResponse($this->generateUrl('home'));
+        return new RedirectResponse($this->generateUrl('dashboard'));
 
     }
 
