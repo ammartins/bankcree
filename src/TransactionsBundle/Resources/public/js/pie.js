@@ -14,9 +14,9 @@ $(document).ready(function() {
     }
 
     // Calculate Total Expenses
-    for(key in obj) {
+    for(var key in obj) {
         if (obj.hasOwnProperty(key)){
-            if (obj[key].total] > 0) {
+            if (obj[key].total > 0) {
                 total = parseInt(obj[key].total);
             }
         }
@@ -30,18 +30,18 @@ $(document).ready(function() {
     // total is 100 so sd[key] is percent
     // 100 - total
     // x   -  sd[key]
-    for(key in obj) {
+    for(var key in obj) {
         if (obj.hasOwnProperty(key) && parseInt(obj[key].total) <= 0) {
             sdF[idx++] = {
                 'name': obj[key].shortDescription,
-                'y' : (Math.floor((parseInt(obj[key]['total'])*100)/total))*-1
+                'y' : (Math.floor((parseInt(obj[key].total)*100)/total))*-1
             };
         }
     }
 
     // This is for the Year graphMonthYear
     idx = 0;
-    for(key in objM) {
+    for(var key in objM) {
         if (objM.hasOwnProperty(key)) {
             if ( objM.hasOwnProperty(key) ) {
                 perMonth[idx++] = parseInt(objM[key].amount);
@@ -53,7 +53,7 @@ $(document).ready(function() {
     for(var key in objM2) {
         if (objM2.hasOwnProperty(key)) {
             if ( objM2.hasOwnProperty(key) ) {
-                perMonth1[idx++] = parseInt(objM2[key]['amount']);
+                perMonth1[idx++] = parseInt(objM2[key].amount);
             }
         }
     }
