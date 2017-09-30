@@ -17,7 +17,6 @@ class Version20170917114337 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE transactions DROP FOREIGN KEY FK_EAA81A4C664F7A0B');
-        $this->addSql('DROP INDEX IDX_EAA81A4C664F7A0B ON transactions');
     }
 
     /**
