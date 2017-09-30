@@ -36,9 +36,6 @@ class Version20170829123451 extends AbstractMigration
             "CREATE UNIQUE INDEX UNIQ_8D93D649F85E0677 ON user (username)"
         );
         $this->addSql(
-            "ALTER TABLE transactions DROP FOREIGN KEY FK_EAA81A4C664F7A0B"
-        );
-        $this->addSql(
             "DROP INDEX UNIQ_EAA81A4C664F7A0B ON transactions"
         );
         $this->addSql(
