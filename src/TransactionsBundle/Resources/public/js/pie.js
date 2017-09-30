@@ -8,6 +8,7 @@ $(document).ready(function() {
     ];
     var idx = 0;
     var total = 0;
+    var key;
 
     // Disaply Bar or Columns
     if (window.innerHeight > window.innerWidth) {
@@ -17,7 +18,7 @@ $(document).ready(function() {
     }
 
     // Calculate Total Expenses
-    for(var key in obj) {
+    for(key in obj) {
         if (obj.hasOwnProperty(key)){
             if (obj[key].total > 0) {
                 total = parseInt(obj[key].total);
@@ -33,7 +34,7 @@ $(document).ready(function() {
     // total is 100 so sd[key] is percent
     // 100 - total
     // x   -  sd[key]
-    for(var key in obj) {
+    for(key in obj) {
         if (obj.hasOwnProperty(key) && parseInt(obj[key].total) <= 0) {
             sdF[idx++] = {
                 'name': obj[key].shortDescription,
@@ -44,7 +45,7 @@ $(document).ready(function() {
 
     // This is for the Year graphMonthYear
     idx = 0;
-    for(var key in objM) {
+    for(key in objM) {
         if (objM.hasOwnProperty(key)) {
             if ( objM.hasOwnProperty(key) ) {
                 perMonth[idx++] = parseInt(objM[key].amount);
@@ -53,7 +54,7 @@ $(document).ready(function() {
     }
 
     idx = 0;
-    for(var key in objM2) {
+    for(key in objM2) {
         if (objM2.hasOwnProperty(key)) {
             if ( objM2.hasOwnProperty(key) ) {
                 perMonth1[idx++] = parseInt(objM2[key].amount);
@@ -130,7 +131,7 @@ $(document).ready(function() {
      *               This is for the Month Net Worth per days                  *
      **************************************************************************/
     frr = [];
-    for(var key in objD) {
+    for(key in objD) {
         if (objD[key].hasOwnProperty('days')) {
             frr[objD[key].days] = parseInt(objD[key].amount);
         }
@@ -205,7 +206,7 @@ $(document).ready(function() {
     perMonth1 = [ 0,0,0,0,0,0,0,0,0,0,0,0];
     idx = 0;
 
-    for(var key in objMI) {
+    for(key in objMI) {
         if (objMI.hasOwnProperty(key)) {
             if ( objMI.hasOwnProperty(key) ) {
                 perMonth[idx++] = parseInt(objMI[key].amount);
@@ -214,7 +215,7 @@ $(document).ready(function() {
     }
 
     idx = 0;
-    for(var key in objME) {
+    for(key in objME) {
         if (objME.hasOwnProperty(key)) {
             if ( objME.hasOwnProperty(key) ) {
                 perMonth1[idx++] = parseInt(objME[key].amount)*-1;
