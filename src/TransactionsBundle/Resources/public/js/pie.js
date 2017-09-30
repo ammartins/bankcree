@@ -14,10 +14,10 @@ $(document).ready(function() {
     }
 
     // Calculate Total Expenses
-    for(var key in obj) {
+    for(key in obj) {
         if (obj.hasOwnProperty(key)){
-            if (obj[key]['total'] > 0) {
-                total = parseInt(obj[key]['total']);
+            if (obj[key].total] > 0) {
+                total = parseInt(obj[key].total);
             }
         }
     }
@@ -30,10 +30,10 @@ $(document).ready(function() {
     // total is 100 so sd[key] is percent
     // 100 - total
     // x   -  sd[key]
-    for(var key in obj) {
-        if (obj.hasOwnProperty(key) && parseInt(obj[key]['total']) <= 0) {
+    for(key in obj) {
+        if (obj.hasOwnProperty(key) && parseInt(obj[key].total) <= 0) {
             sdF[idx++] = {
-                'name': obj[key]['shortDescription'],
+                'name': obj[key].shortDescription,
                 'y' : (Math.floor((parseInt(obj[key]['total'])*100)/total))*-1
             };
         }
@@ -41,10 +41,10 @@ $(document).ready(function() {
 
     // This is for the Year graphMonthYear
     idx = 0;
-    for(var key in objM) {
+    for(key in objM) {
         if (objM.hasOwnProperty(key)) {
             if ( objM.hasOwnProperty(key) ) {
-                perMonth[idx++] = parseInt(objM[key]['amount']);
+                perMonth[idx++] = parseInt(objM[key].amount);
             }
         }
     }
@@ -57,6 +57,70 @@ $(document).ready(function() {
             }
         }
     }
+
+    chart1 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'container2',
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+        },
+        tooltip: {
+            pointFormat: '<b>Total %: {point.y:.1f}% : Spent %: {point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        title: {
+            text: 'Quantity'
+        },
+        series: [{
+            data: sdF
+        }]
+    });
+
+    chart3 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'container3',
+            type: gtype
+        },
+        title: {
+            text: 'Year Expensives'
+        },
+        xAxis: {
+            categories: [
+                "Jan","Fev","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
+            ]
+        },
+        yAxis: {
+            title: {
+                text: 'Income'
+            }
+        },
+        plotOptions: {
+            column: {
+                colorByPoint: true
+            }
+        },
+        series: [
+            {
+                name: 'Total Current Year',
+                data: perMonth
+            },
+            {
+                name: 'Total Previous Year',
+                data: perMonth1
+            }
+        ]
+    });
 
 
     /***************************************************************************
@@ -129,70 +193,6 @@ $(document).ready(function() {
             name: 'Total',
             data: frr
         }]
-    });
-
-    chart1 = new Highcharts.Chart({
-        chart: {
-            renderTo: 'container2',
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie',
-        },
-        tooltip: {
-            pointFormat: '<b>Total %: {point.y:.1f}% : Spent %: {point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: false
-                },
-                showInLegend: true
-            }
-        },
-        title: {
-            text: 'Quantity'
-        },
-        series: [{
-            data: sdF
-        }]
-    });
-
-    chart3 = new Highcharts.Chart({
-        chart: {
-            renderTo: 'container3',
-            type: gtype
-        },
-        title: {
-            text: 'Year Expensives'
-        },
-        xAxis: {
-            categories: [
-                "Jan","Fev","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
-            ]
-        },
-        yAxis: {
-            title: {
-                text: 'Income'
-            }
-        },
-        plotOptions: {
-            column: {
-                colorByPoint: true
-            }
-        },
-        series: [
-            {
-                name: 'Total Current Year',
-                data: perMonth
-            },
-            {
-                name: 'Total Previous Year',
-                data: perMonth1
-            }
-        ]
     });
 
     /***************************************************************************
