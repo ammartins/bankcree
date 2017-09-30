@@ -57,10 +57,10 @@ class Version20170829123451 extends AbstractMigration
         $this->addSql(
             "CREATE INDEX IDX_6E9D6988727ACA70 ON transaction_type (parent_id)"
         );
-        $this->addSql(
-            "ALTER TABLE transactions
-            RENAME INDEX fk_eaa81a4c6e9d6988e TO IDX_EAA81A4C6E9D6988"
-        );
+        #$this->addSql(
+        #    "ALTER TABLE transactions
+        #     RENAME INDEX fk_eaa81a4c6e9d6988e TO IDX_EAA81A4C6E9D6988"
+        #);
     }
 
     /**
