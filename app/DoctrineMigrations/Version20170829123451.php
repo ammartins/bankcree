@@ -36,9 +36,6 @@ class Version20170829123451 extends AbstractMigration
             "CREATE UNIQUE INDEX UNIQ_8D93D649F85E0677 ON user (username)"
         );
         $this->addSql(
-            "ALTER TABLE transactions DROP FOREIGN KEY FK_EAA81A4C664F7A0B"
-        );
-        $this->addSql(
             "DROP INDEX UNIQ_EAA81A4C664F7A0B ON transactions"
         );
         $this->addSql(
@@ -57,10 +54,10 @@ class Version20170829123451 extends AbstractMigration
         $this->addSql(
             "CREATE INDEX IDX_6E9D6988727ACA70 ON transaction_type (parent_id)"
         );
-        $this->addSql(
-            "ALTER TABLE transactions
-            RENAME INDEX fk_eaa81a4c6e9d6988e TO IDX_EAA81A4C6E9D6988"
-        );
+        #$this->addSql(
+        #    "ALTER TABLE transactions
+        #     RENAME INDEX fk_eaa81a4c6e9d6988e TO IDX_EAA81A4C6E9D6988"
+        #);
     }
 
     /**

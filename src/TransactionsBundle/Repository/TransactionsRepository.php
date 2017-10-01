@@ -13,6 +13,32 @@ use CategoriesBundle\Entity\Categories;
 */
 class TransactionsRepository extends EntityRepository
 {
+    public function getMonthIncome($month, $year)
+    {
+        $data = $this->getEntityManager()->createQuery(
+            "SELECT t
+            FROM TransactionsBundle:Transactions t
+            WHERE MONTH(t.createAt) = $month
+            AND YEAR(t.createAt) = $year
+            AND t.amount > 0"
+        )->execute();
+
+        return $data;
+    }
+
+    public function getMonthSpending($month, $year)
+    {
+        $data = $this->getEntityManager()->createQuery(
+            "SELECT t
+            FROM TransactionsBundle:Transactions t
+            WHERE MONTH(t.createAt) = $month
+            AND YEAR(t.createAt) = $year
+            AND t.amount < 0"
+        )->execute();
+
+        return $data;
+    }
+
     public function getMonths($year)
     {
         $months = $this->getEntityManager()
@@ -48,7 +74,7 @@ class TransactionsRepository extends EntityRepository
             )->getResult();
     }
 
-    public function getCurrentMonth($month, $year)
+    public function getmonth($month, $year)
     {
         $data = $this->getEntityManager()
             ->createQuery(
@@ -195,11 +221,12 @@ class TransactionsRepository extends EntityRepository
     {
         $data = $this->getEntityManager()
             ->createQuery(
-                "SELECT DAY(p.createAt) as days, sum(p.amount) as amount
+                "SELECT DAY(p.createAt) as days, p.startsaldo as amount
                 FROM TransactionsBundle:Transactions p
                 WHERE YEAR(p.createAt) = $year
                 AND MONTH(p.createAt) = $month
-                GROUP BY days"
+                GROUP BY days
+                ORDER BY p.id DESC"
             )->execute();
 
         return $data;
@@ -218,7 +245,7 @@ class TransactionsRepository extends EntityRepository
     }
 
     // Get Income/Expenses per Month of current Year
-    public function getIncomeExpensiveYear($currentYear, $type = 0)
+    public function getIncomeExpensiveYear($year, $type = 0)
     {
         if ($type == 1) {
             $data = $this->getEntityManager()
@@ -226,7 +253,7 @@ class TransactionsRepository extends EntityRepository
                     "SELECT Month(p.createAt) as month, sum(p.amount) as amount
                     FROM TransactionsBundle:Transactions p
                     where
-                    YEAR(p.createAt) = $currentYear
+                    YEAR(p.createAt) = $year
                     and
                     p.amount > $type
                     group by month"
@@ -240,7 +267,7 @@ class TransactionsRepository extends EntityRepository
                 "SELECT Month(p.createAt) as month, sum(p.amount) as amount
                 FROM TransactionsBundle:Transactions p
                 where
-                YEAR(p.createAt) = $currentYear
+                YEAR(p.createAt) = $year
                 and
                 p.amount < $type
                 group by month"
@@ -284,6 +311,21 @@ class TransactionsRepository extends EntityRepository
                 FROM TransactionsBundle:Transactions p
                 WHERE p.possibleMatch is not null
                 GROUP BY p.possibleMatch"
+            )->execute();
+
+        return $data;
+    }
+
+    public function getPrevision()
+    {
+        $data = $this->getEntityManager()
+            ->createQuery(
+                "SELECT t, c
+                FROM TransactionsBundle:Transactions t
+                JOIN CategoriesBundle:Categories c
+                WHERE t.categories = c.id
+                AND c.recurring = 1
+                ORDER BY t.createAt ASC"
             )->execute();
 
         return $data;

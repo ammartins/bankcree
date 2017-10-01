@@ -1,9 +1,9 @@
 <nav class="text-center">
   <ul class="pagination">
-    {% for year in years %}
-      <li {% if year.year == currentYear %} class="active" {% endif %}>
-        <a href="{{ path('home', {'currentYear' : year.year, 'currentMonth' : currentMonth}) }}">
-          {{ year.year }}
+    {% for y in years %}
+      <li {% if y.year == year %} class="active" {% endif %}>
+        <a href="{{ path('home', {'year' : y.year, 'month' : month}) }}">
+          {{ y.year }}
         </a>
       </li>
     {% endfor %}
@@ -11,10 +11,10 @@
 </nav>
 <nav class="text-center">
   <ul class="pagination">
-    {% for month in months %}
-      <li {% if month.months == currentMonth%}class="active"{% endif %}>
-        <a href="{{ path('home', {'currentYear' : currentYear,'currentMonth' : month.months}) }}">
-          {{ month.monthName|date('F') }}
+    {% for m in months %}
+      <li {% if m.months == month %}class="active"{% endif %}>
+        <a href="{{ path('home', {'year' : year,'month' : m.months}) }}">
+          {{ m.monthName|date('F') }}
         </a>
       </li>
     {% endfor %}

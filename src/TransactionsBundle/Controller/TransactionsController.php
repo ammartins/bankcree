@@ -5,6 +5,7 @@ namespace TransactionsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -53,49 +54,81 @@ class TransactionsController extends Controller
     }
 
     /**
+     * Prevision of upcoming month
      *
-     * @param int $currentYear
-     * @param int $currentMonth
-     *
-     * @Route("/transactions/{currentYear}/{currentMonth}", name="home")
+     * @Route("/prevision", name="prevision")
      */
-    public function indexAction($currentYear, $currentMonth)
+    public function previsionAction()
     {
-        $currentYear  = $currentYear ? $currentYear : date('Y');
+        $em = $this->getDoctrine()->getManager();
+        $data = $em
+            ->getRepository('TransactionsBundle:Transactions')
+            ->getPrevision();
+
+        $test = [];
+        ini_set('display_startup_errors',1);
+        ini_set('display_errors',1);
+        error_reporting(-1);
+
+        foreach ($data as $transaction) {
+            if (get_class($transaction) === "TransactionsBundle\Entity\Transactions") {
+                $test[$transaction->getCategories()->getName()][] = $transaction;
+            }
+        }
+
+        return new RedirectResponse($this->generateUrl('dashboard'));
+
+    }
+
+    /**
+     *
+     * @param int $year
+     * @param int $month
+     *
+     * @Route("/finance/{year}/{month}", name="home")
+     */
+    public function indexAction($year, $month)
+    {
+        $year  = $year ? $year : date('Y');
         $em = $this->getDoctrine()->getManager();
 
+        // $monthIncome = $em->getRepository('TransactionsBundle:Transactions')
+        // ->getMonthIncome($month, $year);
+        // $monthSpending = $em->getRepository('TransactionsBundle:Transactions')
+        // ->getMonthSpending($month, $year);
+
+        // dump($monthIncome);
+        // dump($monthSpending);
+        // // exit;
+
         $transactions = $em->getRepository('TransactionsBundle:Transactions')
-            ->findAllByMonth($currentMonth, $currentYear);
+            ->findAllByMonth($month, $year);
         $graphDataType = $em->getRepository('TransactionsBundle:Transactions')
-            ->getDescriptionUsage($currentMonth, $currentYear);
+            ->getDescriptionUsage($month, $year);
         $graphDataDay = $em->getRepository('TransactionsBundle:Transactions')
-            ->getDescriptionPerDayInMonth($currentMonth, $currentYear);
+            ->getDescriptionPerDayInMonth($month, $year);
         $monthsData = $em->getRepository('TransactionsBundle:Transactions')
-            ->getMonthsForName($currentYear);
+            ->getMonthsForName($year);
         $graphMonthYear = $em->getRepository('TransactionsBundle:Transactions')
-            ->graphMonthYear($currentYear);
+            ->graphMonthYear($year);
         $graphMonthYear2 = $em->getRepository('TransactionsBundle:Transactions')
-            ->graphMonthYear($currentYear-1);
+            ->graphMonthYear($year-1);
         $income = $em->getRepository('TransactionsBundle:Transactions')
-            ->getIncomeExpensiveYear($currentYear, 1);
+            ->getIncomeExpensiveYear($year, 1);
         $expenses = $em->getRepository('TransactionsBundle:Transactions')
-            ->getIncomeExpensiveYear($currentYear, 0);
+            ->getIncomeExpensiveYear($year, 0);
         $monthsData = $em->getRepository('TransactionsBundle:Transactions')
-            ->getMonths($currentYear);
+            ->getMonths($year);
         $allYears = $em->getRepository('TransactionsBundle:Transactions')
             ->getAllYears();
         $descriptionData = $em->getRepository('TransactionsBundle:Transactions')
-            ->getDescriptionPerMonth($currentMonth, $currentYear);
+            ->getDescriptionPerMonth($month, $year);
         $amountDay = $em->getRepository('TransactionsBundle:Transactions')
-            ->getAmountPerDay($currentMonth, $currentYear);
+            ->getAmountPerDay($month, $year);
         $spendsPerDay = $em->getRepository('TransactionsBundle:Transactions')
-            ->getSpendsPerDay($currentMonth, $currentYear);
+            ->getSpendsPerDay($month, $year);
 
-        $numberOfDays = cal_days_in_month(
-            CAL_GREGORIAN,
-            $currentMonth,
-            $currentYear
-        );
+        $numberOfDays = cal_days_in_month(CAL_GREGORIAN,$month,$year);
         $spends = $spendsPerDay[0][1]/$numberOfDays;
 
         $serializer = $this->get('jms_serializer');
@@ -114,13 +147,13 @@ class TransactionsController extends Controller
                 'data' => $graphDataType,
                 'dataDay' => $graphDataDay,
                 'months' => $monthsData,
-                'currentMonth' => $currentMonth,
+                'month' => $month,
                 'descriptionData' => $descriptionData,
                 'descriptionDay' => $amountDay,
                 'graphDay' => $graphAmountDay,
-                'currentMonth' => $currentMonth,
+                'month' => $month,
                 'years' => $allYears,
-                "currentYear" => $currentYear,
+                "year" => $year,
                 "graphMonth" => $graphMonthYear,
                 "graphMonth2" => $graphMonthYear2,
                 "income" => $income,
@@ -143,14 +176,14 @@ class TransactionsController extends Controller
     }
 
     /**
-    * @Route("/transactions/show/{currentYear}/{currentMonth}/{id}", name="show")
+    * @Route("/transactions/show/{year}/{month}/{id}", name="show")
     *
-    * @param int $currentYear
+    * @param int $year
     * @param int $id
-    * @param int $currentMonth
+    * @param int $month
     * @param Request $request
     */
-    public function showAction($currentYear, $currentMonth, $id)
+    public function showAction($year, $month, $id)
     {
         $em = $this->getDoctrine()->getManager();
         $transaction = $em->getRepository('TransactionsBundle:Transactions')->find($id);
@@ -159,22 +192,22 @@ class TransactionsController extends Controller
             'TransactionsBundle:default:show.html.twig',
             array(
                 'transaction' => $transaction,
-                'currentMonth' => $currentMonth,
-                "currentYear" => $currentYear,
+                'month' => $month,
+                "year" => $year,
             )
         );
     }
 
     /**
-    * @Route("/transactions/edit/{currentYear}/{currentMonth}/{id}", name="edit")
+    * @Route("/transactions/edit/{year}/{month}/{id}", name="edit")
     *
-    * @param int $currentYear
-    * @param int $currentMonth
+    * @param int $year
+    * @param int $month
     * @param int $id
     * @param Request $request
     * @return \Symfony\Component\HttpFoundation\Response
     */
-    public function editAction($currentYear, $currentMonth, $id, Request $request)
+    public function editAction($year, $month, $id, Request $request)
     {
         // Get Transaction
         $em = $this->getDoctrine()->getManager();
@@ -198,8 +231,8 @@ class TransactionsController extends Controller
             return $this->redirectToRoute(
                 'home',
                 array(
-                    'currentYear' => $currentYear,
-                    'currentMonth' => $currentMonth
+                    'year' => $year,
+                    'month' => $month
                 ),
                 301
             );
@@ -210,8 +243,8 @@ class TransactionsController extends Controller
             array(
                 'transaction' => $transaction,
                 'form' => $form->createView(),
-                'currentMonth' => $currentMonth,
-                "currentYear" => $currentYear,
+                'month' => $month,
+                "year" => $year,
             )
         );
     }

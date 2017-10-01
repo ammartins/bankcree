@@ -1,5 +1,3 @@
-{% include 'TransactionsBundle:default:monthMenu.html.twig' %}
-
 <table class="table table-condensed table-hover table-responsive">
   <tr>
     <th class="text-left">Transaction Date</th>
@@ -19,25 +17,23 @@
           {% else %}
               <a href="{{ path('match', {
                 'id': transaction.id,
-                'currentMonth': currentMonth,
-                'currentYear': currentYear,
+                'month': month,
+                'year': year,
               }) }}">Match</a>
           {% endif %}
       </td>
       <td class="text-right">
         <a href="{{ path('show', {
             'id': transaction.id,
-            'currentMonth': currentMonth,
-            'currentYear': currentYear,
+            'month': month,
+            'year': year,
         }) }}">Show</a>
         <a href="{{ path('edit', {
           'id': transaction.id,
-          'currentMonth': currentMonth,
-          'currentYear': currentYear,
+          'month': month,
+          'year': year,
         }) }}">Edit</a>
       </td>
     </tr>
   {% endfor %}
 </table>
-
-{% include 'TransactionsBundle:default:monthMenu.html.twig' %}

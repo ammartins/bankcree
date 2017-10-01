@@ -53,8 +53,8 @@
     <div class="text-right">
       {{ form_widget(form.save, { 'attr': {'class': 'btn btn-success'}}) }}
       <a type="button" class="btn btn-primary" href="{{ path('home', {
-        'currentMonth': currentMonth,
-        'currentYear': currentYear,
+        'month': month,
+        'year': year,
       }) }}">Back</a>
     </div>
   {{ form_end(form) }}

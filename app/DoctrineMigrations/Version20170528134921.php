@@ -20,11 +20,6 @@ class Version20170528134921 extends AbstractMigration
             ADD possible_match INT DEFAULT NULL"
         );
         $this->addSql(
-            "ALTER TABLE transactions
-            ADD CONSTRAINT FK_EAA81A4C664F7A0B FOREIGN KEY (possible_match)
-            REFERENCES transactions (id)"
-        );
-        $this->addSql(
             "CREATE UNIQUE INDEX UNIQ_EAA81A4C664F7A0B
             ON transactions (possible_match)"
         );
