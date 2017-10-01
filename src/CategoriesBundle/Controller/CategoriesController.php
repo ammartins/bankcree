@@ -138,7 +138,7 @@ class CategoriesController extends Controller
 
             $itemDescription = $matchService->cleanUp($item['description']);
 
-            foreach ($itemDescription as $key => $value) {
+            foreach ($itemDescription as $value) {
                 if (in_array($value, $transacDescription)) {
                     $score += 1;
                 }

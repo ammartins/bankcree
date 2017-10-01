@@ -303,7 +303,7 @@ class TransactionsRepository extends EntityRepository
         return $data;
     }
 
-    public function getPossibleMatch($possibleMatch = null)
+    public function getPossibleMatch()
     {
         $data = $this->getEntityManager()
             ->createQuery(
