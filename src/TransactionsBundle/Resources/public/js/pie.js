@@ -71,7 +71,7 @@ $(document).ready(function() {
             type: 'pie',
         },
         tooltip: {
-            pointFormat: '<b>Total %: {point.y:.1f}% : Spent %: {point.percentage:.1f}%</b>'
+            pointFormat: '<b>Spent %: {point.percentage:.1f}%</b>'
         },
         plotOptions: {
             pie: {
