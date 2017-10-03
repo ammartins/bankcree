@@ -1,0 +1,25 @@
+<div class="row">
+    <p class="col-md-1">
+        <!-- <img src="//logo.clearbit.com/dominos.com?size=20"> -->
+    </p>
+    <p class="col-md-6">
+        {% if transaction.categories %}
+            {{ transaction.categories.name|capitalize }}
+        {% endif %}
+    </p>
+    <p class="col-md-2
+        {% if transaction.amount > 0 %}label-success
+        {% elseif transaction.amount < -250 %}label-danger
+        {% else %}label-warning
+        {% endif %}
+    ">
+        {{ transaction.amount }}
+    </p>
+    <p class="col-md-3">
+        <a href="{{ path('show', {'id': transaction.id,'month': month,'year': year,}) }}">Show</a>
+        <a href="{{ path('edit', {'id': transaction.id,'month': month,'year': year,}) }}">Edit</a>
+        {% if not transaction.categories %}
+            <a href="{{ path('match', {'id': transaction.id,'month': month,'year': year,}) }}">Match</a>
+        {% endif %}
+    </p>
+</div>
