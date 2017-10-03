@@ -1,4 +1,4 @@
-{% for transaction in transactions %}
+{% for transaction in transactions|reverse %}
     {% if prev is defined and transaction.createAt.date|date('Y-m-d') > prev.createAt.date|date('Y-m-d')  %}
         <h3>{{ transaction.createAt.date|date('d-m-Y') }}</h3>
     {% elseif not prev is defined %}
