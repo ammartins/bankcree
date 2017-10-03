@@ -110,15 +110,15 @@ class CategoriesController extends Controller
     }
 
     /**
-     * @Route("/match/{currentYear}/{currentMonth}/{id}", name="match")
+     * @Route("/match/{year}/{month}/{id}", name="match")
      *
-     * @param int $currentYear
-     * @param int $currentMonth
+     * @param int $year
+     * @param int $month
      * @param int $id
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function matchAction($currentYear, $currentMonth, $id, Request $request)
+    public function matchAction($year, $month, $id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->get('jms_serializer');
@@ -138,7 +138,7 @@ class CategoriesController extends Controller
 
             $itemDescription = $matchService->cleanUp($item['description']);
 
-            foreach ($itemDescription as $key => $value) {
+            foreach ($itemDescription as $value) {
                 if (in_array($value, $transacDescription)) {
                     $score += 1;
                 }
@@ -181,8 +181,8 @@ class CategoriesController extends Controller
             return $this->redirectToRoute(
                 'home',
                 array(
-                    'currentYear' => $currentYear,
-                    'currentMonth' => $currentMonth
+                    'year' => $year,
+                    'month' => $month
                 ),
                 301
             );
@@ -210,8 +210,8 @@ class CategoriesController extends Controller
                 'form' => $form->createView(),
                 'transactions' => $results,
                 'transaction' => $transaction['transaction'][0],
-                'currentYear' => $currentYear,
-                'currentMonth' => $currentMonth
+                'year' => $year,
+                'month' => $month
             )
         );
     }

@@ -39,7 +39,7 @@ class MatchService
             $special = 0;
             $itemDescription = $this->cleanUp($item->getDescription());
 
-            foreach ($itemDescription as $key => $item1) {
+            foreach ($itemDescription as $item1) {
                 if (in_array($item1, $matchDescription)) {
                     $score += 1;
                 }
