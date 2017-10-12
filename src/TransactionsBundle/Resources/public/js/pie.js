@@ -17,115 +17,63 @@ $(document).ready(function() {
         gtype = 'column';
     }
 
-    // Calculate Total Expenses
-    for(key in obj) {
-        if (obj.hasOwnProperty(key)){
-            if (obj[key].total > 0) {
-                total = parseInt(obj[key].total);
-            }
-        }
-    }
+    /***************************************************************************
+    *                         This is for the Pie Chart                        *
+     **************************************************************************/
+     // Calculate Total Expenses
+     for(key in obj) {
+         if (obj.hasOwnProperty(key)){
+             if (obj[key].total > 0) {
+                 total = parseInt(obj[key].total);
+             }
+         }
+     }
 
-    // To avoid strange infinity on the y value
-    if ( total <= 0) {
-        total = 1;
-    }
+     // To avoid strange infinity on the y value
+     if ( total <= 0) {
+         total = 1;
+     }
 
-    // total is 100 so sd[key] is percent
-    // 100 - total
-    // x   -  sd[key]
-    for(key in obj) {
-        if (obj.hasOwnProperty(key) && parseInt(obj[key].total) <= 0) {
-            sdF[idx++] = {
-                'name': obj[key].shortDescription,
-                'y' : (Math.floor((parseInt(obj[key].total)*100)/total))*-1
-            };
-        }
-    }
+     // total is 100 so sd[key] is percent
+     // 100 - total
+     // x   -  sd[key]
+     for(key in obj) {
+         if (obj.hasOwnProperty(key) && parseInt(obj[key].total) <= 0) {
+             sdF[idx++] = {
+                 'name': obj[key].shortDescription,
+                 'y' : (Math.floor((parseInt(obj[key].total)*100)/total))*-1
+             };
+         }
+     }
 
-    // This is for the Year graphMonthYear
-    idx = 0;
-    for(key in objM) {
-        if (objM.hasOwnProperty(key)) {
-            if ( objM.hasOwnProperty(key) ) {
-                perMonth[idx++] = parseInt(objM[key].amount);
-            }
-        }
-    }
-
-    idx = 0;
-    for(key in objM2) {
-        if (objM2.hasOwnProperty(key)) {
-            if ( objM2.hasOwnProperty(key) ) {
-                perMonth1[idx++] = parseInt(objM2[key].amount);
-            }
-        }
-    }
-
-    chart1 = new Highcharts.Chart({
-        chart: {
-            renderTo: 'container2',
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie',
-        },
-        tooltip: {
-            pointFormat: '<b>Spent %: {point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: false
-                },
-                showInLegend: true
-            }
-        },
-        title: {
-            text: 'Quantity'
-        },
-        series: [{
-            data: sdF
-        }]
-    });
-
-    chart3 = new Highcharts.Chart({
-        chart: {
-            renderTo: 'container3',
-            type: gtype
-        },
-        title: {
-            text: 'Year Expensives'
-        },
-        xAxis: {
-            categories: [
-                "Jan","Fev","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
-            ]
-        },
-        yAxis: {
-            title: {
-                text: 'Income'
-            }
-        },
-        plotOptions: {
-            column: {
-                colorByPoint: true
-            }
-        },
-        series: [
-            {
-                name: 'Total Current Year',
-                data: perMonth
-            },
-            {
-                name: 'Total Previous Year',
-                data: perMonth1
-            }
-        ]
-    });
-
+     chart1 = new Highcharts.Chart({
+         chart: {
+             renderTo: 'container2',
+             plotBackgroundColor: null,
+             plotBorderWidth: null,
+             plotShadow: false,
+             type: 'pie',
+         },
+         tooltip: {
+             pointFormat: '<b>Spent %: {point.percentage:.1f}%</b>'
+         },
+         plotOptions: {
+             pie: {
+                 allowPointSelect: true,
+                 cursor: 'pointer',
+                 dataLabels: {
+                     enabled: false
+                 },
+                 showInLegend: true
+             }
+         },
+         title: {
+             text: 'Quantity'
+         },
+         series: [{
+             data: sdF
+         }]
+     });
 
     /***************************************************************************
      *               This is for the Month Net Worth per days                  *
@@ -197,6 +145,63 @@ $(document).ready(function() {
             name: 'Total',
             data: frr
         }]
+    });
+
+    /***************************************************************************
+     *                    This is for the Year Expenses Graph                  *
+     **************************************************************************/
+     // This is for the Year graphMonthYear
+     idx = 0;
+     for(key in objM) {
+         if (objM.hasOwnProperty(key)) {
+             if ( objM.hasOwnProperty(key) ) {
+                 perMonth[idx++] = parseInt(objM[key].amount);
+             }
+         }
+     }
+
+     idx = 0;
+     for(key in objM2) {
+         if (objM2.hasOwnProperty(key)) {
+             if ( objM2.hasOwnProperty(key) ) {
+                 perMonth1[idx++] = parseInt(objM2[key].amount);
+             }
+         }
+     }
+
+    chart3 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'container3',
+            type: gtype
+        },
+        title: {
+            text: 'Year Expensives'
+        },
+        xAxis: {
+            categories: [
+                "Jan","Fev","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
+            ]
+        },
+        yAxis: {
+            title: {
+                text: 'Income'
+            }
+        },
+        plotOptions: {
+            column: {
+                colorByPoint: true
+            }
+        },
+        series: [
+            {
+                name: 'Total Current Year',
+                data: perMonth
+            },
+            {
+                name: 'Total Previous Year',
+                data: perMonth1
+            }
+        ]
     });
 
     /***************************************************************************

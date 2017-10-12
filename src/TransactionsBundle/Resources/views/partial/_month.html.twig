@@ -1,0 +1,14 @@
+{% block body %}
+    {% for transaction in transactions %}
+        {% if prev is defined and transaction.createAt.date|date('Y-m-d') > prev.createAt.date|date('Y-m-d')  %}
+            <h3>{{ transaction.createAt.date|date('d-m-Y') }}</h3>
+        {% elseif not prev is defined %}
+            <h3>{{ transaction.createAt.date|date('d-m-Y') }}</h3>
+        {% endif %}
+
+        <div class="well" style="background-image: linear-gradient(to bottom, #fff 0%, #fff 100%)">
+            {% include 'TransactionsBundle:partial:_transaction.html.twig' %}
+        </div>
+        {% set prev = transaction %}
+    {% endfor %}
+{% endblock %}

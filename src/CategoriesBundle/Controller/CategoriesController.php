@@ -352,6 +352,11 @@ class CategoriesController extends Controller
             if ($form->getData()->getParent() === 0) {
                   $transaction->setParent(NULL);
             }
+
+            if ($form->getData()->getCompanyLogo()) {
+                $transaction->setCompanyLogo($form->getData()->getCompanyLogo());
+            }
+
             $em->persist($transaction);
             $em->flush();
             $this->addFlash('notice', 'Transaction was successfully updated.');
