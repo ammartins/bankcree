@@ -185,7 +185,7 @@ class Categories
 
     public function setCompanyLogo($companyLogo)
     {
-        $this->company_logo = $companyLogo;
+        $this->companyLogo = $companyLogo;
         return $this;
     }
 
