@@ -1,14 +1,23 @@
 {% block body %}
     {% for transaction in transactions %}
         {% if prev is defined and transaction.createAt.date|date('Y-m-d') > prev.createAt.date|date('Y-m-d')  %}
-            <h3>{{ transaction.createAt.date|date('d-m-Y') }}</h3>
+            </div>
+            <div class="row">
+            <h3>{{ transaction.createAt.date|date('d-m-Y') }} Previous Day: {{ lastDay }}<span class="glyphicon-euro"></span></h3>
+            {% set lastDay = 0 %}
+            {% set lastDay = lastDay + transaction.amount %}
         {% elseif not prev is defined %}
-            <h3>{{ transaction.createAt.date|date('d-m-Y') }}</h3>
+            <div class="row">
+                {% set lastDay = transaction.amount %}
+                <h3>{{ transaction.createAt.date|date('d-m-Y') }}</h3>
+        {% else %}
+            {% set lastDay = lastDay + transaction.amount %}
         {% endif %}
 
-        <div class="well" style="background-image: linear-gradient(to bottom, #fff 0%, #fff 100%)">
+        <div class="well col-md-3" style="background-image: linear-gradient(to bottom, #fff 0%, #fff 100%)">
             {% include 'TransactionsBundle:partial:_transaction.html.twig' %}
         </div>
         {% set prev = transaction %}
     {% endfor %}
+    </div>
 {% endblock %}

@@ -45,18 +45,12 @@ class ImportCommand extends ContainerAwareCommand
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
 
-        $skip = 1;
-
         if ($fileContent) {
             dump('Start importing');
             dump(count($fileContentArray));
             foreach ($fileContentArray as $line) {
                 // Clean end of string
                 $line = rtrim($line);
-                if ( $skip ) {
-                    $skip = FALSE;
-                    continue;
-                }
                 if ( empty($line) ) {
                     continue;
                 }
@@ -74,6 +68,11 @@ class ImportCommand extends ContainerAwareCommand
                 // Should probably clean this a bit
                 if ($verify['id'] > 0) {
                     $line = '';
+                    continue;
+                }
+
+                if ($info[0] === "436175428")
+                {
                     continue;
                 }
 

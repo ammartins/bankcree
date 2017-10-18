@@ -1,35 +1,49 @@
 {% block body %}
-    <div class="row">
-        <div class="col-md-1">
-            {% if transaction.categories and transaction.categories.companyLogo %}
-                <img src="//logo.clearbit.com/{{ transaction.categories.companyLogo }}?size=20">
-            {% endif %}
+    <div class="
+        {% if transaction.amount > 0 %}label-success
+        {% elseif transaction.amount < -250 %}label-danger
+        {% else %}label-warning
+        {% endif %}
+    ">
+        <div class="row">
+            <div class="col-md-2">
+                {% if transaction.categories and transaction.categories.companyLogo %}
+                    <img src="//logo.clearbit.com/{{ transaction.categories.companyLogo }}?size=20">
+                {% endif %}
+            </div>
+            <div class="col-md-10">
+                {% if transaction.categories %}
+                    {{ transaction.categories.name|capitalize }}
+                {% else %}
+                    &nbsp;
+                {% endif %}
+            </div>
         </div>
-        <div class="col-md-4">
-            {% if transaction.categories %}
-                {{ transaction.categories.name|capitalize }}
-            {% endif %}
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-3">
+                {{ transaction.startsaldo }}<span class="glyphicon-euro"></span>
+            </div>
+            <div class="col-md-3">
+                {{ transaction.endsaldo }}<span class="glyphicon-euro"></span>
+            </div>
+            <div class="col-md-4">
+                {{ transaction.amount }}<span class="glyphicon-euro"></span>
+            </div>
         </div>
-        <div class="col-md-1">
-            {{ transaction.startsaldo }}
-        </div>
-        <div class="col-md-1">
-            {{ transaction.startsaldo }}
-        </div>
-        <div class="col-md-1
-            {% if transaction.amount > 0 %}label-success
-            {% elseif transaction.amount < -250 %}label-danger
-            {% else %}label-warning
-            {% endif %}
-        ">
-            {{ transaction.amount }}
-        </div>
-        <div class="col-md-3">
-            <a href="{{ path('show', {'id': transaction.id,'month': month,'year': year,}) }}">Show</a>
-            <a href="{{ path('edit', {'id': transaction.id,'month': month,'year': year,}) }}">Edit</a>
-            {% if not transaction.categories %}
-                <a href="{{ path('match', {'id': transaction.id,'month': month,'year': year,}) }}">Match</a>
-            {% endif %}
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-3">
+                <a href="{{ path('show', {'id': transaction.id,'month': month,'year': year,}) }}">Show</a>
+            </div>
+            <div class="col-md-3">
+                <a href="{{ path('edit', {'id': transaction.id,'month': month,'year': year,}) }}">Edit</a>
+            </div>
+            <div class="col-md-4">
+                {% if not transaction.categories %}
+                    <a href="{{ path('match', {'id': transaction.id,'month': month,'year': year,}) }}">Match</a>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}
