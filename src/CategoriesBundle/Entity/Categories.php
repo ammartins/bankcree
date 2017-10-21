@@ -66,6 +66,11 @@ class Categories
      */
     private $isParent;
 
+    /**
+     * @ORM\Column(name="company_logo", type="string", nullable=true, length=255)
+     */
+    private $companyLogo;
+
     public function __construct()
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
@@ -170,6 +175,17 @@ class Categories
     public function setRecurring($recurring)
     {
         $this->recurring = $recurring;
+        return $this;
+    }
+
+    public function getCompanyLogo()
+    {
+        return $this->companyLogo;
+    }
+
+    public function setCompanyLogo($companyLogo)
+    {
+        $this->companyLogo = $companyLogo;
         return $this;
     }
 

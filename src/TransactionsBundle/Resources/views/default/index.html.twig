@@ -21,13 +21,10 @@
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="table">
-            {% include 'TransactionsBundle:default:monthNew.html.twig' %}
-        </div>
-        <div role="tabpanel" class="tab-pane" id="monthgraph">
-            {% include 'TransactionsBundle:default:montGraph.html.twig' %}
+            {% include 'TransactionsBundle:partial:_monthGraphNetWorth.html.twig' %}
         </div>
         <div role="tabpanel" class="tab-pane" id="dailygraph">
-            {% include 'TransactionsBundle:default:dailygraph.html.twig' %}
+            {% include 'TransactionsBundle:partial:_dailygraph.html.twig' %}
         </div>
     </div>
 {% endblock %}

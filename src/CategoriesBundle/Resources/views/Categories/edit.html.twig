@@ -5,16 +5,24 @@
 {% endblock %}
 {% block body %}
     {{ form_start(form) }}
-    <div class="form-group">
-        <label for="short_description">{{ form_label(form.parent) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.parent.vars.errors} %}
-        {{ form_widget(form.parent, { 'attr': {'class': 'form-control'} }) }}
-    </div>
+    {% if form.parent %}
+        <div class="form-group">
+            <label for="short_description">{{ form_label(form.parent) }}</label>
+            {% include '::errors.html.twig' with {'errors': form.parent.vars.errors} %}
+            {{ form_widget(form.parent, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+    {% endif %}
 
     <div class="form-group">
         <label for="short_description">{{ form_label(form.name) }}</label>
         {% include '::errors.html.twig' with {'errors': form.name.vars.errors} %}
         {{ form_widget(form.name, { 'attr': {'class': 'form-control'} }) }}
+    </div>
+
+    <div class="form-group">
+        <label for="short_description">{{ form_label(form.companyLogo) }}</label>
+        {% include '::errors.html.twig' with {'errors': form.companyLogo.vars.errors} %}
+        {{ form_widget(form.companyLogo, { 'attr': {'class': 'form-control'} }) }}
     </div>
 
     <div class="form-group">
