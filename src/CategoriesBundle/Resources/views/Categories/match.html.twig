@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-{# {{ dump(transaction) }} #}
   <div style="text-center">{{ transaction.description }}</div>
   <div style="text-center">{{ transaction.amount }}</div>
   <table class="table table-condensed table-hover table-responsive">
@@ -32,7 +31,7 @@
       var type   = jQuery.parseJSON('{{ type|raw }}');
       $.each( type, function( key, value ) {
         console.log(key);
-        $("#form_name option:contains(" + key + ")").attr('selected', 'selected');
+        $("#transactions_categories option:contains(" + key + ")").attr('selected', 'selected');
         //$('select[name="form_name"] option[value="'+key+'"]').attr("selected","selected");
       });
     });
