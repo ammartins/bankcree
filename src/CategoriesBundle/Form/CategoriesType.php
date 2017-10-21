@@ -36,12 +36,16 @@ class CategoriesType extends AbstractType
             $parent[$par->getId()] = $par->getName();
         }
 
+        if (!$options['data']->getId()) {
+            $builder->add('parent', ChoiceType::class, array(
+                'choices' => $parent
+            ));
+        }
+
         $builder
             ->add('name')
             ->add('recurring')
-            ->add('parent', ChoiceType::class, array(
-                'choices' => $parent
-            ))
+            ->add('companyLogo')
             ->add('save', SubmitType::class);
     }
 

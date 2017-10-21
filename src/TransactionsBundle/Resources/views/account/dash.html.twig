@@ -3,8 +3,8 @@
 {% block menu %}
   {% include 'menu.html.twig' %}
 {% endblock %}
+
 {% block body %}
-  {# TODO Show Balance (Show Multiple Accounts if that's the case) #}
   {% for key, info in data %}
     <a href="{{ path('home', {'year' : info.year,'month' : info.month}) }}">
       <div class="text-center col-md-2 {% if info[2] > 0 %}bg-success{% else %}bg-danger{% endif %}">
