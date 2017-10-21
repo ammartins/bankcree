@@ -116,7 +116,18 @@ $(document).ready(function() {
         yAxis: {
             title: {
                 text: 'Income'
-            }
+            },
+            plotBands: [
+                {
+                    from: 499, to: 500, color: 'red'
+                },
+                {
+                    from: 999, to: 1000, color: 'orange'
+                },
+                {
+                    from: 1999, to: 2000, color: 'green'
+                },
+            ]
         },
         plotOptions: {
             area: {

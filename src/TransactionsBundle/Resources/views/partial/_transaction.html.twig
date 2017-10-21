@@ -1,8 +1,8 @@
 {% block body %}
     <div class="
-        {% if transaction.amount > 0 %}label-success
-        {% elseif transaction.amount < -250 %}label-danger
-        {% else %}label-warning
+        {% if transaction.amount > 0 %}bg-success
+        {% elseif transaction.amount < -250 %}bg-danger
+        {% else %}bg-warning
         {% endif %}
     ">
         <div class="row">
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
             <div class="col-md-3">
                 {{ transaction.startsaldo }}<span class="glyphicon-euro"></span>
             </div>
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
             <div class="col-md-3">
                 <a href="{{ path('show', {'id': transaction.id,'month': month,'year': year,}) }}">Show</a>
             </div>
