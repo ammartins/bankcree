@@ -71,8 +71,7 @@ class ImportCommand extends ContainerAwareCommand
                     continue;
                 }
 
-                if ($info[0] === "436175428")
-                {
+                if ( $info[0] === "436175428" ) {
                     continue;
                 }
 
