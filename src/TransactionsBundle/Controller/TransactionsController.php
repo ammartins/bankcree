@@ -92,15 +92,6 @@ class TransactionsController extends Controller
         $year  = $year ? $year : date('Y');
         $em = $this->getDoctrine()->getManager();
 
-        // $monthIncome = $em->getRepository('TransactionsBundle:Transactions')
-        // ->getMonthIncome($month, $year);
-        // $monthSpending = $em->getRepository('TransactionsBundle:Transactions')
-        // ->getMonthSpending($month, $year);
-
-        // dump($monthIncome);
-        // dump($monthSpending);
-        // // exit;
-
         $transactions = $em->getRepository('TransactionsBundle:Transactions')
             ->findAllByMonth($month, $year);
         $graphDataType = $em->getRepository('TransactionsBundle:Transactions')
@@ -127,6 +118,8 @@ class TransactionsController extends Controller
             ->getAmountPerDay($month, $year);
         $spendsPerDay = $em->getRepository('TransactionsBundle:Transactions')
             ->getSpendsPerDay($month, $year);
+        $monthSpents = $em->getRepository('TransactionsBundle:Transactions')
+            ->getDescriptionPerMonth($month, $year);
 
         $numberOfDays = cal_days_in_month(CAL_GREGORIAN,$month,$year);
         $spends = $spendsPerDay[0][1]/$numberOfDays;
@@ -144,6 +137,7 @@ class TransactionsController extends Controller
             'TransactionsBundle:default:index.html.twig',
             array(
                 'transactions' => $transactions,
+                'monthSpents' => $monthSpents,
                 'data' => $graphDataType,
                 'dataDay' => $graphDataDay,
                 'months' => $monthsData,
