@@ -24,7 +24,7 @@ class CategoriesRepository extends \Doctrine\ORM\EntityRepository
         $qb->select('p')
             ->from('CategoriesBundle:Categories', 'c')
             ->where($qb->expr()->isNull('p.isParent'))
-            ->orWhere($qb->expr()->eq('p.isParent', 'false'));
+            ->andWhere('p.parent is not null');
 
         return $qb->getQuery()->getResult();
     }

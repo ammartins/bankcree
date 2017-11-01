@@ -84,11 +84,6 @@ class Transactions
     private $categories;
 
     /**
-     * @ORM\Column(name="possible_match", type="integer", nullable=true)
-     */
-    private $possibleMatch;
-
-    /**
      * @ORM\Column(name="match_percentage", type="integer", nullable=true, options={"default":NULL}))
      */
     private $matchPercentage;
@@ -299,29 +294,6 @@ class Transactions
     public function getCategories()
     {
         return $this->categories;
-    }
-
-    /**
-     * Set possibleMatch
-     *
-     * @param integer $possibleMatch
-     * @return Transactions
-     */
-    public function setPossibleMatch($possibleMatch)
-    {
-        $this->possibleMatch = $possibleMatch;
-
-        return $this;
-    }
-
-    /**
-     * Get possibleMatch
-     *
-     * @return Transactions
-     */
-    public function getPossibleMatch()
-    {
-        return $this->possibleMatch;
     }
 
     /**
