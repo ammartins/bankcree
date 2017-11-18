@@ -114,6 +114,7 @@ $(document).ready(function() {
             categories: frr.keys
         },
         yAxis: {
+            min: 0,
             title: {
                 text: 'Income'
             },

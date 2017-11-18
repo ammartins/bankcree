@@ -45,7 +45,7 @@ class MatchCommand extends ContainerAwareCommand
             dump('Mattching all Types');
             $categories = $em
                 ->getRepository('CategoriesBundle:Categories')
-                ->findAllNotNUll();
+                ->findAll();
 
             foreach ($categories as $category) {
                 dump("Matching ".$category->getName()." : ");
