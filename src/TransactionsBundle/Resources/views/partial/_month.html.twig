@@ -25,7 +25,21 @@
                         {% endif %}
                     </td>
                 {% endif %}
-                <td>{{ transaction.endSaldo }}</td>
+                <td>
+                    {% if transaction.amount < 0 %}
+                      {% if transaction.endSaldo < transaction.startSaldo %}
+                        {{ transaction.endSaldo }}
+                      {% else %}
+                        {{ transaction.startSaldo }}
+                      {% endif %}
+                    {% else %}
+                      {% if transaction.endSaldo > transaction.startSaldo %}
+                        {{ transaction.endSaldo }}
+                      {% else %}
+                        {{ transaction.startSaldo }}
+                      {% endif %}
+                    {% endif %}
+                </td>
                 <td>{{ transaction.amount }}</td>
                 <td>
                     <a href="{{ path('show', {'id': transaction.id,'month': month,'year': year,}) }}">Show</a>
