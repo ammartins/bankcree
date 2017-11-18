@@ -41,35 +41,21 @@ class MatchCommand extends ContainerAwareCommand
             ->getRepository('TransactionsBundle:Transactions')
             ->findBy(array('categories' => null));
 
-        foreach ($transactions as $key => $transaction) {
-            if (
-                $transaction->getPossibleMatch()
-                || $transaction->getCategories()
-            ) {
-                unset($transactions[$key]);
-                continue;
-            }
-        }
-
         if ($category === "all") {
             dump('Mattching all Types');
             $categories = $em
                 ->getRepository('CategoriesBundle:Categories')
-                ->findAllNotNUll();
+                ->findAll();
 
             foreach ($categories as $category) {
                 dump("Matching ".$category->getName()." : ");
 
-                $matchedT = $em
+                $transactionMatched = $em
                     ->getRepository('TransactionsBundle:Transactions')
-                    ->findBy(
-                        array(
-                            'categories' => $category->getId()
-                        )
-                    );
+                    ->findBy(array('categories' => $category->getId()));
 
                 $this->cycleTransactions(
-                    $matchedT,
+                    $transactionMatched,
                     $transactions,
                     $category->getId(),
                     $output
@@ -78,16 +64,12 @@ class MatchCommand extends ContainerAwareCommand
         }
 
         if ($category !== "all") {
-            $matchedT = $em
+            $transactionMatched = $em
                 ->getRepository('TransactionsBundle:Transactions')
-                ->findBy(
-                    array(
-                        'categories' => $category
-                    )
-                );
+                ->findBy(array('categories' => $category));
 
             $this->cycleTransactions(
-                $matchedT,
+                $transactionMatched,
                 $transactions,
                 $category,
                 $output
@@ -96,17 +78,17 @@ class MatchCommand extends ContainerAwareCommand
     }
 
     protected function cycleTransactions(
-        $matchedT,
+        $transactionMatched,
         $transactions,
         $category,
         $output
     ) {
         dump('Starting '.date('h:i:s A'));
 
-        $progress = new ProgressBar($output, count($matchedT));
-        $progress->setFormat('verbose');
-
         $results = array();
+
+        $progress = new ProgressBar($output, count($transactionMatched));
+        $progress->setFormat('verbose');
 
         $matchService = $this
             ->getApplication()
@@ -115,14 +97,10 @@ class MatchCommand extends ContainerAwareCommand
             ->get('transactions.match');
 
         $progress->start();
-        foreach ($matchedT as $match) {
+        foreach ($transactionMatched as $match) {
             $progress->advance();
-            if (!$match->getCategories()) {
-                continue;
-            }
 
-            $matches = $matchService
-                ->match($match, $transactions, $category);
+            $matches = $matchService->match($match, $transactions, $category);
 
             if (count($matches) === 0) {
                 continue;

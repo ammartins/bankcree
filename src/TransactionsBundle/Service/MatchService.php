@@ -28,13 +28,13 @@ class MatchService
         $this->entityManager = $entityManager;
     }
 
-    public function match($match, $transaction, $category)
+    public function match($match, $transactions, $category)
     {
         $results = array();
 
         $matchDescription = $this->cleanUp($match->getDescription());
 
-        foreach ($transaction as $item) {
+        foreach ($transactions as $item) {
             $score   = 0;
             $special = 0;
             $itemDescription = $this->cleanUp($item->getDescription());
@@ -45,10 +45,7 @@ class MatchService
                 }
             }
 
-            $matchPercent = round(
-                (($score*100)/(count($itemDescription))),
-                0
-            );
+            $matchPercent = round((($score*100)/(count($itemDescription))),0);
 
             $type = $this->transactionsRepository->findById($category);
             $type = $this->categoryRepository->findById($category);
@@ -64,16 +61,6 @@ class MatchService
 
                 $score = 0;
                 $special = 0;
-
-                continue;
-            }
-
-            if ($matchPercent) {
-                $item->setPossibleMatch($type[0]->getId());
-                $item->setMatchPercentage($matchPercent);
-
-                $this->entityManager->persist($item);
-                $this->entityManager->flush();
 
                 continue;
             }
