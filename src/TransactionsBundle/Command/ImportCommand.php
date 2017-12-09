@@ -71,10 +71,6 @@ class ImportCommand extends ContainerAwareCommand
                     continue;
                 }
 
-                if ( $info[0] === "436175428" ) {
-                    continue;
-                }
-
                 $transaction = new Transactions();
 
                 $transaction->setTransactionHash($hash);
