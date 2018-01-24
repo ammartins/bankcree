@@ -1,82 +1,82 @@
 {% extends 'base.html.twig' %}
 
 {% block menu %}
-  {% include 'menu.html.twig' %}
+{% include 'menu.html.twig' %}
 {% endblock %}
 {% block body %}
-    <div id="{{ transaction.id }}">
-        <h1>Description</h1>
-        <div class="row">
-            <div class="col-md-2">
-                <h5>Transaction Name:</h5>
-            </div>
-            <div class="col-md-6">
-                <h5>{{ transaction.name }}</h5>
-            </div>
-        </div>
-        <br />
-        <br />
-        <span>
-            Recurring Payment:
-            {% if transaction.recurring %}
-                <span class="glyphicon glyphicon-ok"></span>
-            {% else %}
-                <span class="glyphicon glyphicon-remove"></span>
-            {% endif %}
-        </span>
-    </div>
-    <table class="table table-condensed table-hover table-responsive">
-        <tr>
-            <th class="text-left">Id</th>
-            <th class="text-left">Percentage</th>
-            <th class="text-left">Transaction Date</th>
-            <th class="text-right">Amount</th>
-            <th class="text-right">Short Description</th>
-            <th class="text-right">Options</th>
-        </tr>
-        {% for item in transactions %}
-            <tr class='
-                {% if item.amount > 0 %}success{% endif %}
-                {% if matchAgainst[0].amount == item.amount %}success{% endif %}
-            '>
-                <td>{{ item.id }}</td>
-                <td>{{ item.matchPercentage }}</td>
-                <td>{{ item.createAt|date("d/m/Y") }}</td>
-                <td class="text-right">{{ item.amount }} €</td>
-                <td class="text-right">{{ item.description  }}</td>
-                <td class="text-right"><input type="checkbox" {% if matchAgainst[0].amount == item.amount %}checked{% endif %} name="{{ item.id }}" /></td>
-            </tr>
-        {% endfor %}
-    </table>
-    <input type="submit" value="Match Transactions" name="match" id="match" />
-    <input type="submit" value="Check All" name="select_all" id="select_all" />
+<div id="{{ transaction.id }}">
+<h1>Description</h1>
+<div class="row">
+<div class="col-md-2">
+<h5>Transaction Name:</h5>
+</div>
+<div class="col-md-6">
+<h5>{{ transaction.name }}</h5>
+</div>
+</div>
+<br />
+<br />
+<span>
+Recurring Payment:
+{% if transaction.recurring %}
+<span class="glyphicon glyphicon-ok"></span>
+{% else %}
+<span class="glyphicon glyphicon-remove"></span>
+{% endif %}
+</span>
+</div>
+<table class="table table-hover table-responsive">
+<tr>
+<th class="text-left">Id</th>
+<th class="text-left">Percentage</th>
+<th class="text-left">Transaction Date</th>
+<th class="text-right">Amount</th>
+<th class="text-right">Short Description</th>
+<th class="text-right">Options</th>
+</tr>
+{% for item in transactions %}
+<tr class='
+{% if item.amount > 0 %}success{% endif %}
+{% if matchAgainst[0].amount == item.amount %}success{% endif %}
+'>
+<td>{{ item.id }}</td>
+<td>{{ item.matchPercentage }}</td>
+<td>{{ item.createAt|date("d/m/Y") }}</td>
+<td class="text-right">{{ item.amount }} €</td>
+<td class="text-right">{{ item.description  }}</td>
+<td class="text-right"><input type="checkbox" {% if matchAgainst[0].amount == item.amount %}checked{% endif %} name="{{ item.id }}" /></td>
+</tr>
+{% endfor %}
+</table>
+<input type="submit" value="Match Transactions" name="match" id="match" />
+<input type="submit" value="Check All" name="select_all" id="select_all" />
 
 
 <script type="text/javascript">
-    $("#match").click(function(){
-        var data = [];
-        $('.table input:checked').each(function() {
-            data.push($(this).attr('name'));
-        });
+$("#match").click(function(){
+var data = [];
+$('.table input:checked').each(function() {
+data.push($(this).attr('name'));
+});
 
-        // TODO Ajax call to save all the id's with the Categories
-        $.ajax({
-            type: "POST",
-            url: "/categories/matching",
-            data: { selected: data, type: {{ transaction.id }} },
-            success: function(data, dataType) {
-                console.log("all work");
-                location.reload();
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert('Error : ' + errorThrown);
-            }
-        });
+// TODO Ajax call to save all the id's with the Categories
+$.ajax({
+type: "POST",
+url: "/categories/matching",
+data: { selected: data, type: {{ transaction.id }} },
+success: function(data, dataType) {
+console.log("all work");
+location.reload();
+},
+error: function(XMLHttpRequest, textStatus, errorThrown) {
+alert('Error : ' + errorThrown);
+}
+});
 
-    });
+});
 
-    $("#select_all").click(function() {
-      $('input:checkbox').attr('checked','checked');
-    });
+$("#select_all").click(function() {
+$('input:checkbox').attr('checked','checked');
+});
 </script>
 {% endblock %}
