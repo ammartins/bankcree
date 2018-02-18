@@ -30,8 +30,8 @@
                 <th class="text-right">-</th>
                 <td class="text-right">{{ subType.recurring }}</td>
                 <td class="text-right">
+                    <a href="{{ path('categories_show', {"id": subType.id}) }}">Show</a>
                     {% if not loop.first %}
-                        <a href="{{ path('categories_show', {"id": subType.id}) }}">Show</a>
                         <a href="{{ path('categories_delete', {"id": subType.id}) }}">Delete</a>
                     {% endif %}
                     <a href="{{ path('categories_edit', {"id": subType.id}) }}">Edit</a>
