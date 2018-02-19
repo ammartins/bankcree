@@ -1,9 +1,14 @@
 {% block body %}
+    {% javascripts '@TransactionsBundle/Resources/public/js/helpers.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
     <div id="containerGUI">
         <div id="listagem">
             <div id="container"></div>
         </div>
     </div>
+    <input type="button" class="btn-info" id="toggleView" value="Match" />
     <table class="table table-hover table-sm table-responsive">
         <thead class="thead-inverse">
             <tr>
@@ -14,7 +19,7 @@
             </tr>
         </thead>
         {% for transaction in transactions %}
-            <tr>
+            <tr {% if transaction.categories %}class="hideTransaction"{% endif %}>
                 <td>{{ transaction.createAt.date|date('Y-m-d') }}</td>
                 {% if transaction.categories %}
                     <td>{{ transaction.categories.name|capitalize }}</td>
