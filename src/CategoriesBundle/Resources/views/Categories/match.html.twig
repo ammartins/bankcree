@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-  <div style="text-center">{{ transaction.description }}</div>
-  <div style="text-center">{{ transaction.amount }}</div>
+  <pre>
+    <div style="text-center">{{ transaction.description }}</div>
+    <div style="text-center">{{ transaction.amount }}</div>
+  </pre>
   <table class="table table-condensed table-hover table-responsive">
     <tr>
       <th class="text-left">Description</th>
