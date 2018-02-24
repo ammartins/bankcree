@@ -1,6 +1,10 @@
 $(document).ready(function() {
     $("#toggleView").click(function() {
         $( ".hideTransaction" ).toggle();
-        console.log("CLICK CLICK");
+    });
+
+    $(".example").click(function() {
+        $(this).next().toggle();
+        console.log($(this).attr('data-year'));
     });
 });

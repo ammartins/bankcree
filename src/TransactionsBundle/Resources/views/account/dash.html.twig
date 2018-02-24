@@ -5,7 +5,18 @@
 {% endblock %}
 
 {% block body %}
+  {% set currentYear = "" %}
   {% for key, info in data %}
+    {% if currentYear != info.year %}
+        {% set currentYear = info.year %}
+        {% if not loop.first %}
+            <div style="clear: both"></div>
+            </div>
+            <br />
+        {% endif %}
+        <h3 class="example" data-year="{{ info.year }}">{{ info.year }}</h3>
+        <div class="{{ info.year }}">
+    {% endif %}
     <a href="{{ path('home', {'year' : info.year,'month' : info.month}) }}">
       <div class="text-center col-md-2 {% if info[2] > 0 %}bg-success{% else %}bg-danger{% endif %}">
         <h3>{{ info.month }}-{{ info.year }}</h3>

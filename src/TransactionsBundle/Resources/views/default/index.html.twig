@@ -15,10 +15,7 @@
         objME = jQuery.parseJSON('{{ expenses|raw }}');
     </script>
 
-    {% javascripts
-        '@TransactionsBundle/Resources/public/js/pie.js'
-        '@TransactionsBundle/Resources/public/js/helpers.js'
-    %}
+    {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
