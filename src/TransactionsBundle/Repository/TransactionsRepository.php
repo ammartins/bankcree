@@ -331,6 +331,18 @@ class TransactionsRepository extends EntityRepository
         return $data;
     }
 
+    public function getYears()
+    {
+        $data = $this->getEntityManager()
+            ->createQuery(
+                "SELECT YEAR(t.createAt) as year
+                FROM TransactionsBundle:Transactions t
+                GROUP BY year"
+            )->execute();
+
+        return $data;
+    }
+
     // public function getToBeMatched()
     // {
     //     $qb = $this->createQueryBuilder('p');

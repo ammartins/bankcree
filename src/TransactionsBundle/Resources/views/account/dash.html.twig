@@ -1,35 +1,53 @@
 {% extends 'base.html.twig' %}
 
 {% block menu %}
-  {% include 'menu.html.twig' %}
+    {% include 'menu.html.twig' %}
 {% endblock %}
 
 {% block body %}
-  {% set currentYear = "" %}
-  {% for key, info in data %}
-    {% if currentYear != info.year %}
-        {% set currentYear = info.year %}
-        {% if not loop.first %}
-            <div style="clear: both"></div>
-            </div>
-            <br />
-        {% endif %}
-        <h3 class="example" data-year="{{ info.year }}">{{ info.year }}</h3>
-        <div class="{{ info.year }}">
-    {% endif %}
-    <a href="{{ path('home', {'year' : info.year,'month' : info.month}) }}">
-      <div class="text-center col-md-2 {% if info[2] > 0 %}bg-success{% else %}bg-danger{% endif %}">
-        <h3>{{ info.month }}-{{ info.year }}</h3>
-
-        {% if matched[key] is defined and info[1]-matched[key][1]  == 0 %}
-            <span class="glyphicon glyphicon-ok"></span>
-        {% elseif matched[key] is defined %}
-            <span>Open Transactions: {{ info[1]-matched[key][1] }}</span>
-        {% else %}
-            <span>Transactions: {{ info[1] }}</span>
-        {% endif %}
-        <p>{{ info.2|round(2, 'floor') }} €</p>
-      </div>
-    </a>
-  {% endfor %}
+    <ul class="nav nav-tabs" id="years" role="tablist">
+        {% for year in years %}
+            <li class="nav-item {% if loop.last %}active{% endif %}">
+                <a
+                    class="nav-link {% if loop.last %}active{% endif %}"
+                    id="{{ year['year'] }}-tab"
+                    data-toggle="tab"
+                    href="#{{ year['year'] }}"
+                    role="tab"
+                    aria-controls="{{ year['year'] }}"
+                    aria-selected="{% if loop.last %}true{% else %}false{% endif %}"
+                    >
+                    {{ year['year'] }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        {% set currentYear = "" %}
+        {% for key, info in data %}
+            {% if currentYear != info.year %}
+                {% set currentYear = info.year %}
+                {% if not loop.first %}
+                    </div>
+                {% endif %}
+                <div class="tab-pane {% if loop.last %}active{% endif %}" id="{{ info.year }}" role="tabpanel" aria-labelledby="{{ info.year }}">
+            {% endif %}
+                    <a href="{{ path('home', {'year' : info.year,'month' : info.month}) }}">
+                        <div class="text-center col-md-2 {% if info[2] > 0 %}bg-success{% else %}bg-danger{% endif %}">
+                            <h3>{{ info.month }}-{{ info.year }}</h3>
+                            {% if matched[key] is defined and info[1]-matched[key][1]  == 0 %}
+                                <span class="glyphicon glyphicon-ok"></span>
+                            {% elseif matched[key] is defined %}
+                                <span>Open Transactions: {{ info[1]-matched[key][1] }}</span>
+                            {% else %}
+                                <span>Transactions: {{ info[1] }}</span>
+                            {% endif %}
+                            <p>{{ info.2|round(2, 'floor') }} €</p>
+                        </div>
+                    </a>
+                    {% if loop.last %}
+                        </div>
+                    {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}
