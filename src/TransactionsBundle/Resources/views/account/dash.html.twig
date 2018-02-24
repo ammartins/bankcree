@@ -7,15 +7,15 @@
 {% block body %}
     <ul class="nav nav-tabs" id="years" role="tablist">
         {% for year in years %}
-            <li class="nav-item {% if loop.last %}active{% endif %}">
+            <li class="nav-item {% if loop.first %}active{% endif %}">
                 <a
-                    class="nav-link {% if loop.last %}active{% endif %}"
+                    class="nav-link {% if loop.first %}active{% endif %}"
                     id="{{ year['year'] }}-tab"
                     data-toggle="tab"
                     href="#{{ year['year'] }}"
                     role="tab"
                     aria-controls="{{ year['year'] }}"
-                    aria-selected="{% if loop.last %}true{% else %}false{% endif %}"
+                    aria-selected="{% if loop.first %}true{% else %}false{% endif %}"
                     >
                     {{ year['year'] }}
                 </a>
@@ -30,7 +30,7 @@
                 {% if not loop.first %}
                     </div>
                 {% endif %}
-                <div class="tab-pane {% if loop.last %}active{% endif %}" id="{{ info.year }}" role="tabpanel" aria-labelledby="{{ info.year }}">
+                <div class="tab-pane {% if loop.first %}active{% endif %}" id="{{ info.year }}" role="tabpanel" aria-labelledby="{{ info.year }}">
             {% endif %}
                     <a href="{{ path('home', {'year' : info.year,'month' : info.month}) }}">
                         <div class="text-center col-md-2 {% if info[2] > 0 %}bg-success{% else %}bg-danger{% endif %}">
@@ -45,9 +45,6 @@
                             <p>{{ info.2|round(2, 'floor') }} €</p>
                         </div>
                     </a>
-                    {% if loop.last %}
-                        </div>
-                    {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
