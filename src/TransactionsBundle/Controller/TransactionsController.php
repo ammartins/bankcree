@@ -44,11 +44,16 @@ class TransactionsController extends Controller
             ->getRepository('TransactionsBundle:Transactions')
             ->getMatched();
 
+        $years = $em
+            ->getRepository('TransactionsBundle:Transactions')
+            ->getYears();
+
         return $this->render(
             'TransactionsBundle:account:dash.html.twig',
             array(
                 'data' => $data,
                 'matched' => $matched,
+                'years' => $years,
             )
         );
     }
