@@ -1,13 +1,3 @@
-{% block stylesheets %}
-    {% stylesheets '@TransactionsBundle/Resources/public/css/menu.css' %}
-        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
-    {% endstylesheets %}
-    {% stylesheets '@TransactionsBundle/Resources/public/css/main.css' %}
-        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
-    {% endstylesheets %}
-{% endblock %}
-
-
 <div id="top-menu">
   <div class="logo"></div>
   <div class="nav-menu">
@@ -21,10 +11,10 @@
         <!-- <a href="#monthgraph" data-toggle="tab">Expenses</a> -->
         <a href="#dailygraph" data-toggle="tab">Graphs</a>
     {% endif %}
-    <a href="{{ path('prevision') }}">Prevision</a>
+    <!--a href="{{ path('prevision') }}">Prevision</a-->
     <a href="{{ path('categories') }}">Categories</a>
     <a href="{{ path('budget')}}">Budgets</a>
-    <a href="{{ path('contact') }}">Contact</a>
-    <a href="{{ path('logout') }}">Logout</a>
+    <!--a href="{{ path('contact') }}">Contact</a-->
+    <!--a href="{{ path('logout') }}">Logout</a-->
   </div>
 </div>

@@ -114,5 +114,6 @@ class MatchCommand extends ContainerAwareCommand
         }
         $progress->finish();
         dump('Ended '.date('h:i:s A'));
+        dump('Matched '.count($results).' new transactions');
     }
 }

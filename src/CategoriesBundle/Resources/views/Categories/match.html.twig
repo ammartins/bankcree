@@ -1,41 +1,43 @@
 {% extends 'base.html.twig' %}
 
+{% block menu %}
+    {% include 'menu.html.twig' %}
+{% endblock %}
 {% block body %}
-  <pre>
-    <div style="text-center">{{ transaction.description }}</div>
-    <div style="text-center">{{ transaction.amount }}</div>
-  </pre>
-  <table class="table table-condensed table-hover table-responsive">
-    <tr>
-      <th class="text-left">Description</th>
-      <th class="text-left">Short Description</th>
-      <th class="text-left">Matching %</th>
-      <th class="text-left">Amount</th>
-    </tr>
-    {% for transact in transactions %}
-      <tr {% if transaction.amount ==  transact.amount %}class="warning"{% endif %}>
-        <td class="text-left">{{ transact.description }}</td>
-        <td class="text-left">{{ transact.name }}</td>
-        <td class="text-left">{{ transact.percentage}}</td>
-        <td class="text-left">{{ transact.amount}}</td>
-      </tr>
-    {% endfor %}
-  </table>
-  {{ form_start(form) }}
-      <div class="form-group">
-          <label for="short_description">{{ form_label(form.categories) }}</label>
-          {% include '::errors.html.twig' with {'errors': form.categories.vars.errors} %}
-          {{ form_widget(form.categories, { 'attr': {'class': 'form-control'} }) }}
-      </div>
-  {{ form_end(form) }}
-  <script type="text/javascript">
-    $(document).ready(function() {
-      var type   = jQuery.parseJSON('{{ type|raw }}');
-      $.each( type, function( key, value ) {
-        console.log(key);
-        $("#transactions_categories option:contains(" + key + ")").attr('selected', 'selected');
-        //$('select[name="form_name"] option[value="'+key+'"]').attr("selected","selected");
-      });
-    });
-  </script>
+    <pre>
+        <span><a href="#">Create Cetegory</a></span>
+        <span>{{ transaction.description }}</span>
+        <span>{{ transaction.amount }}</span>
+    </pre>
+    <table class="table table-condensed table-hover table-responsive">
+        <tr>
+            <th class="text-left">Description</th>
+            <th class="text-left">Short Description</th>
+            <th class="text-left">Matching %</th>
+            <th class="text-left">Amount</th>
+        </tr>
+        {% for transact in transactions %}
+            <tr {% if transaction.amount ==  transact.amount %}class="warning"{% endif %}>
+                <td class="text-left">{{ transact.description }}</td>
+                <td class="text-left">{{ transact.name }}</td>
+                <td class="text-left">{{ transact.percentage}}</td>
+                <td class="text-left">{{ transact.amount}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {{ form_start(form) }}
+        <div class="form-group">
+            <label for="short_description">{{ form_label(form.categories) }}</label>
+            {% include '::errors.html.twig' with {'errors': form.categories.vars.errors} %}
+            {{ form_widget(form.categories, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+    {{ form_end(form) }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var type   = jQuery.parseJSON('{{ type|raw }}');
+            $.each( type, function( key, value ) {
+                $("#transactions_categories option:contains(" + key + ")").attr('selected', 'selected');
+            });
+        });
+    </script>
 {% endblock %}

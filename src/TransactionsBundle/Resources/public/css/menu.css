@@ -1,14 +1,10 @@
-/* line 1, ../sass/menu.scss */
 #top-menu {
   padding-top: 25px;
-  background-color: #3c8dbc;
+  background-color: #485f71;
 }
-/* line 7, ../sass/menu.scss */
 #top-menu .nav-menu {
-  text-align: right;
   transform: translateY(-50%);
 }
-/* line 10, ../sass/menu.scss */
 #top-menu .nav-menu a, #top-menu .nav-menu a:hover, #top-menu .nav-menu a:visited {
   line-height: 31px;
   display: inline;
