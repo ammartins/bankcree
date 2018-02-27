@@ -17,10 +17,10 @@
         {% javascripts '@jquery' '@bootstrap_js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
-        {% javascripts '@TransactionsBundle/Resources/public/js/highcharts.js' %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-        {% javascripts '@TransactionsBundle/Resources/public/js/helpers.js' %}
+        {% javascripts
+          '@TransactionsBundle/Resources/public/js/highcharts.js'
+          '@TransactionsBundle/Resources/public/js/helpers.js'
+        %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     </head>
