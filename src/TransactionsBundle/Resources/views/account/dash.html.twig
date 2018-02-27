@@ -30,19 +30,19 @@
                 {% if not loop.first %}
                     </div>
                 {% endif %}
-                <div class="tab-pane {% if loop.first %}active{% endif %}" id="{{ info.year }}" role="tabpanel" aria-labelledby="{{ info.year }}">
+                <div  class="tab-pane {% if loop.first %}active{% endif %}" id="{{ info.year }}" role="tabpanel" aria-labelledby="{{ info.year }}">
             {% endif %}
-                    <a href="{{ path('home', {'year' : info.year,'month' : info.month}) }}">
-                        <div class="text-center col-md-2 {% if info[2] > 0 %}bg-success{% else %}bg-danger{% endif %}">
-                            <h3>{{ info.month }}-{{ info.year }}</h3>
+                    <a class="month-display" href="{{ path('home', {'year' : info.year,'month' : info.month}) }}">
+                        <div class="well text-center col-md-2">
+                            <h4>{{ info.month }}-{{ info.year }}</h4>
+                            <h5 class="{% if info[2] > 0 %}bg-success{% else %}bg-danger{% endif %}">{{ info.2|round(2, 'floor') }} €</h5>
                             {% if matched[key] is defined and info[1]-matched[key][1]  == 0 %}
-                                <span class="glyphicon glyphicon-ok"></span>
+                                <h6 class="glyphicon glyphicon-ok"></h6>
                             {% elseif matched[key] is defined %}
-                                <span>Open Transactions: {{ info[1]-matched[key][1] }}</span>
+                                <h6>Open Transactions: {{ info[1]-matched[key][1] }}</h6>
                             {% else %}
-                                <span>Transactions: {{ info[1] }}</span>
+                                <h6>Transactions: {{ info[1] }}</h6>
                             {% endif %}
-                            <p>{{ info.2|round(2, 'floor') }} €</p>
                         </div>
                     </a>
         {% endfor %}
