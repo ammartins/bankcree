@@ -75,7 +75,7 @@ class MatchService
     $description = preg_replace('/(\d{1,2}[.\/])+\d{1,2}/','',$description);
     $description = preg_replace("/\d\d-\d\d-\d\d\d\d/", "", $description);
     $description = preg_replace('/\w+:[A-Z0-9]+/','',$description);
-    $description = preg_replace("/,PAS572/",'',$description);
+    $description = preg_replace("/,PAS[0-9]{3}/",'',$description);
     $description = array_filter(preg_split('/[\s\/\*]/',$description));
 
     foreach ($description as $key => $item1) {
