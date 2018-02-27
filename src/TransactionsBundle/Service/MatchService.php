@@ -101,7 +101,6 @@ class MatchService
     return $description;
   }
 
-  // TODO OMG PLEASE REMOVE THIS CODE FROM HERE
   public function matchToClean($toBeSave, $transaction)
   {
     $results = array();
@@ -122,7 +121,7 @@ class MatchService
 
       $itemDescription = $this->cleanUp($item->getDescription());
 
-      foreach ($itemDescription as $key => $item1) {
+      foreach ($itemDescription as $item1) {
         if (
           in_array(strtolower($item1), array_map('strtolower', $categorieDesc))
         ) {
