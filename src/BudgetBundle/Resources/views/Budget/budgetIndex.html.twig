@@ -3,28 +3,27 @@
 {% block menu %}
   {% include 'menu.html.twig' %}
 {% endblock %}
+
 {% block body %}
-    <div class="text-right">
-        <a class="btn btn-success" href="{{ path('budget_new') }}">New</a>
-    </div>
-    <table class="table table-condensed table-hover table-responsive">
-      <tr>
-        <th class="text-left">Categorie</th>
-        <th class="text-right">Limit</th>
-        <th class="text-right">Current Ammount</th>
-        <th class="text-right">Options</th>
+  <div class="text-right">
+    <a class="btn btn-success" href="{{ path('budget_new') }}">New</a>
+  </div>
+  <table class="table table-condensed table-hover table-responsive">
+    <tr>
+      <th class="text-left">Categorie</th>
+      <th class="text-right">Limit</th>
+      <th class="text-right">Current Ammount</th>
+      <th class="text-right">Options</th>
+    </tr>
+    {% for budget in budgets %}
+      <tr class="{% if budget.limit < budget.amount %}danger{% else %}success{% endif %}">
+        <td>{{ budget.name }}</td>
+        <td class="text-right">{{ budget.limit }} €</td>
+        <td class="text-right">{{ budget.amount }}  €</td>
+        <td class="text-right">
+          <a href="{{ path('budgets_delete', {"id": budget.id}) }}">Delete</a>
+        </td>
       </tr>
-      {% for budget in budgets %}
-        <tr class="{% if budget.limit < budget.amount %}danger{% else %}success{% endif %}">
-            <td>{{ budget.name }}</td>
-            <td class="text-right">{{ budget.limit }} €</td>
-            <td class="text-right">{{ budget.amount }}  €</td>
-            <td class="text-right">
-                <a href="{{ path('budgets_show', {"id": budget.id}) }}">Show</a>
-                <a href="{{ path('budgets_delete', {"id": budget.id}) }}">Delete</a>
-                <a href="{{ path('budgets_edit', {"id": budget.id}) }}">Edit</a>
-            </td>
-        </tr>
     {% endfor %}
-    </table>
+  </table>
 {% endblock %}
