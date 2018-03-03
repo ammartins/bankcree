@@ -2,4 +2,6 @@ language: php
 php:
   - '7.1'
   - '7.0'
-  - hhvm # on Trusty only
+
+before_script: composer install
+
