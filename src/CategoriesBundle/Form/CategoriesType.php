@@ -45,6 +45,7 @@ class CategoriesType extends AbstractType
         $builder
             ->add('name')
             ->add('recurring')
+            ->add('savings')
             ->add('companyLogo')
             ->add('save', SubmitType::class);
     }

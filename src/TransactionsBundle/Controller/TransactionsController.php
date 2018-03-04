@@ -40,6 +40,9 @@ class TransactionsController extends Controller
             ->getRepository('TransactionsBundle:Transactions')
             ->groupByYear();
 
+        $helper = $this->container->get('transactions.helper');
+        $data = $helper->calculateSavings($data);
+
         $matched = $em
             ->getRepository('TransactionsBundle:Transactions')
             ->getMatched();
