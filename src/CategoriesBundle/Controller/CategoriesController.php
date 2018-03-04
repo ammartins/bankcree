@@ -117,240 +117,250 @@ class CategoriesController extends Controller
     );
   }
 
-/**
-* @Route("/match/{year}/{month}/{id}", name="match")
-*
-* @param int $year
-* @param int $month
-* @param int $id
-* @param Request $request
-* @return \Symfony\Component\HttpFoundation\Response
-*/
-public function matchAction($year, $month, $id, Request $request)
-{
-$em = $this->getDoctrine()->getManager();
-$serializer = $this->get('jms_serializer');
-$matchService = $this->get('transactions.match');
+  /**
+   * @Route("/match/{year}/{month}/{id}", name="match")
+   *
+   * @param int $year
+   * @param int $month
+   * @param int $id
+   * @param Request $request
+   * @return \Symfony\Component\HttpFoundation\Response
+   */
+  public function matchAction($year, $month, $id, Request $request)
+  {
+    $em = $this->getDoctrine()->getManager();
+    $serializer = $this->get('jms_serializer');
+    $matchService = $this->get('transactions.match');
 
-$toBeSave = $em->getRepository('TransactionsBundle:Transactions')
-->find($id);
-$transaction = $em->getRepository('TransactionsBundle:Transactions')
-->getMatchTransactions($id);
+    $toBeSave = $em
+      ->getRepository('TransactionsBundle:Transactions')
+      ->find($id);
 
-$results = array();
-$transacDescription = $transaction['transaction'][0]['description'];
-$transacDescription = $matchService->cleanUp($transacDescription);
+    $transaction = $em
+      ->getRepository('TransactionsBundle:Transactions')
+      ->getMatchTransactions($id);
 
-foreach ($transaction['data'] as $item) {
-$score = 0;
+    $results = array();
+    $transacDescription = $transaction['transaction'][0]['description'];
+    $transacDescription = $matchService->cleanUp($transacDescription);
 
-$itemDescription = $matchService->cleanUp($item['description']);
+    foreach ($transaction['data'] as $item) {
+      $score = 0;
+      $itemDescription = $matchService->cleanUp($item['description']);
 
-foreach ($itemDescription as $value) {
-if (in_array($value, $transacDescription)) {
-$score += 1;
-}
-}
+      foreach ($itemDescription as $value) {
+        if (in_array($value, $transacDescription)) {
+          $score += 1;
+        }
+      }
 
-if ($score > (count($itemDescription))/2) {
-$item['percentage'] = round(
-(($score*100)/(count($transacDescription))),
-0
-);
+      if ($score > (count($itemDescription))/2) {
+        $item['percentage'] = round(
+          (($score*100)/(count($transacDescription))),
+          0
+        );
 
-$results[] = $item;
-$score = 0;
-continue;
-}
-}
+        $results[] = $item;
+        $score = 0;
+        continue;
+      }
+    }
 
-$form = $this->createForm(
-TransactionsType::class,
-$toBeSave,
-array(
-'entity_manager' => $em
-)
-);
+    $form = $this->createForm(
+      TransactionsType::class,
+      $toBeSave,
+      array(
+        'entity_manager' => $em
+      )
+    );
 
-$form->handleRequest($request);
+    $form->handleRequest($request);
 
-if ($form->isSubmitted() && $form->isValid()) {
-$categoryId = $form->getData()->getCategories();
-$category = $em
-->getRepository('CategoriesBundle:Categories')
-->findById($categoryId);
-$toBeSave->setCategories($category[0]);
+    if ($form->isSubmitted() && $form->isValid()) {
+      $categoryId = $form->getData()->getCategories();
+      $category = $em
+        ->getRepository('CategoriesBundle:Categories')
+        ->findById($categoryId);
 
-$em->persist($toBeSave);
-$em->flush();
+      $toBeSave->setCategories($category[0]);
 
-$this->addFlash('notice', 'Transaction was successfully updated.');
+      $em->persist($toBeSave);
+      $em->flush();
 
-return $this->redirectToRoute(
-'home',
-array(
-'year' => $year,
-'month' => $month
-),
-301
-);
-} elseif ($form->isSubmitted() && !$form->isValid()) {
-// $this->addFlash('notice', $form->getError());
-$this->addFlash('notice', 'Transaction was not updated.');
-}
+      $this->addFlash('notice', 'Transaction was successfully updated.');
 
-// Even more hugly code :P
-$type = array();
-foreach ($results as $result) {
-if (array_key_exists($result['name'], $type)) {
-$type[$result['name']] += 1;
-continue;
-}
-$type[$result['name']] = 1;
-}
+      return $this->redirectToRoute(
+        'home',
+        array(
+          'year' => $year,
+          'month' => $month
+        ),
+        301
+      );
+    } elseif ($form->isSubmitted() && !$form->isValid()) {
+      // $this->addFlash('notice', $form->getError());
+      $this->addFlash('notice', 'Transaction was not updated.');
+    }
 
-$type = $serializer->serialize($type, 'json');
+    // Even more hugly code :P
+    $type = array();
+    foreach ($results as $result) {
+      if (array_key_exists($result['name'], $type)) {
+        $type[$result['name']] += 1;
+        continue;
+      }
+      $type[$result['name']] = 1;
+    }
 
-return $this->render(
-'CategoriesBundle:Categories:match.html.twig',
-array(
-'type' => $type,
-'form' => $form->createView(),
-'transactions' => $results,
-'transaction' => $transaction['transaction'][0],
-'year' => $year,
-'month' => $month
-)
-);
-}
+    $type = $serializer->serialize($type, 'json');
 
-/**
-* @Route("/categories/new/", name="categories_new")
-*
-* @param Request $request
-* @return \Symfony\Component\HttpFoundation\Response
-*/
-public function newAction(Request $request)
-{
-$em = $this->getDoctrine()->getManager();
-$transaction  = new Categories();
+    return $this->render(
+      'CategoriesBundle:Categories:match.html.twig',
+      array(
+        'type' => $type,
+        'form' => $form->createView(),
+        'transactions' => $results,
+        'transaction' => $transaction['transaction'][0],
+        'year' => $year,
+        'month' => $month
+      )
+    );
+  }
 
-$form = $this->createForm(
-CategoriesType::class,
-$transaction,
-array(
-'entity_manager' => $em
-)
-);
+  /**
+   * @Route("/categories/new/", name="categories_new")
+   *
+   * @param Request $request
+   * @return \Symfony\Component\HttpFoundation\Response
+   */
+  public function newAction(Request $request)
+  {
+    $em = $this->getDoctrine()->getManager();
+    $transaction  = new Categories();
 
-$form->handleRequest($request);
+    $form = $this->createForm(
+      CategoriesType::class,
+      $transaction,
+      array(
+        'entity_manager' => $em
+      )
+    );
 
-if ($form->isSubmitted() && $form->isValid()) {
-// Setting User
-$user = $this->get('security.token_storage')->getToken()->getUser();
-$transaction->setAccountId($user->getId());
+    $form->handleRequest($request);
 
-if ($form->getData()->getParent() == 0) {
-$transaction->setParent(NULL);
-}
+    if ($form->isSubmitted() && $form->isValid()) {
 
-if ($form->getData()->getParent() > 0) {
-$parent = $em->getRepository('CategoriesBundle:Categories')
-->findBy(array('id' => $form->getData()->getParent()));
-$transaction->setParent($parent[0]);
-}
+      // Setting User
+      $user = $this->get('security.token_storage')->getToken()->getUser();
+      $transaction->setAccountId($user->getId());
 
-$em->persist($transaction);
-$em->flush();
-$this->addFlash('notice', 'Transaction was successfully created.');
+      if ($form->getData()->getParent() == 0) {
+        $transaction->setParent(NULL);
+      }
 
-return $this->redirectToRoute(
-'categories',
-array(),
-301
-);
-}
+      if ($form->getData()->getParent() > 0) {
+        $parent = $em
+          ->getRepository('CategoriesBundle:Categories')
+          ->findBy(array('id' => $form->getData()->getParent()));
+        $transaction->setParent($parent[0]);
+      }
 
-return $this->render(
-'CategoriesBundle:Categories:edit.html.twig',
-array(
-'Categories' => $transaction,
-'form' => $form->createView(),
-)
-);
-}
+      $em->persist($transaction);
+      $em->flush();
+      $this->addFlash('notice', 'Transaction was successfully created.');
 
-/**
-* @Route("/categories/edit/{id}", name="categories_edit")
-*
-* @param int $id
-* @param Request $request
-* @return \Symfony\Component\HttpFoundation\Response
-*/
-public function editAction($id, Request $request)
-{
-$em = $this->getDoctrine()->getManager();
-$transaction  = $em->getRepository('CategoriesBundle:Categories')
-->find($id);
+      return $this->redirectToRoute(
+        'categories',
+        array(),
+        301
+      );
+    }
 
-$form = $this->createForm(
-CategoriesType::class,
-$transaction,
-array(
-'entity_manager' => $em
-)
-);
-$form->handleRequest($request);
+    return $this->render(
+      'CategoriesBundle:Categories:edit.html.twig',
+      array(
+        'Categories' => $transaction,
+        'form' => $form->createView(),
+      )
+    );
+  }
 
-if ($form->isSubmitted() && $form->isValid()) {
-if ($form->getData()->getParent() === 0) {
-$transaction->setParent(NULL);
-}
+  /**
+   * @Route("/categories/edit/{id}", name="categories_edit")
+   *
+   * @param int $id
+   * @param Request $request
+   * @return \Symfony\Component\HttpFoundation\Response
+   */
+  public function editAction($id, Request $request)
+  {
+    $em = $this->getDoctrine()->getManager();
 
-if ($form->getData()->getCompanyLogo()) {
-$transaction->setCompanyLogo($form->getData()->getCompanyLogo());
-}
+    $transaction  = $em
+      ->getRepository('CategoriesBundle:Categories')
+      ->find($id);
 
-$em->persist($transaction);
-$em->flush();
-$this->addFlash('notice', 'Transaction was successfully updated.');
+    $form = $this->createForm(
+      CategoriesType::class,
+      $transaction,
+      array(
+        'entity_manager' => $em
+      )
+    );
 
-return $this->redirectToRoute(
-'categories',
-array(),
-301
-);
-}
+    $form->handleRequest($request);
 
-return $this->render(
-'CategoriesBundle:Categories:edit.html.twig',
-array(
-'Categories' => $transaction,
-'form' => $form->createView(),
-)
-);
-}
+    if ($form->isSubmitted() && $form->isValid()) {
+      if ($form->getData()->getParent() === 0) {
+        $transaction->setParent(NULL);
+      }
 
-/**
-* @Route("/categories/delete/{id}", name="categories_delete")
-*
-* @param int $id
-* @param Request $request
-*/
-public function deleteAction($id)
-{
-$em = $this->getDoctrine()->getManager();
-$transaction  = $em->getRepository('CategoriesBundle:Categories')
-->find($id);
-$em->remove($transaction);
-$em->flush();
+      if ($form->getData()->getCompanyLogo()) {
+        $transaction->setCompanyLogo($form->getData()->getCompanyLogo());
+      }
 
-return $this->redirectToRoute(
-'categories',
-array(),
-301
-);
-}
+      $em->persist($transaction);
+      $em->flush();
+      $this->addFlash('notice', 'Transaction was successfully updated.');
+
+      return $this->redirectToRoute(
+        'categories',
+        array(),
+        301
+      );
+    }
+
+    return $this->render(
+      'CategoriesBundle:Categories:edit.html.twig',
+      array(
+        'Categories' => $transaction,
+        'form' => $form->createView(),
+      )
+    );
+  }
+
+  /**
+   * @Route("/categories/delete/{id}", name="categories_delete")
+   *
+   * @param int $id
+   * @param Request $request
+   */
+  public function deleteAction($id)
+  {
+    $em = $this->getDoctrine()->getManager();
+    $transaction  = $em
+      ->getRepository('CategoriesBundle:Categories')
+      ->find($id);
+
+    $em->remove($transaction);
+    $em->flush();
+
+    return $this->redirectToRoute(
+      'categories',
+      array(),
+      301
+    );
+  }
 
   /**
    * @Route("/categories/matching", defaults={"_format"="xml"}, name="matching")

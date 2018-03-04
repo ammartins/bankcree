@@ -9,7 +9,7 @@
         {% for monthSpent in monthSpents %}
             <tr>
                 <td>{{ monthSpent.description }}</td>
-                <td>{{ monthSpent.amount }}</td>
+                <td>{{ monthSpent.amount|number_format(2) }}</td>
             </tr>
         {% endfor %}
     </table>
