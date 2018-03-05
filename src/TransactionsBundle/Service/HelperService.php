@@ -14,16 +14,16 @@ class HelperService
   /**
    * @var \TransactionsBundle\Repository\TransactionsRepository
    */
-  protected $transactionsRepository;
+  protected $transRepo;
   protected $categoryRepository;
   protected $entityManager;
 
   public function __construct(
-    TransactionsRepository $transactionsRepository,
+    TransactionsRepository $transRepo,
     CategoriesRepository $categoryRepository,
     EntityManager $entityManager
   ) {
-    $this->transactionsRepository = $transactionsRepository;
+    $this->transactionsRepository = $transRepo;
     $this->categoryRepository = $categoryRepository;
     $this->entityManager = $entityManager;
   }
