@@ -1,4 +1,6 @@
-{% include 'TransactionsBundle:partial:_monthMenu.html.twig' %}
+{% block menu %}
+    {% include 'TransactionsBundle:partial:_monthMenu.html.twig' %}
+{% endblock %}
 
 {% block body %}
     {% include 'TransactionsBundle:partial:_month.html.twig' %}

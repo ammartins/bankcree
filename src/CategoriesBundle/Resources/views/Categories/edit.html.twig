@@ -3,37 +3,7 @@
 {% block menu %}
   {% include 'menu.html.twig' %}
 {% endblock %}
+
 {% block body %}
-    {{ form_start(form) }}
-    {% if form.parent %}
-        <div class="form-group">
-            <label for="short_description">{{ form_label(form.parent) }}</label>
-            {% include '::errors.html.twig' with {'errors': form.parent.vars.errors} %}
-            {{ form_widget(form.parent, { 'attr': {'class': 'form-control'} }) }}
-        </div>
-    {% endif %}
-
-    <div class="form-group">
-        <label for="short_description">{{ form_label(form.name) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.name.vars.errors} %}
-        {{ form_widget(form.name, { 'attr': {'class': 'form-control'} }) }}
-    </div>
-
-    <div class="form-group">
-        <label for="short_description">{{ form_label(form.companyLogo) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.companyLogo.vars.errors} %}
-        {{ form_widget(form.companyLogo, { 'attr': {'class': 'form-control'} }) }}
-    </div>
-
-    <div class="form-group">
-        <label for="account_id">{{ form_label(form.recurring) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.recurring.vars.errors} %}
-        {{ form_widget(form.recurring, { 'attr': {'class': 'form-control'} }) }}
-    </div>
-
-    <div class="text-right">
-      {{ form_widget(form.save, { 'attr': {'class': 'btn btn-success'}}) }}
-      <a type="button" class="btn btn-primary" href="{{ path('dashboard') }}">Back</a>
-    </div>
-  {{ form_end(form) }}
+  {% include 'CategoriesBundle:Categories:form.html.twig' %}
 {% endblock %}

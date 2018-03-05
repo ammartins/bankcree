@@ -1,8 +1,13 @@
-/* line 1, ../sass/main.scss */
-body {
+body
+{
   color: #1b404b;
-  background-color: #FFF;
+  background-color: #f0f1f3;
   line-height: 22px;
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
+}
+
+.tab-pane .month-display div
+{
+    margin: 0 0 10px 0;
 }

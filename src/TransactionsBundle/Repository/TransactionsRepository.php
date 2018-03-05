@@ -13,31 +13,31 @@ use CategoriesBundle\Entity\Categories;
 */
 class TransactionsRepository extends EntityRepository
 {
-    public function getMonthIncome($month, $year)
-    {
-        $data = $this->getEntityManager()->createQuery(
-            "SELECT t
-            FROM TransactionsBundle:Transactions t
-            WHERE MONTH(t.createAt) = $month
-            AND YEAR(t.createAt) = $year
-            AND t.amount > 0"
-        )->execute();
+    // public function getMonthIncome($month, $year)
+    // {
+    //     $data = $this->getEntityManager()->createQuery(
+    //         "SELECT t
+    //         FROM TransactionsBundle:Transactions t
+    //         WHERE MONTH(t.createAt) = $month
+    //         AND YEAR(t.createAt) = $year
+    //         AND t.amount > 0"
+    //     )->execute();
+    //
+    //     return $data;
+    // }
 
-        return $data;
-    }
-
-    public function getMonthSpending($month, $year)
-    {
-        $data = $this->getEntityManager()->createQuery(
-            "SELECT t
-            FROM TransactionsBundle:Transactions t
-            WHERE MONTH(t.createAt) = $month
-            AND YEAR(t.createAt) = $year
-            AND t.amount < 0"
-        )->execute();
-
-        return $data;
-    }
+    // public function getMonthSpending($month, $year)
+    // {
+    //     $data = $this->getEntityManager()->createQuery(
+    //         "SELECT t
+    //         FROM TransactionsBundle:Transactions t
+    //         WHERE MONTH(t.createAt) = $month
+    //         AND YEAR(t.createAt) = $year
+    //         AND t.amount < 0"
+    //     )->execute();
+    //
+    //     return $data;
+    // }
 
     public function getMonths($year)
     {
@@ -276,18 +276,30 @@ class TransactionsRepository extends EntityRepository
         return $data;
     }
 
-    public function groupByYear()
-    {
-        $data = $this->getEntityManager()
-            ->createQuery(
-                "SELECT YEAR(p.createAt) as year, Month(p.createAt) as month, count(p.id), SUM(p.amount)
-                FROM TransactionsBundle:Transactions p
-                GROUP BY month, year
-                ORDER BY Year(p.createAt), Month(p.createAt)"
-            )->execute();
+  public function groupByYear()
+  {
+    $data = $this->getEntityManager()
+      ->createQuery(
+        "SELECT YEAR(p.createAt) as year, Month(p.createAt) as month, count(p.id), SUM(p.amount)
+        FROM TransactionsBundle:Transactions p
+        GROUP BY month, year
+        ORDER BY Year(p.createAt), Month(p.createAt)"
+      )->execute();
 
-        return $data;
-    }
+    $data2 = $this->getEntityManager()
+      ->createQuery(
+        "SELECT YEAR(p.createAt) as year, Month(p.createAt) as month, count(p.id), SUM(p.amount)
+        FROM TransactionsBundle:Transactions p
+        JOIN CategoriesBundle:Categories c
+        WHERE p.categories = c.id
+        AND c.savings = 1
+        AND p.amount  < 0
+        GROUP BY month, year
+        ORDER BY Year(p.createAt), Month(p.createAt)"
+      )->execute();
+
+    return array($data, $data2);
+  }
 
     public function getMatched()
     {
@@ -326,6 +338,18 @@ class TransactionsRepository extends EntityRepository
                 WHERE t.categories = c.id
                 AND c.recurring = 1
                 ORDER BY t.createAt ASC"
+            )->execute();
+
+        return $data;
+    }
+
+    public function getYears()
+    {
+        $data = $this->getEntityManager()
+            ->createQuery(
+                "SELECT YEAR(t.createAt) as year
+                FROM TransactionsBundle:Transactions t
+                GROUP BY year"
             )->execute();
 
         return $data;

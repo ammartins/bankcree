@@ -22,7 +22,7 @@ class BudgetController extends Controller
      *
      * @Route("/budget", name="budget")
      */
-    public function budgetAction(Request $request)
+    public function budgetAction()
     {
         $em = $this->getDoctrine()->getManager();
         $budgets = $em->getRepository('BudgetBundle:Budget')->findAll();
@@ -112,8 +112,6 @@ class BudgetController extends Controller
      */
     public function showAction()
     {
-        dump("Show Action");
-        exit;
     }
 
     /**
@@ -121,8 +119,6 @@ class BudgetController extends Controller
      */
     public function editAction()
     {
-        dump("Edit Action");
-        exit;
     }
 
     /**

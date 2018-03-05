@@ -46,6 +46,13 @@ class Categories
     /**
      * @var boolean
      *
+     * @ORM\Column(name="savings", type="boolean")
+     */
+    private $savings;
+
+    /**
+     * @var boolean
+     *
      * @ORM\Column(name="discard", type="boolean", nullable=true)
      */
     private $discard;
@@ -175,6 +182,28 @@ class Categories
     public function setRecurring($recurring)
     {
         $this->recurring = $recurring;
+        return $this;
+    }
+
+    /**
+     * Get savings
+     *
+     * @return boolean
+     */
+    public function getSavings()
+    {
+        return $this->savings;
+    }
+
+    /**
+     * Set savings
+     *
+     * @param boolean $savings
+     * @return Transactions
+     */
+    public function setSavings($savings)
+    {
+        $this->savings = $savings;
         return $this;
     }
 
