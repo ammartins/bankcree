@@ -133,8 +133,7 @@ class CategoriesController extends Controller
     $matchService = $this->get('transactions.match');
 
     $toBeSave = $em
-      ->getRepository('TransactionsBundle:Transactions')
-      ->find($id);
+      ->getRepository('TransactionsBundle:Transactions')->find($id);
 
     $transaction = $em
       ->getRepository('TransactionsBundle:Transactions')
@@ -198,7 +197,6 @@ class CategoriesController extends Controller
         301
       );
     } elseif ($form->isSubmitted() && !$form->isValid()) {
-      // $this->addFlash('notice', $form->getError());
       $this->addFlash('notice', 'Transaction was not updated.');
     }
 
