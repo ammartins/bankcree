@@ -52,7 +52,7 @@ class TransactionsController extends Controller
     return $this->render(
       'TransactionsBundle:account:dash.html.twig',
       array(
-        'data' => $data,
+        'data' => $data[0],
         'matched' => $matched,
         'years' => $years,
       )
