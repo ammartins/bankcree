@@ -30,6 +30,13 @@ class Budget
     private $name;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="account_id", type="integer")
+     */
+    private $accountId;
+
+    /**
      * @var array
      *
      * @ORM\OneToMany(targetEntity="CategoriesBundle\Entity\Categories", mappedBy="name")
@@ -81,6 +88,29 @@ class Budget
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set accountId
+     *
+     * @param integer $accountId
+     *
+     * @return Categories
+     */
+    public function setAccountId($accountId)
+    {
+        $this->accountId = $accountId;
+        return $this;
+    }
+
+    /**
+     * Get accountId
+     *
+     * @return int
+     */
+    public function getAccountId()
+    {
+        return $this->accountId;
     }
 
     /**

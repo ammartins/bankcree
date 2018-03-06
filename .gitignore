@@ -17,7 +17,6 @@
 .DS_Store
 .sass-cache/
 data/
-tests/
 help/
 watch/
 phpunit.phar
