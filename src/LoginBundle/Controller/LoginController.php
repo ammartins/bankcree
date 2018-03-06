@@ -10,31 +10,31 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class LoginController extends Controller
 {
-    /**
-     * @Route("/login", name="login")
-     */
-    public function loginAction()
-    {
-        $authenticationUtils = $this->get('security.authentication_utils');
-        $error = $authenticationUtils->getLastAuthenticationError();
+  /**
+   * @Route("/login", name="login")
+   */
+  public function loginAction()
+  {
+    $authenticationUtils = $this->get('security.authentication_utils');
+    $error = $authenticationUtils->getLastAuthenticationError();
 
-        return $this->render(
-            'LoginBundle:Security:login.html.twig',
-            array(
-                'error'         => $error,
-            )
-        );
-    }
+    return $this->render(
+      'LoginBundle:Security:login.html.twig',
+      array(
+        'error' => $error,
+      )
+    );
+  }
 
-    /**
-     * @Route("/logout", name="logout")
-     */
-     public function logoutAction()
-     {
-        //clear the token, cancel session and redirect
-        $this->get('security.context')->setToken(null);
-        $this->get('request')->getSession()->invalidate();
+  /**
+   * @Route("/logout", name="logout")
+   */
+  public function logoutAction()
+  {
+    //clear the token, cancel session and redirect
+    $this->get('security.context')->setToken(null);
+    $this->get('request')->getSession()->invalidate();
 
-        return $this->redirect($this->generateUrl('login'));
-    }
+    return $this->redirect($this->generateUrl('login'));
+  }
 }
