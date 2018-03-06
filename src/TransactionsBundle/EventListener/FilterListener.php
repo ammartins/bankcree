@@ -22,6 +22,9 @@ class FilterListener
   public function onKernelRequest()
   {
     if ($user = $this->getUser()) {
+      if ($user == "anon.") {
+        return "";
+      }
       $filter = $this->em->getFilters()->enable('user_filter');
       $filter->setParameter('userId', $user->getId());
     }
