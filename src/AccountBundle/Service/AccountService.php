@@ -11,15 +11,15 @@ class AccountService implements AccountServiceInterface
   /**
    * @var \TransactionsBundle\Repository\TransactionsRepository
    */
-  protected $transactionsRepository;
+  protected $transactionRepo;
 
   /**
-   * @param \TransactionsBundle\Repository\TransactionsRepository $transactionsRepository
+   * @param \TransactionsBundle\Repository\TransactionsRepository $transactionRepo
    */
   public function __construct(
-    PromoRepositoryInterface $transactionsRepository
+    PromoRepositoryInterface $transactionRepo
   ) {
-    $this->transactionsRepository = $transactionsRepository;
+    $this->transactionRepo = $transactionRepo;
   }
 
   /**
@@ -27,18 +27,18 @@ class AccountService implements AccountServiceInterface
    */
   public function get($id)
   {
-    $transaction = $this->transactionsRepository->find($id);
+    $transaction = $this->transactionRepo->find($id);
     return $transaction;
   }
 
   /**
    * @inheritdoc
    */
-  public function getAll($updatedSinceTimestamp = null)
+  public function getAll($updatedSince = null)
   {
-    return is_null($updatedSinceTimestamp)
-    ? $this->transactionsRepository->findAll()
-    : $this->transactionsRepository->findUpdatedSince($updatedSinceTimestamp);
+    return is_null($updatedSince)
+    ? $this->transactionRepo->findAll()
+    : $this->transactionRepo->findUpdatedSince($updatedSince);
   }
 
   /**
@@ -56,7 +56,7 @@ class AccountService implements AccountServiceInterface
    */
   public function save(Transactions $transaction)
   {
-    $transaction = $this->transactionsRepository->persist($transaction);
+    $transaction = $this->transactionRepo->persist($transaction);
     return $transaction;
   }
 }
