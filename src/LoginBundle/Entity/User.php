@@ -55,6 +55,11 @@ class User implements UserInterface, \Serializable
    */
   private $isActive;
 
+  /**
+   * @ORM\Column(name="is_savings", type="boolean")
+   */
+  private $isSavings;
+
   public function __construct()
   {
     $this->isActive = true;
@@ -126,6 +131,30 @@ class User implements UserInterface, \Serializable
   public function getEmail()
   {
     return $this->email;
+  }
+
+  /**
+   * Set savings
+   *
+   * @param bool savings
+   *
+   * @return User
+   */
+  public function setIsSavings($isSavings)
+  {
+    $this->issavings = $isSavings;
+
+    return $this;
+  }
+
+  /**
+   * Get savings
+   *
+   * @return string
+   */
+  public function getIsSavings()
+  {
+    return $this->issavings;
   }
 
   /**
