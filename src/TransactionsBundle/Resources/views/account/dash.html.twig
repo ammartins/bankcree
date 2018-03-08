@@ -7,8 +7,8 @@
 {% block body %}
   <ul class="nav nav-tabs" id="years" role="tablist">
     {% for year in years %}
-      <li class="nav-item {% if loop.first %}active{% endif %}">
-        <a class="nav-link {% if loop.first %}active{% endif %}"
+      <li class="nav-item {% if year['year'] == "now"|date("Y") %}active{% endif %}">
+        <a class="nav-link {% if year['year'] == "now"|date("Y") %}active{% endif %}"
           id="{{ year['year'] }}-tab"
           data-toggle="tab"
           href="#{{ year['year'] }}"
@@ -29,7 +29,7 @@
         {% if not loop.first %}
           </div>
         {% endif %}
-        <div  class="tab-pane {% if loop.first %}active{% endif %}" id="{{ info.year }}" role="tabpanel" aria-labelledby="{{ info.year }}">
+        <div  class="tab-pane {% if info.year == "now"|date("Y") %}active{% endif %}" id="{{ info.year }}" role="tabpanel" aria-labelledby="{{ info.year }}">
       {% endif %}
       <a class="month-display" href="{{ path('home', {'year' : info.year,'month' : info.month}) }}">
         <div class="well text-center col-md-3">
