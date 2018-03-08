@@ -7,8 +7,8 @@
 {% block body %}
   <ul class="nav nav-tabs" id="years" role="tablist">
     {% for year in years %}
-      <li class="nav-item {% if loop.first %}active{% endif %}">
-        <a class="nav-link {% if loop.first %}active{% endif %}"
+      <li class="nav-item {% if year['year'] == "now"|date("Y") %}active{% endif %}">
+        <a class="nav-link {% if year['year'] == "now"|date("Y") %}active{% endif %}"
           id="{{ year['year'] }}-tab"
           data-toggle="tab"
           href="#{{ year['year'] }}"
