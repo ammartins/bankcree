@@ -4,16 +4,6 @@ parameters:
 #    parameter_name: value
 
 services:
-  filter_listener:
-    class: TransactionsBundle\EventListener\FilterListener
-    arguments:
-      - "@doctrine.orm.entity_manager"
-      - "@security.token_storage"
-    tags:
-      -
-        name: kernel.event_listener
-        event: kernel.request
-        method: onKernelRequest
   transactions.match:
     class: TransactionsBundle\Service\MatchService
     arguments:
