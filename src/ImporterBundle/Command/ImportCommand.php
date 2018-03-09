@@ -1,7 +1,7 @@
 <?php
 
 // src/AppBundle/Command/GreetCommand.php
-namespace TransactionsBundle\Command;
+namespace ImporterBundle\Command;
 
 use TransactionsBundle\Entity\Transactions;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -62,7 +62,9 @@ class ImportCommand extends ContainerAwareCommand
                 # Generate Hash
                 $hashString = $line;
                 $hash = hash('md5', $hashString, False);
-                $verify = $em->getRepository('TransactionsBundle:Transactions')->getTransactionByHash($hash);
+                $verify = $em
+                  ->getRepository('TransactionsBundle:Transactions')
+                  ->getTransactionByHash($hash);
 
                 // Check if this is already on DB and if so continue
                 // Should probably clean this a bit
@@ -76,11 +78,21 @@ class ImportCommand extends ContainerAwareCommand
                 $transaction->setTransactionHash($hash);
                 $transaction->setCreateAt($Date);
                 $transaction->setAmount(
-                  floatval(str_replace(',', '.', str_replace('.', '', $info[6]))));
+                  floatval(
+                    str_replace(',', '.', str_replace('.', '', $info[6]))
+                  )
+                );
                 $transaction->setstartsaldo(
-                  floatval(str_replace(',', '.', str_replace('.', '', $info[3]))));
+                  floatval(
+                    str_replace(',', '.', str_replace('.', '', $info[3]))
+                  )
+                );
                 $transaction->setEndsaldo(
-                  floatval(str_replace(',', '.', str_replace('.', '', $info[4]))));
+                  floatval(
+                    str_replace(',', '.', str_replace('.', '', $info[4]))
+                  )
+                );
+                
                 $transaction->setDescription($info[7]);
                 $transaction->setShortDescription('');
                 $transaction->setAccountId($account);
