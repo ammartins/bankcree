@@ -99,9 +99,8 @@ class CategoriesController extends Controller
             $categorieId = $match->getCategories()->getId();
             $results[$categorieId][$matchR->getId()] = $matchR;
           }
-        } else {
-          continue;
         }
+        continue;
       }
     }
 
