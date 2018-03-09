@@ -53,12 +53,12 @@ class TransactionsController extends Controller
     $by_year_data = [];
     $by_year_matched = [];
 
-    foreach($data[0] as $month) {
+    foreach ($data[0] as $month) {
         $year_of_month = $month['year'];
         $by_year_data[$year_of_month][] = $month;
     }
 
-    foreach($matched as $match) {
+    foreach ($matched as $match) {
         $year_of_month = $match['year'];
         $by_year_matched[$year_of_month][] = $match;
     }
