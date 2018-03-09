@@ -20,3 +20,4 @@ data/
 help/
 watch/
 phpunit.phar
+*.TAB

@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "content-hash": "6c98914ff62aed0129e2bfa5357cd3b7",
+    "content-hash": "7ed1bca47ecdfe84692b45cab02dc0b0",
     "packages": [
         {
             "name": "components/jquery",
@@ -3265,16 +3266,16 @@
         },
         {
             "name": "twitter/bootstrap",
-            "version": "v3.3.7",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "0b9c4a4007c44201dce9a6cc1a38407005c26c86"
+                "reference": "8a628b943cf31ca0a002c08af661a95772480225"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/0b9c4a4007c44201dce9a6cc1a38407005c26c86",
-                "reference": "0b9c4a4007c44201dce9a6cc1a38407005c26c86",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/8a628b943cf31ca0a002c08af661a95772480225",
+                "reference": "8a628b943cf31ca0a002c08af661a95772480225",
                 "shasum": ""
             },
             "replace": {
@@ -3301,18 +3302,18 @@
                 }
             ],
             "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
-            "homepage": "http://getbootstrap.com",
+            "homepage": "https://getbootstrap.com",
             "keywords": [
                 "JS",
                 "css",
                 "framework",
                 "front-end",
-                "less",
                 "mobile-first",
                 "responsive",
+                "sass",
                 "web"
             ],
-            "time": "2016-07-25T15:51:55+00:00"
+            "time": "2018-01-18T18:29:48+00:00"
         },
         {
             "name": "zendframework/zend-code",
@@ -3478,7 +3479,7 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v4.0.5",
+            "version": "v4.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",

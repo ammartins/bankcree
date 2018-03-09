@@ -50,11 +50,24 @@ class TransactionsController extends Controller
     $helper = $this->get('transactions.helper');
     $data[0] = $helper->calculateSavings($data);
 
+    $by_year_data = [];
+    $by_year_matched = [];
+
+    foreach ($data[0] as $month) {
+        $year_of_month = $month['year'];
+        $by_year_data[$year_of_month][] = $month;
+    }
+
+    foreach ($matched as $match) {
+        $year_of_month = $match['year'];
+        $by_year_matched[$year_of_month][] = $match;
+    }
+
     return $this->render(
       'TransactionsBundle:account:dash.html.twig',
       array(
-        'data' => $data[0],
-        'matched' => $matched,
+        'data' => $by_year_data,
+        'matched' => $by_year_matched,
         'years' => $years,
       )
     );
