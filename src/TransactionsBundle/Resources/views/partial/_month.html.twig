@@ -6,13 +6,15 @@
     </div>
 
     <input type="button" class="btn-info" id="toggleView" value="Match" />
-    <table class="table table-hover table-sm table-responsive">
-        <thead class="thead-inverse">
+    <div class="table-responsive">
+    <table class="table table-hover table-sm">
+        <thead class="thead-dark">
             <tr>
                 <th>Date</th>
                 <th>Category</th>
                 <th>Saldo</th>
                 <th>Amount</th>
+                <th></th>
             </tr>
         </thead>
         {% for transaction in transactions %}
@@ -51,4 +53,5 @@
             </tr>
         {% endfor %}
     </table>
+    </div>
 {% endblock %}
