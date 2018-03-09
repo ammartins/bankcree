@@ -7,5 +7,6 @@ php:
 
 before_script:
   - composer install --dev
+  - php app/console assetic:dump
 
 script: phpunit -c app/phpunit.xml.dist
