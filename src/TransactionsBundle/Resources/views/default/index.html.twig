@@ -25,13 +25,31 @@
     {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    <div class="card">
+        <div class="card-header">
+            <nav>
+                <div class="nav nav-tabs card-header-tabs" id="years" role="tablist">
+                    {% if menu is defined and month is defined and year is defined %}
+                        <a class="nav-item nav-link active" href="#table" role="tab" data-toggle="tab">Month</a>
+                    {% endif %}
+                    {% if menu is defined %}
+                        <a class="nav-item nav-link" href="#dailygraph" role="tab" data-toggle="tab">Graphs</a>
+                    {% endif %}
+                </div>
+            </nav>
 
+        </div>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="table">
+            <div class="col-md-12 mt-3">
             {% include 'TransactionsBundle:partial:_monthGraphNetWorth.html.twig' %}
+            </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="dailygraph">
+            <div class="col-md-12 mt-3">
             {% include 'TransactionsBundle:partial:_dailygraph.html.twig' %}
+            </div>
         </div>
+    </div>
     </div>
 {% endblock %}
