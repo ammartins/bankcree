@@ -91,7 +91,7 @@ class MatchService
         $item1 == 'BIC:' || $item1 == 'Omschrijving:' ||
         $item1 == 'SEPA' || $item1 == 'OVERBOEKING' ||
         $item1 == 'BEA' || $item1 == 'NOTPROVIDED' ||
-        $item1 == 'Naam:' || $item1 == 'PAS572'
+        $item1 == 'Naam:' || preg_match('/PAS[0-9]{3}/', $item1)
       ) {
         unset($description[$key]);
         continue;
