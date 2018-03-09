@@ -91,6 +91,13 @@ class BudgetController extends Controller
 
             $budget->setName($name[0]->getName());
 
+            $userId = $this
+              ->get('security.context')
+              ->getToken()
+              ->getUser()
+              ->getId();
+            $budget->setAccountId($userId);
+
             $em->persist($budget);
             $em->flush();
 
