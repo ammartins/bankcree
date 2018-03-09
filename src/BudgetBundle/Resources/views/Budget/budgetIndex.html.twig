@@ -17,7 +17,7 @@
       <th class="text-right">Options</th>
     </tr>
     {% for budget in budgets %}
-      <tr class="{% if budget.limit < budget.amount %}danger{% else %}success{% endif %}">
+      <tr class="{% if budget.limit < budget.amount %}table-danger{% else %}table-success{% endif %}">
         <td>{{ budget.name }}</td>
         <td class="text-right">{{ budget.limit }} €</td>
         <td class="text-right">{{ budget.amount }}  €</td>
