@@ -7,6 +7,8 @@ php:
 
 before_script:
   - composer install --dev
+  - npm i -g phplint
   - php app/console assetic:dump
+  - phplint '**/*.php' '!vendor/**' '!app/cache/**'
 
 script: phpunit -c app/phpunit.xml.dist
