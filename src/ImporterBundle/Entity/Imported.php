@@ -156,4 +156,3 @@ class Imported
         return $this->importedAt;
     }
 }
-

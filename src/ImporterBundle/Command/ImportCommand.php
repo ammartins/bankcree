@@ -92,7 +92,7 @@ class ImportCommand extends ContainerAwareCommand
                     str_replace(',', '.', str_replace('.', '', $info[4]))
                   )
                 );
-                
+
                 $transaction->setDescription($info[7]);
                 $transaction->setShortDescription('');
                 $transaction->setAccountId($account);
