@@ -33,8 +33,11 @@ class FilterListener
   private function getUser()
   {
     $token = $this->tokenStorage->getToken();
-    $user = $token->getUser();
+    if ($token) {
+      $user = $token->getUser();
+      return $user;
+    }
 
-    return $user;
+    return null;
   }
 }

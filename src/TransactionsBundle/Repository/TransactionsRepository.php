@@ -14,18 +14,46 @@ use CategoriesBundle\Entity\Categories;
 class TransactionsRepository extends EntityRepository
 {
 
-public function getMonths($year)
-{
-$months = $this->getEntityManager()
-->createQuery(
-"SELECT DISTINCT Month(p.createAt) as months, p.createAt as monthName
-FROM TransactionsBundle:Transactions p
-WHERE Year(p.createAt) = $year
-GROUP BY months"
-)->execute();
+  public function getYearValues($year)
+  {
+    $data = $this
+      ->getEntityManager()
+      ->createQuery(
+        "SELECT SUM(p.amount), p.createAt as amountPerDay
+        FROM TransactionsBundle:Transactions p
+        WHERE YEAR(p.createAt) = $year
+        GROUP BY amountPerDay"
+      )->execute();
 
-return $months;
-}
+    return $data;
+  }
+
+  public function findAllByYear($year)
+  {
+    return $this
+      ->getEntityManager()
+      ->createQuery(
+        "SELECT p.endsaldo, p.createAt
+        FROM TransactionsBundle:Transactions p
+        WHERE Year(p.createAt) = $year
+        GROUP BY p.createAt
+        ORDER BY p.createAt ASC"
+      )->getResult();
+  }
+
+  public function getMonths($year)
+  {
+    $months = $this
+      ->getEntityManager()
+      ->createQuery(
+        "SELECT DISTINCT Month(p.createAt) as months, p.createAt as monthName
+        FROM TransactionsBundle:Transactions p
+        WHERE Year(p.createAt) = $year
+        GROUP BY months"
+      )->execute();
+
+      return $months;
+    }
 
 public function getAllYears()
 {
@@ -37,31 +65,33 @@ ORDER BY p.createAt"
 )->getResult();
 }
 
-public function findAllByMonth($month, $year)
-{
-return $this->getEntityManager()
-->createQuery(
-"SELECT p
-FROM TransactionsBundle:Transactions p
-WHERE MONTH(p.createAt) = $month
-AND Year(p.createAt) = $year
-ORDER BY p.createAt ASC"
-)->getResult();
-}
+  public function findAllByMonth($month, $year)
+  {
+    return $this
+      ->getEntityManager()
+      ->createQuery(
+        "SELECT p
+        FROM TransactionsBundle:Transactions p
+        WHERE MONTH(p.createAt) = $month
+        AND Year(p.createAt) = $year
+        ORDER BY p.createAt ASC"
+    )->getResult();
+  }
 
-public function getmonth($month, $year)
-{
-$data = $this->getEntityManager()
-->createQuery(
-"SELECT SUM(p.amount)
-FROM TransactionsBundle:Transactions p
-WHERE MONTH(p.createAt) = $month
-AND Year(p.createAt) = $year
-GROUP BY p.shortDescription"
-)->execute();
+  public function getmonth($month, $year)
+  {
+    $data = $this
+      ->getEntityManager()
+      ->createQuery(
+        "SELECT SUM(p.amount)
+        FROM TransactionsBundle:Transactions p
+        WHERE MONTH(p.createAt) = $month
+        AND Year(p.createAt) = $year
+        GROUP BY p.shortDescription"
+      )->execute();
 
-return $data;
-}
+    return $data;
+  }
 
 public function getMatchTransactions($transactionId)
 {
@@ -251,30 +281,32 @@ group by month"
 return $data;
 }
 
-public function groupByYear()
-{
-$data = $this->getEntityManager()
-->createQuery(
-"SELECT YEAR(p.createAt) as year, Month(p.createAt) as month, count(p.id), SUM(p.amount)
-FROM TransactionsBundle:Transactions p
-GROUP BY month, year
-ORDER BY Year(p.createAt), Month(p.createAt)"
-)->execute();
+  public function groupByYear()
+  {
+    $data = $this
+      ->getEntityManager()
+      ->createQuery(
+        "SELECT YEAR(p.createAt) as year, Month(p.createAt) as month, count(p.id), SUM(p.amount)
+        FROM TransactionsBundle:Transactions p
+        GROUP BY month, year
+        ORDER BY Year(p.createAt), Month(p.createAt)"
+      )->execute();
 
-$data2 = $this->getEntityManager()
-->createQuery(
-"SELECT YEAR(p.createAt) as year, Month(p.createAt) as month, count(p.id), SUM(p.amount)
-FROM TransactionsBundle:Transactions p
-JOIN CategoriesBundle:Categories c
-WHERE p.categories = c.id
-AND c.savings = 1
-AND p.amount  < 0
-GROUP BY month, year
-ORDER BY Year(p.createAt), Month(p.createAt)"
-)->execute();
+    $data2 = $this
+      ->getEntityManager()
+      ->createQuery(
+        "SELECT YEAR(p.createAt) as year, Month(p.createAt) as month, count(p.id), SUM(p.amount)
+        FROM TransactionsBundle:Transactions p
+        JOIN CategoriesBundle:Categories c
+        WHERE p.categories = c.id
+        AND c.savings = 1
+        AND p.amount  < 0
+        GROUP BY month, year
+        ORDER BY Year(p.createAt), Month(p.createAt)"
+      )->execute();
 
-return array($data, $data2);
-}
+    return array($data, $data2);
+  }
 
 public function getMatched()
 {
