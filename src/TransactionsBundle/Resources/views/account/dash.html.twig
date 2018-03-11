@@ -50,7 +50,7 @@
                         <h5>{{ info.month }}-{{ info.year }}</h5>
                         <h3>{{ info.2|round(2, 'floor') }} €</h3>
                         {% if matched[info.year][key] is defined and info[1]-matched[info.year][key][1]  == 0 %}
-                          <h6>--<i class="fas fa-check"></i></h6>
+                          <h6><i class="fas fa-check"></i></h6>
                         {% elseif matched[info.year][key] is defined %}
                           <h6>Open Transactions: {{ info[1]-matched[info.year][key][1] }}</h6>
                         {% else %}
