@@ -30,7 +30,9 @@
         "jms/serializer-bundle": "^1.1",
         "sentry/sentry": "^1.7",
         "sentry/sentry-symfony": "^0.8.0",
-        "symfony/finder": "^3.4"
+        "symfony/finder": "^3.4",
+        "sensiolabs/ansi-to-html": "^1.1",
+        "squizlabs/php_codesniffer": "*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
