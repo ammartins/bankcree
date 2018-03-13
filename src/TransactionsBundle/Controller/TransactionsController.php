@@ -98,48 +98,24 @@ class TransactionsController extends Controller
         $serializer = $this->get('jms_serializer');
 
         if ($month != 0) {
-            $transactions = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->findAllByMonth($month, $year);
-            $graphDataType = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->getDescriptionUsage($month, $year);
+            $transactions = $em->getRepository('TransactionsBundle:Transactions')->findAllByMonth($month, $year);
+            $graphDataType = $em->getRepository('TransactionsBundle:Transactions')->getDescriptionUsage($month, $year);
             $graphDataDay = $em
                 ->getRepository('TransactionsBundle:Transactions')
                 ->getDescriptionPerDayInMonth($month, $year);
-            $monthsData = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->getMonthsForName($year);
-            $graphMonthYear = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->graphMonthYear($year);
-            $graphMonthYear2 = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->graphMonthYear($year-1);
-            $income = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->getIncomeExpensiveYear($year, 1);
-            $expenses = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->getIncomeExpensiveYear($year, 0);
-            $monthsData = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->getMonths($year);
-            $allYears = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->getAllYears();
+            $monthsData = $em->getRepository('TransactionsBundle:Transactions')->getMonthsForName($year);
+            $graphMonthYear = $em->getRepository('TransactionsBundle:Transactions')->graphMonthYear($year);
+            $graphMonthYear2 = $em->getRepository('TransactionsBundle:Transactions')->graphMonthYear($year-1);
+            $income = $em->getRepository('TransactionsBundle:Transactions')->getIncomeExpensiveYear($year, 1);
+            $expenses = $em->getRepository('TransactionsBundle:Transactions')->getIncomeExpensiveYear($year, 0);
+            $monthsData = $em->getRepository('TransactionsBundle:Transactions')->getMonths($year);
+            $allYears = $em->getRepository('TransactionsBundle:Transactions')->getAllYears();
             $descriptionData  = $em
                 ->getRepository('TransactionsBundle:Transactions')
                 ->getDescriptionPerMonth($month, $year);
-            $amountDay = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->getAmountPerDay($month, $year);
-            $spendsPerDay = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->getSpendsPerDay($month, $year);
-            $monthSpents = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->getDescriptionPerMonth($month, $year);
+            $amountDay = $em->getRepository('TransactionsBundle:Transactions')->getAmountPerDay($month, $year);
+            $spendsPerDay = $em->getRepository('TransactionsBundle:Transactions')->getSpendsPerDay($month, $year);
+            $monthSpents = $em->getRepository('TransactionsBundle:Transactions')->getDescriptionPerMonth($month, $year);
 
             $numberOfDays = cal_days_in_month(CAL_GREGORIAN, $month, $year);
             $spends = $spendsPerDay[0][1]/$numberOfDays;
@@ -155,31 +131,29 @@ class TransactionsController extends Controller
             return $this->render(
                 'TransactionsBundle:default:index.html.twig',
                 array(
-                'transactions' => $transactions,
-                'monthSpents' => $monthSpents,
-                'data' => $graphDataType,
-                'dataDay' => $graphDataDay,
-                'months' => $monthsData,
-                'month' => $month,
-                'descriptionData' => $descriptionData,
-                'descriptionDay' => $amountDay,
-                'graphDay' => $graphAmountDay,
-                'month' => $month,
-                'years' => $allYears,
-                "year" => $year,
-                "graphMonth" => $graphMonthYear,
-                "graphMonth2" => $graphMonthYear2,
-                "income" => $income,
-                "expenses" => $expenses,
-                "spends" => $spends,
-                "menu" => 1,
+                    'transactions' => $transactions,
+                    'monthSpents' => $monthSpents,
+                    'data' => $graphDataType,
+                    'dataDay' => $graphDataDay,
+                    'months' => $monthsData,
+                    'month' => $month,
+                    'descriptionData' => $descriptionData,
+                    'descriptionDay' => $amountDay,
+                    'graphDay' => $graphAmountDay,
+                    'month' => $month,
+                    'years' => $allYears,
+                    "year" => $year,
+                    "graphMonth" => $graphMonthYear,
+                    "graphMonth2" => $graphMonthYear2,
+                    "income" => $income,
+                    "expenses" => $expenses,
+                    "spends" => $spends,
+                    "menu" => 1,
                 )
             );
         }
 
-        $yearTotal = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->findAllByYear($year);
+        $yearTotal = $em->getRepository('TransactionsBundle:Transactions')->findAllByYear($year);
 
         $yearTotalJson = $serializer->serialize($yearTotal, 'json');
 
