@@ -47,11 +47,20 @@ class TransactionsController extends Controller
             ->getRepository('TransactionsBundle:Transactions')
             ->getYears();
 
-        $helper = $this->get('transactions.helper');
-        $data[0] = $helper->calculateSavings($data);
-
         $by_year_data = [];
         $by_year_matched = [];
+        $by_year_total = [];
+
+        foreach ($data[0] as $month) {
+            $year_of_month = $month['year'];
+            $by_year_total[$year_of_month] =
+            array_key_exists($year_of_month, $by_year_total) ?
+            $by_year_total[$year_of_month]+$month[2]
+            : $month[2];
+        }
+
+        // $helper = $this->get('transactions.helper');
+        // $data[0] = $helper->calculateSavings($data);
 
         foreach ($data[0] as $month) {
             $year_of_month = $month['year'];
@@ -66,21 +75,13 @@ class TransactionsController extends Controller
         return $this->render(
             'TransactionsBundle:account:dash.html.twig',
             array(
-                'data' => $by_year_data,
-                'matched' => $by_year_matched,
-                'years' => $years,
+            'data' => $by_year_data,
+            'matched' => $by_year_matched,
+            'years' => $years,
+            'yearsTotal' => $by_year_total,
+            'currentYear' => date("Y"),
             )
         );
-    }
-
-    /**
-     * Prevision of upcoming month
-     *
-     * @Route("/prevision", name="prevision")
-     */
-    public function previsionAction()
-    {
-        return new RedirectResponse($this->generateUrl('dashboard'));
     }
 
     /**
@@ -88,99 +89,109 @@ class TransactionsController extends Controller
      * @param int $year
      * @param int $month
      *
-     * @Route("/finance/{year}/{month}", name="home")
+     * @Route("/finance/{year}/{month}", name="home", defaults={"month"=0})
      */
     public function indexAction($year, $month)
     {
         $year  = $year ? $year : date('Y');
         $em = $this->getDoctrine()->getManager();
-
-        $transactions = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->findAllByMonth($month, $year);
-        $graphDataType = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getDescriptionUsage($month, $year);
-        $graphDataDay = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getDescriptionPerDayInMonth($month, $year);
-        $monthsData = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getMonthsForName($year);
-        $graphMonthYear = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->graphMonthYear($year);
-        $graphMonthYear2 = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->graphMonthYear($year-1);
-        $income = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getIncomeExpensiveYear($year, 1);
-        $expenses = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getIncomeExpensiveYear($year, 0);
-        $monthsData = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getMonths($year);
-        $allYears = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getAllYears();
-        $descriptionData  = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getDescriptionPerMonth($month, $year);
-        $amountDay = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getAmountPerDay($month, $year);
-        $spendsPerDay = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getSpendsPerDay($month, $year);
-        $monthSpents = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getDescriptionPerMonth($month, $year);
-
-        $numberOfDays = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        $spends = $spendsPerDay[0][1]/$numberOfDays;
-
         $serializer = $this->get('jms_serializer');
-        $graphDataType = $serializer->serialize($graphDataType, 'json');
-        $graphDataDay = $serializer->serialize($graphDataDay, 'json');
-        $graphAmountDay = $serializer->serialize($amountDay, 'json');
-        $graphMonthYear = $serializer->serialize($graphMonthYear, 'json');
-        $graphMonthYear2 = $serializer->serialize($graphMonthYear2, 'json');
-        $income = $serializer->serialize($income, 'json');
-        $expenses = $serializer->serialize($expenses, 'json');
+
+        if ($month != 0) {
+            $transactions = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->findAllByMonth($month, $year);
+            $graphDataType = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->getDescriptionUsage($month, $year);
+            $graphDataDay = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->getDescriptionPerDayInMonth($month, $year);
+            $monthsData = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->getMonthsForName($year);
+            $graphMonthYear = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->graphMonthYear($year);
+            $graphMonthYear2 = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->graphMonthYear($year-1);
+            $income = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->getIncomeExpensiveYear($year, 1);
+            $expenses = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->getIncomeExpensiveYear($year, 0);
+            $monthsData = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->getMonths($year);
+            $allYears = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->getAllYears();
+            $descriptionData  = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->getDescriptionPerMonth($month, $year);
+            $amountDay = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->getAmountPerDay($month, $year);
+            $spendsPerDay = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->getSpendsPerDay($month, $year);
+            $monthSpents = $em
+                ->getRepository('TransactionsBundle:Transactions')
+                ->getDescriptionPerMonth($month, $year);
+
+            $numberOfDays = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $spends = $spendsPerDay[0][1]/$numberOfDays;
+
+            $graphDataType = $serializer->serialize($graphDataType, 'json');
+            $graphDataDay = $serializer->serialize($graphDataDay, 'json');
+            $graphAmountDay = $serializer->serialize($amountDay, 'json');
+            $graphMonthYear = $serializer->serialize($graphMonthYear, 'json');
+            $graphMonthYear2 = $serializer->serialize($graphMonthYear2, 'json');
+            $income = $serializer->serialize($income, 'json');
+            $expenses = $serializer->serialize($expenses, 'json');
+
+            return $this->render(
+                'TransactionsBundle:default:index.html.twig',
+                array(
+                'transactions' => $transactions,
+                'monthSpents' => $monthSpents,
+                'data' => $graphDataType,
+                'dataDay' => $graphDataDay,
+                'months' => $monthsData,
+                'month' => $month,
+                'descriptionData' => $descriptionData,
+                'descriptionDay' => $amountDay,
+                'graphDay' => $graphAmountDay,
+                'month' => $month,
+                'years' => $allYears,
+                "year" => $year,
+                "graphMonth" => $graphMonthYear,
+                "graphMonth2" => $graphMonthYear2,
+                "income" => $income,
+                "expenses" => $expenses,
+                "spends" => $spends,
+                "menu" => 1,
+                )
+            );
+        }
+
+        $yearTotal = $em
+            ->getRepository('TransactionsBundle:Transactions')
+            ->findAllByYear($year);
+
+        $yearTotalJson = $serializer->serialize($yearTotal, 'json');
 
         return $this->render(
-            'TransactionsBundle:default:index.html.twig',
+            'TransactionsBundle:default:indexYear.html.twig',
             array(
-            'transactions' => $transactions,
-            'monthSpents' => $monthSpents,
-            'data' => $graphDataType,
-            'dataDay' => $graphDataDay,
-            'months' => $monthsData,
-            'month' => $month,
-            'descriptionData' => $descriptionData,
-            'descriptionDay' => $amountDay,
-            'graphDay' => $graphAmountDay,
-            'month' => $month,
-            'years' => $allYears,
-            "year" => $year,
-            "graphMonth" => $graphMonthYear,
-            "graphMonth2" => $graphMonthYear2,
-            "income" => $income,
-            "expenses" => $expenses,
-            "spends" => $spends,
-            "menu" => 1,
+            'transactions' => $yearTotal,
+            'transactionsJson' => $yearTotalJson,
+            'year' => $year,
+            "menu" => 0,
             )
         );
-    }
-
-    /**
-     * @Route("/contact", name="contact")
-     */
-    public function contactAction()
-    {
-        return $this->render('TransactionsBundle:account:contact.html.twig');
     }
 
     /**
@@ -247,15 +258,5 @@ class TransactionsController extends Controller
                 301
             );
         }
-
-        return $this->render(
-            'TransactionsBundle:default:edit.html.twig',
-            array(
-            'transaction' => $transaction,
-            'form' => $form->createView(),
-            'month' => $month,
-            "year" => $year,
-            )
-        );
     }
 }

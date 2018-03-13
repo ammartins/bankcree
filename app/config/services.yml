@@ -18,8 +18,8 @@ services:
       - "@account.category_repository"
       - "@doctrine.orm.entity_manager"
       - "@event_dispatcher"
-  account.account_service:
-    class: AccountBUndle\Service\AccountService
+  login.user_service:
+    class: LoginBundle\Service\AccountService
     arguments:
       - "@account.account_repository"
       - "@event_dispatcher"
