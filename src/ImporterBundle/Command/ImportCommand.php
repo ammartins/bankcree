@@ -1,7 +1,7 @@
 <?php
 
 // src/AppBundle/Command/GreetCommand.php
-namespace TransactionsBundle\Command;
+namespace ImporterBundle\Command;
 
 use TransactionsBundle\Entity\Transactions;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -61,8 +61,10 @@ class ImportCommand extends ContainerAwareCommand
 
                 // Generate Hash
                 $hashString = $line;
-                $hash = hash('md5', $hashString, false);
-                $verify = $em->getRepository('TransactionsBundle:Transactions')->getTransactionByHash($hash);
+                $hash = hash('md5', $hashString, False);
+                $verify = $em
+                  ->getRepository('TransactionsBundle:Transactions')
+                  ->getTransactionByHash($hash);
 
                 // Check if this is already on DB and if so continue
                 // Should probably clean this a bit
@@ -84,6 +86,7 @@ class ImportCommand extends ContainerAwareCommand
                 $transaction->setEndsaldo(
                     floatval(str_replace(',', '.', str_replace('.', '', $info[4])))
                 );
+
                 $transaction->setDescription($info[7]);
                 $transaction->setShortDescription('');
                 $transaction->setAccountId($account);

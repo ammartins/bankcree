@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new CategoriesBundle\CategoriesBundle(),
             new Sentry\SentryBundle\SentryBundle(),
             new AccountBundle\AccountBundle(),
+            new ImporterBundle\ImporterBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
