@@ -176,7 +176,7 @@ class Categories
     /**
      * Set recurring
      *
-     * @param boolean $recurring
+     * @param  boolean $recurring
      * @return Transactions
      */
     public function setRecurring($recurring)
@@ -198,7 +198,7 @@ class Categories
     /**
      * Set savings
      *
-     * @param boolean $savings
+     * @param  boolean $savings
      * @return Transactions
      */
     public function setSavings($savings)
@@ -231,7 +231,7 @@ class Categories
     /**
      * Set discard
      *
-     * @param boolean $discard
+     * @param  boolean $discard
      * @return Transactions
      */
     public function setDiscard($discard)

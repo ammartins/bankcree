@@ -3,11 +3,6 @@ importer:
     type:     annotation
     prefix:   /
 
-account:
-    resource: "@AccountBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 categories:
     resource: "@CategoriesBundle/Controller/"
     type:     annotation
