@@ -10,6 +10,6 @@ before_script:
   - npm i -g phplint
   - php app/console assetic:dump
   - phplint '**/*.php' '!vendor/**' '!app/cache/**'
-  - vendor/squizlabs/php_codesniffer/bin/phpcs src/
+ # - vendor/squizlabs/php_codesniffer/bin/phpcs src/
 
 script: phpunit -c app/phpunit.xml.dist
