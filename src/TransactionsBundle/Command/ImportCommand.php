@@ -40,7 +40,7 @@ class ImportCommand extends ContainerAwareCommand
         $fileLocation = $input->getArgument('name');
         $account = $input->getArgument('account');
         $fileContent = file_get_contents($fileLocation);
-        $fileContentArray = explode( "\n", $fileContent);
+        $fileContentArray = explode("\n", $fileContent);
 
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
@@ -51,17 +51,17 @@ class ImportCommand extends ContainerAwareCommand
             foreach ($fileContentArray as $line) {
                 // Clean end of string
                 $line = rtrim($line);
-                if ( empty($line) ) {
+                if (empty($line) ) {
                     continue;
                 }
 
                 $info = explode("\t", $line);
-                $correctDate = substr($info[2],0,4).'-'.substr($info[2],4,2).'-'.substr($info[2],6,2);
+                $correctDate = substr($info[2], 0, 4).'-'.substr($info[2], 4, 2).'-'.substr($info[2], 6, 2);
                 $Date = new \DateTime($correctDate);
 
-                # Generate Hash
+                // Generate Hash
                 $hashString = $line;
-                $hash = hash('md5', $hashString, False);
+                $hash = hash('md5', $hashString, false);
                 $verify = $em->getRepository('TransactionsBundle:Transactions')->getTransactionByHash($hash);
 
                 // Check if this is already on DB and if so continue
@@ -76,11 +76,14 @@ class ImportCommand extends ContainerAwareCommand
                 $transaction->setTransactionHash($hash);
                 $transaction->setCreateAt($Date);
                 $transaction->setAmount(
-                  floatval(str_replace(',', '.', str_replace('.', '', $info[6]))));
+                    floatval(str_replace(',', '.', str_replace('.', '', $info[6])))
+                );
                 $transaction->setstartsaldo(
-                  floatval(str_replace(',', '.', str_replace('.', '', $info[3]))));
+                    floatval(str_replace(',', '.', str_replace('.', '', $info[3])))
+                );
                 $transaction->setEndsaldo(
-                  floatval(str_replace(',', '.', str_replace('.', '', $info[4]))));
+                    floatval(str_replace(',', '.', str_replace('.', '', $info[4])))
+                );
                 $transaction->setDescription($info[7]);
                 $transaction->setShortDescription('');
                 $transaction->setAccountId($account);

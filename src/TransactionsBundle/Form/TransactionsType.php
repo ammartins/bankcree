@@ -27,7 +27,7 @@ class TransactionsType extends AbstractType
                 )
             );
 
-        $parent = [NULL];
+        $parent = [null];
 
         foreach ($parents as $par) {
             if (!$par->getParent()) {
@@ -56,9 +56,11 @@ class TransactionsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
             'data_class' => 'TransactionsBundle\Entity\Transactions'
-        ));
+            )
+        );
 
         $resolver->setRequired('entity_manager');
     }
