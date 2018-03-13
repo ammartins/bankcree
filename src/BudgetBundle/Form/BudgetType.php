@@ -43,10 +43,12 @@ class BudgetType extends AbstractType
         $builder
             ->add('name')
             ->add('budgetLimit')
-            ->add('name', ChoiceType::class, array(
+            ->add(
+                'name', ChoiceType::class, array(
                 'choices' => $parent,
                 'required' => false
-            ))
+                )
+            )
             ->add('save', SubmitType::class);
     }
 
@@ -55,17 +57,19 @@ class BudgetType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
             'data_class' => 'BudgetBundle\Entity\Budget',
             'allow_extra_fields' => true
-        ));
+            )
+        );
 
         $resolver->setRequired('entity_manager');
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'budgetbundle_budget';
