@@ -5,7 +5,7 @@ namespace TransactionsBundle\EventListener;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class FilterListener
+class UserFilterListener
 {
     public function __construct(
         EntityManager $em,

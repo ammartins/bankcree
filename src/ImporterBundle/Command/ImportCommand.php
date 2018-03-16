@@ -51,7 +51,7 @@ class ImportCommand extends ContainerAwareCommand
             foreach ($fileContentArray as $line) {
                 // Clean end of string
                 $line = rtrim($line);
-                if (empty($line) ) {
+                if (empty($line)) {
                     continue;
                 }
 
@@ -61,7 +61,7 @@ class ImportCommand extends ContainerAwareCommand
 
                 // Generate Hash
                 $hashString = $line;
-                $hash = hash('md5', $hashString, False);
+                $hash = hash('md5', $hashString, false);
                 $verify = $em
                   ->getRepository('TransactionsBundle:Transactions')
                   ->getTransactionByHash($hash);
@@ -77,15 +77,9 @@ class ImportCommand extends ContainerAwareCommand
 
                 $transaction->setTransactionHash($hash);
                 $transaction->setCreateAt($Date);
-                $transaction->setAmount(
-                    floatval(str_replace(',', '.', str_replace('.', '', $info[6])))
-                );
-                $transaction->setstartsaldo(
-                    floatval(str_replace(',', '.', str_replace('.', '', $info[3])))
-                );
-                $transaction->setEndsaldo(
-                    floatval(str_replace(',', '.', str_replace('.', '', $info[4])))
-                );
+                $transaction->setAmount(floatval(str_replace(',', '.', str_replace('.', '', $info[6]))));
+                $transaction->setstartsaldo(floatval(str_replace(',', '.', str_replace('.', '', $info[3]))));
+                $transaction->setEndsaldo(floatval(str_replace(',', '.', str_replace('.', '', $info[4]))));
 
                 $transaction->setDescription($info[7]);
                 $transaction->setShortDescription('');
@@ -99,4 +93,3 @@ class ImportCommand extends ContainerAwareCommand
         print "Please use a csv file with content";
     }
 }
-?>

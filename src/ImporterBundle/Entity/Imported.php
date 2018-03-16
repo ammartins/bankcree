@@ -43,12 +43,25 @@ class Imported
     private $transactions;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="success", type="integer")
+     */
+    private $success;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="importedAt", type="datetime")
      */
     private $importedAt;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createddAt", type="datetime")
+     */
+    private $createddAt;
 
     /**
      * Get id
@@ -133,6 +146,30 @@ class Imported
     }
 
     /**
+     * Set success
+     *
+     * @param integer $success
+     *
+     * @return Imported
+     */
+    public function setSuccess($success)
+    {
+        $this->success = $success;
+
+        return $this;
+    }
+
+    /**
+     * Get success
+     *
+     * @return int
+     */
+    public function getSuccess()
+    {
+        return $this->success;
+    }
+
+    /**
      * Set importedAt
      *
      * @param \DateTime $importedAt
@@ -154,5 +191,29 @@ class Imported
     public function getImportedAt()
     {
         return $this->importedAt;
+    }
+
+    /**
+     * Set importedAt
+     *
+     * @param \DateTime $createddAt
+     *
+     * @return Created
+     */
+    public function setCreatedAt($createddAt)
+    {
+        $this->createddAt = $createddAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createddAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createddAt;
     }
 }

@@ -46,7 +46,7 @@ class Categories
     /**
      * @var boolean
      *
-     * @ORM\Column(name="savings", type="boolean")
+     * @ORM\Column(name="savings", type="boolean", nullable=true)
      */
     private $savings;
 

@@ -2,6 +2,9 @@
 
 namespace ImporterBundle\Repository;
 
+use Doctrine\ORM\EntityRepository;
+use ImporterBundle\Entity\Imported;
+
 /**
  * ImportedRepository
  *
@@ -10,4 +13,20 @@ namespace ImporterBundle\Repository;
  */
 class ImportedRepository extends \Doctrine\ORM\EntityRepository
 {
+    /*
+     * @param string $filename
+     *
+     */
+    public function getTransactionByFileName($filename)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $query = $qb
+            ->select('i')
+            ->from('ImporterBundle:Imported', 'i')
+            ->where('i.fileName = ?1')
+            ->setParameter(1, $filename)->getQuery();
+
+        return $query->getResult();
+    }
 }
