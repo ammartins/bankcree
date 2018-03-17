@@ -1,1 +1,6 @@
 services:
+    importer.import:
+      class: ImporterBundle\Service\ImportService
+      arguments:
+        - "@doctrine.orm.entity_manager"
+        - "@event_dispatcher"

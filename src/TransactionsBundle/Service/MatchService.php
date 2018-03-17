@@ -69,7 +69,11 @@ class MatchService
 
     public function cleanUp($description)
     {
-        $description = preg_replace("/\w{3,}\s+\w+\:[A-Z0-9]+\s+[0-9]{2,}.[0-9]{2,}.[0-9]{2,}\/[0-9]{2,}\.[0-9]{2,}\s/", '', $description);
+        $description = preg_replace(
+            "/\w{3,}\s+\w+\:[A-Z0-9]+\s+[0-9]{2,}.[0-9]{2,}.[0-9]{2,}\/[0-9]{2,}\.[0-9]{2,}\s/",
+            '',
+            $description
+        );
         $description = preg_replace("/,\w{4,}/", '', $description);
         $description = preg_replace("/SEPA Incasso algemeen doorlopend Incassant:/", '', $description);
         $description = preg_replace('/(\d{1,2}[.\/])+\d{1,2}/', '', $description);
@@ -79,17 +83,17 @@ class MatchService
         $description = array_filter(preg_split('/[\s\/\*]/', $description));
 
         foreach ($description as $key => $item1) {
-            if ($item1 == 'TRTP' || $item1 == 'IBAN' 
-                || $item1 == 'BIC' || $item1 == 'NAME' 
-                || $item1 == 'EREF' || $item1 == 'SEPA' 
-                || $item1 == 'REMI' || $item1 == 'CSID' 
-                || $item1 == 'Incasso' || $item1 == 'MARF' 
-                || $item1 == '' || $item1 == 'algemeen' 
-                || $item1 == 'doorlopend' || $item1 == 'IBAN:' 
-                || $item1 == 'Overboeking' || $item1 == 'INGBNL2A' 
-                || $item1 == 'BIC:' || $item1 == 'Omschrijving:' 
-                || $item1 == 'SEPA' || $item1 == 'OVERBOEKING' 
-                || $item1 == 'BEA' || $item1 == 'NOTPROVIDED' 
+            if ($item1 == 'TRTP' || $item1 == 'IBAN'
+                || $item1 == 'BIC' || $item1 == 'NAME'
+                || $item1 == 'EREF' || $item1 == 'SEPA'
+                || $item1 == 'REMI' || $item1 == 'CSID'
+                || $item1 == 'Incasso' || $item1 == 'MARF'
+                || $item1 == '' || $item1 == 'algemeen'
+                || $item1 == 'doorlopend' || $item1 == 'IBAN:'
+                || $item1 == 'Overboeking' || $item1 == 'INGBNL2A'
+                || $item1 == 'BIC:' || $item1 == 'Omschrijving:'
+                || $item1 == 'SEPA' || $item1 == 'OVERBOEKING'
+                || $item1 == 'BEA' || $item1 == 'NOTPROVIDED'
                 || $item1 == 'Naam:' || preg_match('/PAS[0-9]{3}/', $item1)
             ) {
                 unset($description[$key]);

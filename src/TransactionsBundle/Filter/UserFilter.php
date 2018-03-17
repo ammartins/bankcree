@@ -4,6 +4,7 @@ namespace TransactionsBundle\Filter;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
+use ImporterBundle\Entity\Import;
 
 class UserFilter extends SQLFilter
 {
@@ -19,12 +20,16 @@ class UserFilter extends SQLFilter
         ClassMetadata $targetEntity,
         $targetTableAlias
     ) {
-        if ($this->getParameter('userId')) {
-            return sprintf(
-                '%s.account_id = %s',
-                $targetTableAlias,
-                $this->getParameter('userId')
-            );
+        if (!$targetEntity->getReflectionClass()->name == 'ImporterBundle\Entity\Imported') {
+            if ($this->getParameter('userId')) {
+                return sprintf(
+                    '%s.account_id = %s',
+                    $targetTableAlias,
+                    $this->getParameter('userId')
+                );
+            }
         }
+
+        return "";
     }
 }
