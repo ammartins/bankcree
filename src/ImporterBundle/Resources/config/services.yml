@@ -3,4 +3,5 @@ services:
       class: ImporterBundle\Service\ImportService
       arguments:
         - "@doctrine.orm.entity_manager"
+        - "@security.token_storage"
         - "@event_dispatcher"

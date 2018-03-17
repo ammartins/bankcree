@@ -12,8 +12,8 @@ class DoctrineExceptionListener
     {
         $exception = $event->getException();
 
-        dump($exception->getTrace());
-        die;
+        // dump($exception->getTrace());
+        // die;
 
         if ($exception instanceof PDOException) {
             die('By My Hand');

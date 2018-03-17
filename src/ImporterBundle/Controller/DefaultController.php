@@ -12,9 +12,19 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $importer = $this->get('importer.import');
-        $importer->importFiles();
-        exit;
-        return $this->render('ImporterBundle:Default:index.html.twig');
+        // $importer = $this->get('importer.import');
+        // $importer->importFiles();
+        // exit;
+        $em = $this->getDoctrine()->getManager();
+
+        $data = $em->getRepository('ImporterBundle:Imported')->findAll();
+
+        return $this
+            ->render(
+                'ImporterBundle:Default:index.html.twig',
+                array(
+                    'data' => $data,
+                )
+            );
     }
 }

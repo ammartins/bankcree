@@ -55,6 +55,11 @@ class User implements UserInterface, \Serializable
      */
     private $isActive;
 
+    /**
+     * @ORM\Column(name="bank_account", type="string", unique=true)
+     */
+    private $bankAccount;
+
     public function __construct()
     {
         $this->isActive = true;
@@ -102,6 +107,30 @@ class User implements UserInterface, \Serializable
     public function getUsername()
     {
         return $this->username;
+    }
+
+    /**
+     * Set bankAccount
+     *
+     * @param string $bankAccount
+     *
+     * @return User
+     */
+    public function setBankAccount($bankAccount)
+    {
+        $this->bankAccount = $bankAccount;
+
+        return $this;
+    }
+
+    /**
+     * Get bankAccount
+     *
+     * @return string
+     */
+    public function getBankAccount()
+    {
+        return $this->bankAccount;
     }
 
     /**
@@ -182,7 +211,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @see \Serializable::serialize() 
+     * @see \Serializable::serialize()
      */
     public function serialize()
     {
@@ -196,7 +225,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @see \Serializable::unserialize() 
+     * @see \Serializable::unserialize()
      */
     public function unserialize($serialized)
     {

@@ -81,7 +81,7 @@ class ImportCommand extends ContainerAwareCommand
                 $transaction->setstartsaldo(floatval(str_replace(',', '.', str_replace('.', '', $info[3]))));
                 $transaction->setEndsaldo(floatval(str_replace(',', '.', str_replace('.', '', $info[4]))));
 
-                $transaction->setDescription($info[7]);
+                $transaction->setDescription(utf8_encode($info[7]));
                 $transaction->setShortDescription('');
                 $transaction->setAccountId($account);
 

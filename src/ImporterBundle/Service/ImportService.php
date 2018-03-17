@@ -10,6 +10,7 @@ use ImporterBundle\Entity\Imported;
 use Symfony\Component\Finder\Finder;
 
 use TransactionsBundle\Entity\Transactions;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ImportService
 {
@@ -18,9 +19,13 @@ class ImportService
      */
     protected $entityManager;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(
+        EntityManager $entityManager,
+        TokenStorageInterface $tokenStorage
+    )
     {
         $this->em = $entityManager;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function importFiles()
@@ -57,7 +62,6 @@ class ImportService
                     }
 
                     $account = $path[count($path)-1];
-                    $this->importFilesContent($file->getPathName(), $account);
 
                     $import = new Imported();
                     $import->setFileName($filename);
@@ -65,6 +69,13 @@ class ImportService
                     $import->setCreatedAt($createdAt);
                     $import->setAccount($account);
                     $import->setTransactions($transactionsCount);
+                    $import->setSuccess(0);
+
+                    $this->em->persist($import);
+                    $this->em->flush();
+
+                    $this->importFilesContent($file->getPathName(), $account);
+
                     $import->setSuccess(1);
 
                     $this->em->persist($import);
@@ -82,6 +93,8 @@ class ImportService
         $fileContent = file_get_contents($fileLocation);
         $fileContentArray = explode("\n", $fileContent);
 
+        $bankAcc = $this->tokenStorage->getToken()->getUser()->getBankAccount();
+
         if ($fileContent) {
             foreach ($fileContentArray as $line) {
                 // Clean end of string
@@ -91,6 +104,10 @@ class ImportService
                 }
 
                 $info = explode("\t", $line);
+                if ($bankAcc != $info[0]) {
+                    continue;
+                }
+
                 $correctDate = substr($info[2], 0, 4).'-'.substr($info[2], 4, 2).'-'.substr($info[2], 6, 2);
                 $Date = new \DateTime($correctDate);
 
@@ -117,7 +134,7 @@ class ImportService
                 $transaction->setstartsaldo(floatval(str_replace(',', '.', str_replace('.', '', $info[3]))));
                 $transaction->setEndsaldo(floatval(str_replace(',', '.', str_replace('.', '', $info[4]))));
 
-                $transaction->setDescription($info[7]);
+                $transaction->setDescription(utf8_encode($info[7]));
                 $transaction->setShortDescription('');
                 $transaction->setAccountId($account);
 
