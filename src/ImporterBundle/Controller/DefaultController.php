@@ -8,15 +8,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/importer")
+     * @Route("/importer", name="importer")
      */
     public function indexAction()
     {
-        // $importer = $this->get('importer.import');
-        // $importer->importFiles();
-        // exit;
         $em = $this->getDoctrine()->getManager();
-
         $data = $em->getRepository('ImporterBundle:Imported')->findAll();
 
         return $this
@@ -26,5 +22,16 @@ class DefaultController extends Controller
                     'data' => $data,
                 )
             );
+    }
+
+    /**
+     * @Route("/importAll")
+     */
+    public function importAllAction()
+    {
+        $importer = $this->get('importer.import');
+        $importer->importFiles();
+
+        return $this->redirectToRoute('importer');
     }
 }
