@@ -33,7 +33,3 @@ services:
         arguments: [ CategoriesBundle\Entity\Categories]
     account.menu:
         class: TransactionsBundle\Service\MenuService
-    kernel.listener.doctrine_exception_pdo_listener:
-        class: ImporterBundle\EventListener\DoctrineExceptionListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception, method: onPdoException }
