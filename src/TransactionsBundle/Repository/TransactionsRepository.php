@@ -13,6 +13,32 @@ use CategoriesBundle\Entity\Categories;
  */
 class TransactionsRepository extends EntityRepository
 {
+    public function getYearValues($year)
+    {
+        $data = $this
+            ->getEntityManager()
+            ->createQuery(
+                "SELECT SUM(p.amount), p.createAt as amountPerDay
+                FROM TransactionsBundle:Transactions p
+                WHERE YEAR(p.createAt) = $year
+                GROUP BY amountPerDay"
+            )->execute();
+
+        return $data;
+    }
+
+    public function findAllByYear($year)
+    {
+        return $this
+            ->getEntityManager()
+            ->createQuery(
+                "SELECT p.endsaldo, p.createAt
+                FROM TransactionsBundle:Transactions p
+                WHERE Year(p.createAt) = $year
+                GROUP BY p.createAt
+                ORDER BY p.createAt ASC"
+            )->getResult();
+    }
 
     public function getMonths($year)
     {
