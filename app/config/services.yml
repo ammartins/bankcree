@@ -19,7 +19,7 @@ services:
             - "@doctrine.orm.entity_manager"
             - "@event_dispatcher"
     login.user_service:
-        class: LoginBundle\Service\AccountService
+        class: UserBundle\Service\AccountService
         arguments:
             - "@account.account_repository"
             - "@event_dispatcher"

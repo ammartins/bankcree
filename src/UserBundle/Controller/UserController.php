@@ -1,6 +1,6 @@
 <?php
 
-namespace LoginBundle\Controller;
+namespace UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 // Sessions
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class LoginController extends Controller
+class UserController extends Controller
 {
     /**
      * @Route("/login", name="login")
@@ -19,7 +19,7 @@ class LoginController extends Controller
         $error = $authenticationUtils->getLastAuthenticationError();
 
         return $this->render(
-            'LoginBundle:Security:login.html.twig',
+            'UserBundle:Security:login.html.twig',
             array(
             'error' => $error,
             )
@@ -36,5 +36,24 @@ class LoginController extends Controller
         $this->get('request')->getSession()->invalidate();
 
         return $this->redirect($this->generateUrl('login'));
+    }
+
+    /**
+     * @Route("/User/profile", name="profile")
+     */
+    public function profileAction()
+    {
+        // Generate Form for Edit
+        $em = $this->getDoctrine()->getManager();
+        $transaction = $this->get('account.account_repository')->find($id);
+        
+        $form = $this->createForm(
+            UserType::class,
+            $transaction,
+            array (
+                'entity_manager' => $em
+            )
+        );
+        $form->handleRequest($request);
     }
 }
