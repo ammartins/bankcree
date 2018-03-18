@@ -1,6 +1,6 @@
 <?php
 
-namespace TransactionsBundle\Service;
+namespace LoginBundle\Service;
 
 // use TransactionsBundle\Entity\Transactions;
 // use TransactionsBundle\Repository\TransactionsRepository;
