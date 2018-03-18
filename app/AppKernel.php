@@ -32,7 +32,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
 
-        if (in_array($this->getEnvironment(), array('prod'), true)) {
+        if (in_array($this->getEnvironment(), array('prod', 'dev'), true)) {
             $bundles[] = new Sentry\SentryBundle\SentryBundle();
         }
 
