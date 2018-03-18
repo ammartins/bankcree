@@ -1,1 +1,31 @@
-Hello World!
+{% extends 'base.html.twig' %}
+
+{% block menu %}
+    {% include 'menu.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Filename</th>
+                    <th>Teansactions</th>
+                    <th>Created</th>
+                    <th>Imported</th>
+                    <th>Success</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for imported in data %}
+                    <tr>
+                        <td>{{ imported.fileName }}</td>
+                        <td>{{ imported.transactions }}</td>
+                        <td>{{ imported.createdAt | date }}</td>
+                        <td>{{ imported.importedAt | date }}</td>
+                        <td>{{ imported.success  }}</td>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

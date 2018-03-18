@@ -1,6 +1,6 @@
 services:
   filter_listener:
-    class: TransactionsBundle\EventListener\FilterListener
+    class: TransactionsBundle\EventListener\UserFilterListener
     arguments:
       - "@doctrine.orm.entity_manager"
       - "@security.token_storage"

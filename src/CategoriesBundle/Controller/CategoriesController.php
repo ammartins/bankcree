@@ -47,7 +47,7 @@ class CategoriesController extends Controller
             $organizedC[$category->getId()][] = $category;
 
             foreach ($categories as $categor) {
-                if ($categor->getId() === $category->getId() 
+                if ($categor->getId() === $category->getId()
                     || is_null($categor->getParent())
                 ) {
                     continue;
@@ -245,7 +245,6 @@ class CategoriesController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             // Setting User
             $user = $this->get('security.token_storage')->getToken()->getUser();
             $transaction->setAccountId($user->getId());

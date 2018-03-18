@@ -4,32 +4,32 @@ parameters:
 #    parameter_name: value
 
 services:
-  transactions.match:
-    class: TransactionsBundle\Service\MatchService
-    arguments:
-      - "@account.account_repository"
-      - "@account.category_repository"
-      - "@doctrine.orm.entity_manager"
-      - "@event_dispatcher"
-  transactions.helper:
-    class: TransactionsBundle\Service\HelperService
-    arguments:
-      - "@account.account_repository"
-      - "@account.category_repository"
-      - "@doctrine.orm.entity_manager"
-      - "@event_dispatcher"
-  login.user_service:
-    class: LoginBundle\Service\AccountService
-    arguments:
-      - "@account.account_repository"
-      - "@event_dispatcher"
-  account.account_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine", getRepository]
-    arguments: [ TransactionsBundle\Entity\Transactions]
-  account.category_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine", getRepository]
-    arguments: [ CategoriesBundle\Entity\Categories]
-  account.menu:
-    class: TransactionsBundle\Service\MenuService
+    transactions.match:
+        class: TransactionsBundle\Service\MatchService
+        arguments:
+            - "@account.account_repository"
+            - "@account.category_repository"
+            - "@doctrine.orm.entity_manager"
+            - "@event_dispatcher"
+    transactions.helper:
+        class: TransactionsBundle\Service\HelperService
+        arguments:
+            - "@account.account_repository"
+            - "@account.category_repository"
+            - "@doctrine.orm.entity_manager"
+            - "@event_dispatcher"
+    login.user_service:
+        class: LoginBundle\Service\AccountService
+        arguments:
+            - "@account.account_repository"
+            - "@event_dispatcher"
+    account.account_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments: [ TransactionsBundle\Entity\Transactions]
+    account.category_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine", getRepository]
+        arguments: [ CategoriesBundle\Entity\Categories]
+    account.menu:
+        class: TransactionsBundle\Service\MenuService
