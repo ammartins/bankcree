@@ -56,7 +56,7 @@ class User implements UserInterface, \Serializable
     private $isActive;
 
     /**
-     * @ORM\Column(name="bank_account", type="string", unique=true)
+     * @ORM\Column(name="bank_account", type="string")
      */
     private $bankAccount;
 
