@@ -3,7 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@TransactionsBundle/Resources/config/services.yml" }
-    - { resource: "@LoginBundle/Resources/config/services.yml" }
+    - { resource: "@UserBundle/Resources/config/services.yml" }
     - { resource: "@BudgetBundle/Resources/config/services.yml" }
     - { resource: "@CategoriesBundle/Resources/config/services.yml" }
     - { resource: "@ImporterBundle/Resources/config/services.yml" }
@@ -106,7 +106,7 @@ swiftmailer:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ 'TransactionsBundle', 'LoginBundle' ]
+    bundles:        [ 'TransactionsBundle', 'UserBundle' ]
 
     filters:
         cssrewrite: ~
