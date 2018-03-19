@@ -14,7 +14,7 @@ budget:
     prefix:   /
 
 login:
-    resource: "@LoginBundle/Controller/"
+    resource: "@UserBundle/Controller/"
     type:     annotation
     prefix:   /
 

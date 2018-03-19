@@ -1,6 +1,6 @@
 <?php
 
-namespace LoginBundle\Entity;
+namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * User
  *
  * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass="LoginBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="UserBundle\Repository\UserRepository")
  */
 class User implements UserInterface, \Serializable
 {
@@ -56,7 +56,7 @@ class User implements UserInterface, \Serializable
     private $isActive;
 
     /**
-     * @ORM\Column(name="bank_account", type="string", unique=true)
+     * @ORM\Column(name="bank_account", type="string")
      */
     private $bankAccount;
 

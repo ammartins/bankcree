@@ -18,7 +18,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
-            new LoginBundle\LoginBundle(),
+            new UserBundle\UserBundle(),
             new TransactionsBundle\TransactionsBundle(),
             new BudgetBundle\BudgetBundle(),
             new CategoriesBundle\CategoriesBundle(),
