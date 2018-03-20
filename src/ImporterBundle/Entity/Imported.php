@@ -50,6 +50,13 @@ class Imported
     private $success;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="failed", type="integer")
+     */
+    private $failed;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="importedAt", type="datetime")
@@ -167,6 +174,30 @@ class Imported
     public function getSuccess()
     {
         return $this->success;
+    }
+
+    /**
+     * Set failed
+     *
+     * @param integer $failed
+     *
+     * @return Imported
+     */
+    public function setFailed($failed)
+    {
+        $this->failed = $failed;
+
+        return $this;
+    }
+
+    /**
+     * Get failed
+     *
+     * @return int
+     */
+    public function getFailed()
+    {
+        return $this->failed;
     }
 
     /**

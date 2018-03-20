@@ -22,10 +22,30 @@ class ImportService
     public function __construct(
         EntityManager $entityManager,
         TokenStorageInterface $tokenStorage
-    )
-    {
+    ) {
         $this->em = $entityManager;
         $this->tokenStorage = $tokenStorage;
+    }
+
+    public function saveFile(
+        $filename,
+        $createdAt,
+        $account,
+        $importedResult
+    ) {
+        $import = new Imported();
+        $import->setFileName($filename);
+        $import->setImportedAt(new \Datetime(date('d-M-Y')));
+        $import->setCreatedAt($createdAt);
+        $import->setAccount($account);
+        $import->setTransactions($importedResult['total']);
+        $import->setSuccess($importedResult['success']);
+        $import->setFailed($importedResult['failed']);
+
+        $this->em->persist($import);
+        $this->em->flush();
+
+        return true;
     }
 
     public function importFiles()
@@ -42,48 +62,23 @@ class ImportService
             $date = str_split($matches[2], 2);
             $createdAt = new \DateTime("$date[1]/$date[2]/$date[0]");
 
-            // Number of lines in files
-            $fileContent = file_get_contents($file->getPathName());
-            $fileContentArray = explode("\n", $fileContent);
-            $transactionsCount = count($fileContentArray);
-
             // Get File Extension
             $extension = $path[count($path)-2];
 
             if ($extension == 'TAB') {
-                try {
-                    $verify = $this
-                        ->em
-                        ->getRepository('ImporterBundle:Imported')
-                        ->getTransactionByFileName($filename);
+                $verify = $this
+                    ->em
+                    ->getRepository('ImporterBundle:Imported')
+                    ->getTransactionByFileName($filename);
 
-                    if (count($verify) > 0) {
-                        continue;
-                    }
-
-                    $account = $path[count($path)-1];
-
-                    $import = new Imported();
-                    $import->setFileName($filename);
-                    $import->setImportedAt(new \Datetime(date('d-M-Y')));
-                    $import->setCreatedAt($createdAt);
-                    $import->setAccount($account);
-                    $import->setTransactions($transactionsCount);
-                    $import->setSuccess(0);
-
-                    $this->em->persist($import);
-                    $this->em->flush();
-
-                    $this->importFilesContent($file->getPathName(), $account);
-
-                    $import->setSuccess(1);
-
-                    $this->em->persist($import);
-                    $this->em->flush();
-                } catch (Excetption $e) {
-                    $import->setSuccess(0);
-                    echo "ups ups";
+                if (count($verify) > 0) {
+                    continue;
                 }
+
+                $account = $path[count($path)-1];
+
+                $importedResult = $this->importFilesContent($file->getPathName(), $account);
+                $this->saveFile($filename, $createdAt, $account, $importedResult);
             }
         }
     }
@@ -94,6 +89,11 @@ class ImportService
         $fileContentArray = explode("\n", $fileContent);
 
         $bankAcc = $this->tokenStorage->getToken()->getUser()->getBankAccount();
+        $result = array(
+            'failed' => 0,
+            'success' => 0,
+            'total' => 0,
+        );
 
         if ($fileContent) {
             foreach ($fileContentArray as $line) {
@@ -102,9 +102,11 @@ class ImportService
                 if (empty($line)) {
                     continue;
                 }
+                $result['total'] += 1;
 
                 $info = explode("\t", $line);
                 if ($bankAcc != $info[0]) {
+                    $result['failed'] += 1;
                     continue;
                 }
 
@@ -140,8 +142,9 @@ class ImportService
 
                 $this->em->persist($transaction);
                 $this->em->flush();
+                $result['success'] += 1;
             }
-            return;
+            return $result;
         }
     }
 }

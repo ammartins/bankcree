@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/importer", name="importer")
+     * @Route("/import", name="importer")
      */
     public function indexAction()
     {
@@ -25,9 +25,20 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/importAll")
+     * @Route("/import/all", name="importAll")
      */
     public function importAllAction()
+    {
+        $importer = $this->get('importer.import');
+        $importer->importFiles();
+
+        return $this->redirectToRoute('importer');
+    }
+
+    /**
+     * @Route("/imoport/file/", name="importFile")
+     */
+    public function importFileAction($filename)
     {
         $importer = $this->get('importer.import');
         $importer->importFiles();
