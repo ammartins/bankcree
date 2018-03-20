@@ -39,5 +39,4 @@ class HelperService
         }
         return $data[0];
     }
-
 }
