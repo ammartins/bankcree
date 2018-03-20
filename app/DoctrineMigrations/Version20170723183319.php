@@ -15,7 +15,6 @@ class Version20170723183319 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql("ALTER TABLE budget ADD name_id INT DEFAULT NULL, DROP name");
         $this->addSql("ALTER TABLE budget ADD CONSTRAINT FK_73F2F77B71179CD6 FOREIGN KEY (name_id) REFERENCES transaction_type (id)");
         $this->addSql("CREATE UNIQUE INDEX UNIQ_73F2F77B71179CD6 ON budget (name_id)");
@@ -27,7 +26,5 @@ class Version20170723183319 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

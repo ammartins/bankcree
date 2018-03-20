@@ -15,7 +15,6 @@ class Version20160417180807 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        // And the universe was made
         $this->addSql(
             "CREATE TABLE transactions (
                 id INT(11) NOT NULL AUTO_INCREMENT,
@@ -67,7 +66,5 @@ class Version20160417180807 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        // this down() migration is auto-generated, please modify it to your needs
-
     }
 }
