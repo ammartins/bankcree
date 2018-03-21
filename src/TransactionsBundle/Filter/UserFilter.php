@@ -20,7 +20,7 @@ class UserFilter extends SQLFilter
         ClassMetadata $targetEntity,
         $targetTableAlias
     ) {
-        if (!$targetEntity->getReflectionClass()->name == 'ImporterBundle\Entity\Imported') {
+        if ($targetEntity->getReflectionClass()->name != 'ImporterBundle\Entity\Imported') {
             if ($this->getParameter('userId')) {
                 return sprintf(
                     '%s.account_id = %s',
