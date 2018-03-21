@@ -15,9 +15,7 @@ class Version20180317220211 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql("ALTER TABLE user ADD bank_account VARCHAR(255) NOT NULL;");
-        // $this->addSql("ALTER TABLE transactions RENAME INDEX fk_eaa81a4c6e9d6988 TO IDX_EAA81A4C6E9D6988;");
     }
 
     /**
@@ -25,7 +23,5 @@ class Version20180317220211 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

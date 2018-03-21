@@ -15,7 +15,6 @@ class Version20171011214043 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(
             "ALTER TABLE transaction_type
             ADD company_logo VARCHAR(255) DEFAULT NULL"
@@ -27,6 +26,5 @@ class Version20171011214043 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        // this down() migration is auto-generated, please modify it to your needs
     }
 }
