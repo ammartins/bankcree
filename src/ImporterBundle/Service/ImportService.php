@@ -48,10 +48,10 @@ class ImportService
         return true;
     }
 
-    public function importFiles()
+    public function importFiles($importFrom, $fileName = "")
     {
         $finder = new Finder();
-        $finder->files()->in('../data')->name('*.TAB');
+        $finder->files()->in($importFrom)->name('*.TAB');
 
         foreach ($finder as $file) {
             $path = explode("/", $file->getPath());

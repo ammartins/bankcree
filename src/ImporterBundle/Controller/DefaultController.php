@@ -30,7 +30,8 @@ class DefaultController extends Controller
     public function importAllAction()
     {
         $importer = $this->get('importer.import');
-        $importer->importFiles();
+        $importFrom = $this->container->getParameter('data_folder');
+        $importer->importFiles($importFrom);
 
         return $this->redirectToRoute('importer');
     }
@@ -41,7 +42,8 @@ class DefaultController extends Controller
     public function importFileAction($filename)
     {
         $importer = $this->get('importer.import');
-        $importer->importFiles();
+        $importFrom = $this->container->getParameter('data_folder');
+        $importer->importFiles($importFrom, $filename);
 
         return $this->redirectToRoute('importer');
     }
