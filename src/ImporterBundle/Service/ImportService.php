@@ -48,7 +48,7 @@ class ImportService
         return true;
     }
 
-    public function importFiles($importFrom, $fileName = "")
+    public function importFiles($importFrom)
     {
         $finder = new Finder();
         $finder->files()->in($importFrom)->name('*.TAB');
