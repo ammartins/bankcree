@@ -1,4 +1,4 @@
-$(document).ready(
+    $(document).ready(
     function () {
         // Data For Graphs
         var sdF = [];
@@ -58,7 +58,7 @@ $(document).ready(
                     type: 'pie',
                 },
                 tooltip: {
-                    pointFormat: '<b>Spent %: {point.percentage:.2f}%</b>'
+                    pointFormat: "<b>Spent %: {point.percentage:.2f}%</b>"
                 },
                 plotOptions: {
                     pie: {
@@ -66,7 +66,7 @@ $(document).ready(
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            format: '{point.name} {point.value}€',
+                            format: "{point.name} {point.value}€",
                             style: {
                                 color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                             }
