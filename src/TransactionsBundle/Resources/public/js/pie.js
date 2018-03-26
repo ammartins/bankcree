@@ -18,14 +18,14 @@ $(document).ready(
             gtype = 'column';
         }
 
-        /***************************************************************************
+    /***************************************************************************
     *                         This is for the Pie Chart                        *
      **************************************************************************/
         // Calculate Total Expenses
         for(key in obj) {
             if (obj.hasOwnProperty(key)) {
                 if (obj[key].total > 0) {
-                    total = parseInt(obj[key].total);
+                    total += parseInt(obj[key].total);
                 }
             }
         }
@@ -39,10 +39,11 @@ $(document).ready(
         // 100 - total
         // x   -  sd[key]
         for(key in obj) {
-            if (obj.hasOwnProperty(key) && parseInt(obj[key].total) <= 0) {
+            if (obj.hasOwnProperty(key) && parseInt(obj[key].total) < 0) {
                 sdF[idx++] = {
                     'name': obj[key].shortDescription,
-                    'y' : (Math.floor((parseInt(obj[key].total)*100)/total))*-1
+                    'y' : (((parseInt(obj[key].total)*100)/total))*-1,
+                    'value' : parseInt(obj[key].total)
                 };
             }
         }
@@ -57,7 +58,7 @@ $(document).ready(
                     type: 'pie',
                 },
                 tooltip: {
-                    pointFormat: '<b>Spent %: {point.percentage:.1f}%</b>'
+                    pointFormat: '<b>Spent %: {point.percentage:.2f}%</b>'
                 },
                 plotOptions: {
                     pie: {
@@ -65,12 +66,12 @@ $(document).ready(
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            format: '{point.name} {point.value}€',
                             style: {
                                 color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                             }
                         },
-                        showInLegend: false
+                        showInLegend: true
                     }
                 },
                 title: {

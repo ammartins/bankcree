@@ -59,9 +59,6 @@ class TransactionsController extends Controller
             : $month[2];
         }
 
-        $helper = $this->get('transactions.helper');
-        $data[0] = $helper->calculateSavings($data);
-
         foreach ($data[0] as $month) {
             $year_of_month = $month['year'];
             $by_year_data[$year_of_month][] = $month;
