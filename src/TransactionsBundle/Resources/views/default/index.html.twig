@@ -6,13 +6,13 @@
 
 {% block body %}
     <script type="text/javascript">
-        obj     = jQuery.parseJSON('{{ data|raw }}');
-        objD    = jQuery.parseJSON('{{ graphDay|raw }}');
-        objM    = jQuery.parseJSON('{{ graphMonth|raw }}');
-        objM2   = jQuery.parseJSON('{{ graphMonth2|raw }}');
-        day     = jQuery.parseJSON('{{ dataDay|raw }}');
-        objMI   = jQuery.parseJSON('{{ income|raw }}');
-        objME   = jQuery.parseJSON('{{ expenses|raw }}');
+        global obj     = jQuery.parseJSON('{{ data|raw }}');
+        global objD    = jQuery.parseJSON('{{ graphDay|raw }}');
+        global objM    = jQuery.parseJSON('{{ graphMonth|raw }}');
+        global objM2   = jQuery.parseJSON('{{ graphMonth2|raw }}');
+        global day     = jQuery.parseJSON('{{ dataDay|raw }}');
+        global objMI   = jQuery.parseJSON('{{ income|raw }}');
+        global objME   = jQuery.parseJSON('{{ expenses|raw }}');
     </script>
 
     {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}
