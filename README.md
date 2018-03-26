@@ -14,12 +14,6 @@
   php app/console user:create username email password
 ```
 
-## Import TAB files with data from ABNAMRO
-
-```
-  php app/console import:csv file.TAB username
-```
-
 A Symfony project created on February 17, 2016, 9:38 pm.
 
 
