@@ -41,9 +41,9 @@
         for(key in obj) {
             if (obj.hasOwnProperty(key) && parseInt(obj[key].total) < 0) {
                 sdF[idx++] = {
-                    'name': obj[key].shortDescription,
-                    'y' : (((parseInt(obj[key].total)*100)/total))*-1,
-                    'value' : parseInt(obj[key].total)
+                    "name": obj[key].shortDescription,
+                    "y" : (((parseInt(obj[key].total)*100)/total))*-1,
+                    "value" : parseInt(obj[key].total)
                 };
             }
         }
