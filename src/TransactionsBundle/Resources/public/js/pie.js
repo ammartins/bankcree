@@ -1,5 +1,6 @@
-    $(document).ready(
+$(document).ready(
     function () {
+        $(".table").tablesorter({debug: false});
         // Data For Graphs
         var sdF = [];
         var perMonth = [ 0,0,0,0,0,0,0,0,0,0,0,0];
