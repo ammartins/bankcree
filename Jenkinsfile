@@ -15,9 +15,9 @@ pipeline {
     }
     stage('Lint') {
       steps {
-        sh "
+        sh '''
             phplint \'**/*.php\' \'!vendor/**\' \'!app/cache/**\'
-        "
+        '''
       }
     }
   }
