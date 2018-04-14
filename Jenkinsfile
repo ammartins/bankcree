@@ -8,12 +8,16 @@ pipeline {
     }
     stage('Install Assetics') {
       steps {
-        sh 'php app/console assetic:dump'
+        sh '''
+            php app/console assetic:dump
+        '''
       }
     }
     stage('Lint') {
       steps {
-        sh 'phplint \'**/*.php\' \'!vendor/**\' \'!app/cache/**\''
+        sh "
+            phplint \'**/*.php\' \'!vendor/**\' \'!app/cache/**\'
+        "
       }
     }
   }
