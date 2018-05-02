@@ -18,12 +18,6 @@ pipeline {
         sh '''
             phplint \'**/*.php\' \'!vendor/**\' \'!app/cache/**\'
         '''
-        sh '''
-            composer install --dev
-        '''
-        sh '''
-            php app/console assetic:dump web
-        '''
       }
     }
   }
