@@ -64,7 +64,7 @@ class UserCommand extends ContainerAwareCommand
         $user->setEmail($email);
         $user->setCreatedAt($createdAt);
         $user->setPassword(password_hash($password, 1));
-        $user->setBankAccoun($accountNumber);
+        $user->setBankAccount($accountNumber);
 
         $em->persist($user);
         $em->flush();
