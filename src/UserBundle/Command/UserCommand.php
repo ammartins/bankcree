@@ -31,6 +31,11 @@ class UserCommand extends ContainerAwareCommand
                 InputArgument::REQUIRED,
                 'Account Password'
             )
+            ->addArgument(
+                'bankaccount',
+                InputArgument::REQUIRED,
+                'Account Number'
+            )
             ->addOption(
                 'yell',
                 null,
@@ -46,6 +51,7 @@ class UserCommand extends ContainerAwareCommand
         $username = $input->getArgument('username');
         $email = $input->getArgument('email');
         $password = $input->getArgument('password');
+        $accountNumber = $input->getArgument('bankaccount');
 
         // $isActive = 1;
         $createdAt = new \DateTime();
@@ -58,6 +64,7 @@ class UserCommand extends ContainerAwareCommand
         $user->setEmail($email);
         $user->setCreatedAt($createdAt);
         $user->setPassword(password_hash($password, 1));
+        $user->setBankAccoun($accountNumber);
 
         $em->persist($user);
         $em->flush();

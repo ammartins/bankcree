@@ -207,7 +207,6 @@ class User implements UserInterface, \Serializable
 
     public function eraseCredentials()
     {
-
     }
 
     /**
