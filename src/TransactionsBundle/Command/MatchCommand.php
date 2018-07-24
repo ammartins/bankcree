@@ -87,7 +87,7 @@ class MatchCommand extends ContainerAwareCommand
 
         $results = array();
 
-        $progress = new ProgressBar($output, count($transactionMatched));
+        $progress = new ProgressBar($output, count((array)$transactionMatched));
         $progress->setFormat('verbose');
 
         $matchService = $this
@@ -97,23 +97,12 @@ class MatchCommand extends ContainerAwareCommand
             ->get('transactions.match');
 
         $progress->start();
-        foreach ($transactionMatched as $match) {
+        foreach ($transactions as $toMatch) {
             $progress->advance();
 
-            $matches = $matchService->match($match, $transactions, $category);
-
-            if (count($matches) === 0) {
-                continue;
-            }
-
-            foreach ($matches as $matchR) {
-                $results
-                    [$match->getCategories()->getId()]
-                    [$matchR->getId()] = $matchR;
-            }
+            $matches = $matchService->match($transactionMatched, $toMatch, $category);
         }
         $progress->finish();
         dump('Ended '.date('h:i:s A'));
-        dump('Matched '.count($results).' new transactions');
     }
 }
