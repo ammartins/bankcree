@@ -99,8 +99,7 @@ class MatchCommand extends ContainerAwareCommand
         $progress->start();
         foreach ($transactions as $toMatch) {
             $progress->advance();
-
-            $matches = $matchService->match($transactionMatched, $toMatch, $category);
+            $matchService->match($transactionMatched, $toMatch, $category);
         }
         $progress->finish();
         dump('Ended '.date('h:i:s A'));
