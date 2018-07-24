@@ -51,7 +51,7 @@ class MatchService
 
             $matchPercent = round((($score*100)/(count($itemDescription))), 0);
 
-            if ($matchPercent >= 100) {
+            if ($matchPercent >= 100 || ($matchPercent >= 90 && $match->getAmount() == $transaction->getAmount())) {
                 $transaction->setCategories($type[0]);
                 $transaction->setMatchPercentage($matchPercent);
 

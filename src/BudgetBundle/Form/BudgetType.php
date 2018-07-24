@@ -44,9 +44,11 @@ class BudgetType extends AbstractType
             ->add('name')
             ->add('budgetLimit')
             ->add(
-                'name', ChoiceType::class, array(
-                'choices' => $parent,
-                'required' => false
+                'name',
+                ChoiceType::class,
+                array(
+                    'choices' => $parent,
+                    'required' => false
                 )
             )
             ->add('save', SubmitType::class);
