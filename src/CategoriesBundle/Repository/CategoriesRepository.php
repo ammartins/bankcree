@@ -28,4 +28,15 @@ class CategoriesRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findAllParents()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select('p')
+            ->from('CategoriesBundle:Categories', 'c')
+            ->where('p.parent is null');
+
+        return $qb->getQuery()->getResult();
+    }
 }

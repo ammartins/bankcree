@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe019a308bc9dd8d0b0840f0ba51ffbf",
+    "content-hash": "2ad191d552bcc2aaaa1118783c527ac7",
     "packages": [
         {
             "name": "components/jquery",
@@ -2175,6 +2175,18 @@
         },
         {
             "name": "sentry/sentry",
+<<<<<<< HEAD
+            "version": "1.8.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/getsentry/sentry-php.git",
+                "reference": "643ec20d181ca55317d4ccda6ad658b9a8b4f06a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/643ec20d181ca55317d4ccda6ad658b9a8b4f06a",
+                "reference": "643ec20d181ca55317d4ccda6ad658b9a8b4f06a",
+=======
             "version": "1.9.0",
             "source": {
                 "type": "git",
@@ -2185,6 +2197,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/c90567d78382b803e563939654d1563ddee61707",
                 "reference": "c90567d78382b803e563939654d1563ddee61707",
+>>>>>>> 18a54c8e5aa1ed132980695b4b8db8aa4e96ff75
                 "shasum": ""
             },
             "require": {
@@ -2235,7 +2248,11 @@
                 "log",
                 "logging"
             ],
+<<<<<<< HEAD
+            "time": "2018-03-20T12:52:10+00:00"
+=======
             "time": "2018-05-03T12:06:52+00:00"
+>>>>>>> 18a54c8e5aa1ed132980695b4b8db8aa4e96ff75
         },
         {
             "name": "sentry/sentry-symfony",

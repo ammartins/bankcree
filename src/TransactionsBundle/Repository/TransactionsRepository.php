@@ -360,4 +360,17 @@ class TransactionsRepository extends EntityRepository
 
         return $data;
     }
+
+    public function getMonthExpenses()
+    {
+        // SELECT * FROM transactions AS t JOIN transaction_type AS tt ON
+        // tt.id = t.transaction_type WHERE YEAR(create_at) = 2018
+        // AND MONTH(create_at) = 3;
+        //
+        // $query = $qb
+        //     ->select('i')
+        //     ->from('ImporterBundle:Imported', 'i')
+        //     ->where('i.fileName = ?1')
+        //     ->setParameter(1, $filename)->getQuery();
+    }
 }
