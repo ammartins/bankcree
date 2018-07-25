@@ -1,4 +1,0 @@
-services:
-#    categories.example:
-#        class: CategoriesBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
