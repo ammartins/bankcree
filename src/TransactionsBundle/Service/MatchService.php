@@ -28,16 +28,20 @@ class MatchService
         $this->entityManager = $entityManager;
     }
 
-    public function match($match, $transactions, $category)
+    public function match($matches, $transaction, $category)
     {
-        $results = array();
+        $matchDescription = $this->cleanUp($transaction->getDescription());
+        $type = $this->categoryRepository->findById($category);
 
-        $matchDescription = $this->cleanUp($match->getDescription());
+        if ($transaction->getCategories() != null) {
+            return;
+        }
 
-        foreach ($transactions as $item) {
-            $score   = 0;
+        foreach ($matches as $match) {
+            $score = 0;
             $special = 0;
-            $itemDescription = $this->cleanUp($item->getDescription());
+
+            $itemDescription = $this->cleanUp($match->getDescription());
 
             foreach ($itemDescription as $item1) {
                 if (in_array($item1, $matchDescription)) {
@@ -47,22 +51,17 @@ class MatchService
 
             $matchPercent = round((($score*100)/(count($itemDescription))), 0);
 
-            $type = $this->transactionsRepository->findById($category);
-            $type = $this->categoryRepository->findById($category);
+            if ($matchPercent >= 100 || ($matchPercent >= 90 && $match->getAmount() == $transaction->getAmount())) {
+                $transaction->setCategories($type[0]);
+                $transaction->setMatchPercentage($matchPercent);
 
-            if ($matchPercent >= 100 && $item->getCategories() == null) {
-                $item->setCategories($type[0]);
-                $item->setMatchPercentage($matchPercent);
-
-                $this->entityManager->persist($item);
+                $this->entityManager->persist($transaction);
                 $this->entityManager->flush();
-
-                $results[$item->getId()] = $item;
 
                 $score = 0;
                 $special = 0;
 
-                continue;
+                break;
             }
         }
     }

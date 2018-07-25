@@ -38,8 +38,10 @@ class CategoriesType extends AbstractType
 
         if (!$options['data']->getId()) {
             $builder->add(
-                'parent', ChoiceType::class, array(
-                'choices' => $parent
+                'parent',
+                ChoiceType::class,
+                array(
+                    'choices' => $parent
                 )
             );
         }

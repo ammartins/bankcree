@@ -11,6 +11,7 @@
         <thead class="thead-dark">
             <tr>
                 <th>Date</th>
+                <th>Parent</th>
                 <th>Category</th>
                 <th>Saldo</th>
                 <th>Amount</th>
@@ -20,6 +21,11 @@
         {% for transaction in transactions %}
             <tr {% if transaction.categories %}class="hideTransaction"{% endif %}>
                 <td>{{ transaction.createAt.date|date('Y-m-d') }}</td>
+                {% if transaction.categories %}
+                    <td>{{ transaction.categories.parent.name }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
                 {% if transaction.categories %}
                     <td>{{ transaction.categories.name|capitalize }}</td>
                 {% else %}
