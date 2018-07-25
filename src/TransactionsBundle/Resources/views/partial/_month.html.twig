@@ -21,7 +21,6 @@
         {% for transaction in transactions %}
             <tr {% if transaction.categories %}class="hideTransaction"{% endif %}>
                 <td>{{ transaction.createAt.date|date('Y-m-d') }}</td>
-                <td>{{ transaction.categories.parent.name }}</td>
                 {% if transaction.categories %}
                     <td>{{ transaction.categories.parent.name }}</td>
                 {% else %}
