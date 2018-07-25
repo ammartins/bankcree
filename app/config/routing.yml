@@ -1,5 +1,5 @@
-account:
-    resource: "@AccountBundle/Controller/"
+importer:
+    resource: "@ImporterBundle/Controller/"
     type:     annotation
     prefix:   /
 
@@ -14,7 +14,7 @@ budget:
     prefix:   /
 
 login:
-    resource: "@LoginBundle/Controller/"
+    resource: "@UserBundle/Controller/"
     type:     annotation
     prefix:   /
 

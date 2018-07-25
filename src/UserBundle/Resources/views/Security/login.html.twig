@@ -1,0 +1,39 @@
+{% block stylesheets %}
+  {% stylesheets '@UserBundle/Resources/public/css/*' %}
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
+  {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+  <div class="login">
+    {% if error %}
+      <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    <h1>Login</h1>
+    <form action="{{ path('login') }}" method="post">
+      <input
+        type="text"
+        id="username"
+        placeholder="Username"
+        required="required"
+        name="_username"
+        value=""
+      />
+
+      <input
+        type="password"
+        id="password"
+        name="_password"
+        name="p"
+        placeholder="Password"
+        required="required"
+      />
+
+      <button type="submit" class="btn btn-primary btn-block btn-large">
+        Login
+      </button>
+
+      <input type="hidden" name="_target_path" value="/" />
+    </form>
+  </div>
+{% endblock %}

@@ -18,12 +18,11 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
-            new LoginBundle\LoginBundle(),
+            new UserBundle\UserBundle(),
             new TransactionsBundle\TransactionsBundle(),
             new BudgetBundle\BudgetBundle(),
             new CategoriesBundle\CategoriesBundle(),
-            new Sentry\SentryBundle\SentryBundle(),
-            new AccountBundle\AccountBundle(),
+            new ImporterBundle\ImporterBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
@@ -31,7 +30,10 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-            // $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
+        }
+
+        if (in_array($this->getEnvironment(), array('prod', 'dev'), true)) {
+            $bundles[] = new Sentry\SentryBundle\SentryBundle();
         }
 
         return $bundles;

@@ -3,10 +3,8 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@TransactionsBundle/Resources/config/services.yml" }
-    - { resource: "@LoginBundle/Resources/config/services.yml" }
-    - { resource: "@BudgetBundle/Resources/config/services.yml" }
-    - { resource: "@CategoriesBundle/Resources/config/services.yml" }
-    - { resource: "@AccountBundle/Resources/config/services.yml" }
+    - { resource: "@UserBundle/Resources/config/services.yml" }
+    - { resource: "@ImporterBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -106,7 +104,7 @@ swiftmailer:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ 'TransactionsBundle', 'LoginBundle' ]
+    bundles:        [ 'TransactionsBundle', 'UserBundle' ]
 
     filters:
         cssrewrite: ~
@@ -117,25 +115,13 @@ assetic:
         bootstrap_css:
             inputs:
                 - "%kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap.css"
-                - "%kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap-theme.css"
+                - "%kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap-grid.css"
+                - "%kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap-grid.min.css"
+                - "%kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap-reboot.css"
+                - "%kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap-reboot.min.css"
+                - "%kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap.css"
+                - "%kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap.min.css"
             filters: [cssrewrite]
-
-        bootstrap_glyphicons_ttf:
-            inputs:
-                - "%kernel.root_dir%/../vendor/twitter/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf"
-            output: "fonts/glyphicons-halflings-regular.ttf"
-        bootstrap_glyphicons_eot:
-            inputs:
-                - "%kernel.root_dir%/../vendor/twitter/bootstrap/dist/fonts/glyphicons-halflings-regular.eot"
-            output: "fonts/glyphicons-halflings-regular.eot"
-        bootstrap_glyphicons_svg:
-            inputs:
-                - "%kernel.root_dir%/../vendor/twitter/bootstrap/dist/fonts/glyphicons-halflings-regular.svg"
-            output: "fonts/glyphicons-halflings-regular.svg"
-        bootstrap_glyphicons_woff:
-            inputs:
-                - "%kernel.root_dir%/../vendor/twitter/bootstrap/dist/fonts/glyphicons-halflings-regular.woff"
-            output: "fonts/glyphicons-halflings-regular.woff"
 
         jquery:
             inputs:

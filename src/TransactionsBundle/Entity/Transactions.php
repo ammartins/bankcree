@@ -101,7 +101,7 @@ class Transactions
     /**
      * Set transactionHash
      *
-     * @param integer $transactionHash
+     * @param  integer $transactionHash
      * @return Transactions
      */
     public function setTransactionHash($transactionHash)
@@ -123,7 +123,7 @@ class Transactions
     /**
      * Set createAt
      *
-     * @param \DateTime $createAt
+     * @param  \DateTime $createAt
      * @return Transactions
      */
     public function setCreateAt($createAt)
@@ -145,7 +145,7 @@ class Transactions
     /**
      * Set startsaldo
      *
-     * @param string $startsaldo
+     * @param  string $startsaldo
      * @return Transactions
      */
     public function setStartsaldo($startsaldo)
@@ -167,7 +167,7 @@ class Transactions
     /**
      * Set endsaldo
      *
-     * @param string $endsaldo
+     * @param  string $endsaldo
      * @return Transactions
      */
     public function setEndsaldo($endsaldo)
@@ -189,7 +189,7 @@ class Transactions
     /**
      * Set amount
      *
-     * @param string $amount
+     * @param  string $amount
      * @return Transactions
      */
     public function setAmount($amount)
@@ -211,7 +211,7 @@ class Transactions
     /**
      * Set description
      *
-     * @param string $description
+     * @param  string $description
      * @return Transactions
      */
     public function setDescription($description)
@@ -233,7 +233,7 @@ class Transactions
     /**
      * Set shortDescription
      *
-     * @param string $shortDescription
+     * @param  string $shortDescription
      * @return Transactions
      */
     public function setShortDescription($shortDescription)
@@ -255,7 +255,7 @@ class Transactions
     /**
      * Set accountId
      *
-     * @param integer $accountId
+     * @param  integer $accountId
      * @return Transactions
      */
     public function setaccountId($accountId)
@@ -277,7 +277,7 @@ class Transactions
     /**
      * Set Categories
      *
-     * @param integer $categories
+     * @param  integer $categories
      * @return Transactions
      */
     public function setCategories($categories)
@@ -299,7 +299,7 @@ class Transactions
     /**
      * Set matchPercentage
      *
-     * @param integer $matchPercentage
+     * @param  integer $matchPercentage
      * @return Transactions
      */
     public function setMatchPercentage($matchPercentage)

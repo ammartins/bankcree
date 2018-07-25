@@ -15,7 +15,6 @@ class Version20180304105809 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(
             "ALTER TABLE transaction_type
             ADD savings TINYINT(1) DEFAULT NULL"
@@ -27,7 +26,5 @@ class Version20180304105809 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

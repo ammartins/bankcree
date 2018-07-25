@@ -8,7 +8,8 @@
   <div class="text-right">
     <a class="btn btn-success" href="{{ path('budget_new') }}">New</a>
   </div>
-  <table class="table table-condensed table-hover table-responsive">
+    <div class="table-responsive">
+  <table class="table table-condensed table-hover">
     <tr>
       <th class="text-left">Categorie</th>
       <th class="text-right">Limit</th>
@@ -16,7 +17,7 @@
       <th class="text-right">Options</th>
     </tr>
     {% for budget in budgets %}
-      <tr class="{% if budget.limit < budget.amount %}danger{% else %}success{% endif %}">
+      <tr class="{% if budget.limit < budget.amount %}table-danger{% else %}table-success{% endif %}">
         <td>{{ budget.name }}</td>
         <td class="text-right">{{ budget.limit }} €</td>
         <td class="text-right">{{ budget.amount }}  €</td>
@@ -26,4 +27,5 @@
       </tr>
     {% endfor %}
   </table>
+    </div>
 {% endblock %}

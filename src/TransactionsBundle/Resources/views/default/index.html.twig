@@ -6,32 +6,39 @@
 
 {% block body %}
     <script type="text/javascript">
-        //
-        obj = jQuery.parseJSON('{{ data|raw }}');
-        // Used for Net Worth Graph
-        objD = jQuery.parseJSON('{{ graphDay|raw }}');
-        //
-        objM = jQuery.parseJSON('{{ graphMonth|raw }}');
-        //
-        objM2 = jQuery.parseJSON('{{ graphMonth2|raw }}');
-        //
-        day = jQuery.parseJSON('{{ dataDay|raw }}');
-        //
-        objMI = jQuery.parseJSON('{{ income|raw }}');
-        //
-        objME = jQuery.parseJSON('{{ expenses|raw }}');
+        obj     = jQuery.parseJSON('{{ data|raw }}');
+        objD    = jQuery.parseJSON('{{ graphDay|raw }}');
+        objM    = jQuery.parseJSON('{{ graphMonth|raw }}');
+        objM2   = jQuery.parseJSON('{{ graphMonth2|raw }}');
+        day     = jQuery.parseJSON('{{ dataDay|raw }}');
+        objMI   = jQuery.parseJSON('{{ income|raw }}');
+        objME   = jQuery.parseJSON('{{ expenses|raw }}');
     </script>
 
     {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    <div class="card">
+        <div class="card-header">
+            <nav>
+                <div class="nav nav-tabs card-header-tabs" id="years" role="tablist">
+                      <a class="nav-item nav-link active" href="#table" role="tab" data-toggle="tab">Month</a>
+                      <a class="nav-item nav-link" href="#dailygraph" role="tab" data-toggle="tab">Graphs</a>
+                </div>
+            </nav>
 
+        </div>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="table">
+            <div class="col-md-12 mt-3">
             {% include 'TransactionsBundle:partial:_monthGraphNetWorth.html.twig' %}
+            </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="dailygraph">
+            <div class="col-md-12 mt-3">
             {% include 'TransactionsBundle:partial:_dailygraph.html.twig' %}
+            </div>
         </div>
+    </div>
     </div>
 {% endblock %}

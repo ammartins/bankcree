@@ -8,7 +8,8 @@
     <div class="text-right">
         <a class="btn btn-success" href="{{ path('categories_new') }}">New</a>
     </div>
-    <table class="table table-condensed table-hover table-responsive">
+    <div class="table-responsive">
+    <table class="table table-condensed table-hover">
         <tr>
             <th class="text-left">Name</th>
             <th class="text-left">Parent</th>
@@ -40,4 +41,5 @@
             {% endfor %}
         {% endfor %}
     </table>
+    </div>
 {% endblock %}

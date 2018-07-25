@@ -18,7 +18,7 @@ class BudgetRepository extends \Doctrine\ORM\EntityRepository
         $budgets = $this->getEntityManager()
             ->createQuery(
                 "SELECT tt.name, sum(t.amount) as amount, IDENTITY(tt.parent) as parent
-                FROM TransactionsBundle:Transactions t 
+                FROM TransactionsBundle:Transactions t
                 JOIN CategoriesBundle:Categories tt
                 WHERE t.categories IN
                 (

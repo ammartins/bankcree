@@ -14,7 +14,8 @@
     <p>{{ transaction.description }}</p>
     <p>{{ transaction.amount }}</p>
   </div>
-  <table class="table table-condensed table-hover table-responsive">
+    <div class="table-responsive">
+  <table class="table table-condensed table-hover">
     <tr>
       <th class="text-left">Description</th>
       <th class="text-left">Short Description</th>
@@ -22,7 +23,7 @@
       <th class="text-left">Amount</th>
     </tr>
     {% for transact in transactions %}
-      <tr {% if transaction.amount ==  transact.amount %}class="warning"{% endif %}>
+      <tr {% if transaction.amount ==  transact.amount %}class="bg-warning"{% endif %}>
         <td class="text-left">{{ transact.description }}</td>
         <td class="text-left">{{ transact.name }}</td>
         <td class="text-left">{{ transact.percentage}}</td>
@@ -30,6 +31,7 @@
       </tr>
     {% endfor %}
   </table>
+    </div>
   {{ form_start(form) }}
     <div class="form-group">
       <label for="short_description">{{ form_label(form.categories) }}</label>

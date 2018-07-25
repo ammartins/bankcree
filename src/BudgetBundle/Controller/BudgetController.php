@@ -37,22 +37,21 @@ class BudgetController extends Controller
                 "id" => $budget->getId()
             ];
             foreach ($budgetStatus as $budgetst) {
-                  if ($budgetst["name"] === $budget->getName()) {
-                      $result[$budget->getName()]["amount"] += $budgetst["amount"]*-1;
-                      continue;
-                  }
-                  if (
-                      $budgetst['parent']
-                  ) {
-                      $parentCategory = $em
-			              ->getRepository('CategoriesBundle:Categories')
-                          ->findById($budgetst['parent']);
-                      // TODO try to not have if inside of if
-                      if ($parentCategory[0]->getName() === $budget->getName()) {
+                if ($budgetst["name"] === $budget->getName()) {
+                    $result[$budget->getName()]["amount"] += $budgetst["amount"]*-1;
+                    continue;
+                }
+                if ($budgetst['parent']
+                ) {
+                    $parentCategory = $em
+                        ->getRepository('CategoriesBundle:Categories')
+                        ->findById($budgetst['parent']);
+                    // TODO try to not have if inside of if
+                    if ($parentCategory[0]->getName() === $budget->getName()) {
                         $result[$parentCategory[0]->getName()]["amount"] += $budgetst["amount"]*-1;
                         continue;
-                      }
-                  }
+                    }
+                }
             }
         }
 
@@ -86,10 +85,13 @@ class BudgetController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-						$name = $em->getRepository('CategoriesBundle:Categories')
-								->findBy(array('id' => $form->getData()->getName()));
+            $name = $em->getRepository('CategoriesBundle:Categories')
+                ->findBy(array('id' => $form->getData()->getName()));
 
             $budget->setName($name[0]->getName());
+
+            $userId = $this->get('security.context')->getToken()->getUser()->getId();
+            $budget->setAccountId($userId);
 
             $em->persist($budget);
             $em->flush();

@@ -15,7 +15,6 @@ class Version20170723195927 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql("ALTER TABLE budget DROP FOREIGN KEY FK_73F2F77B5E237E06");
         $this->addSql("DROP INDEX UNIQ_73F2F77B5E237E06 ON budget");
         $this->addSql("ALTER TABLE budget CHANGE name name VARCHAR(255) NOT NULL");
@@ -26,7 +25,5 @@ class Version20170723195927 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        // this down() migration is auto-generated, please modify it to your needs
-
     }
 }
