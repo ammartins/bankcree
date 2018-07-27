@@ -25,18 +25,12 @@ class CategoriesType extends AbstractType
 
         $parent = [null];
 
-        // dump($parents);
-        // exit;
-
         foreach ($parents as $par) {
             if ($par->getParent()) {
                 continue;
             }
             $parent[$par->getId()] = $par->getName();
         }
-
-        dump($parent);
-        exit;
 
         if ($options['data']->getId()) {
             $builder->add(
