@@ -24,7 +24,7 @@
         "twitter/bootstrap": "4.*",
         "components/jquery": "1.11.1",
         "FortAwesome/Font-Awesome": "*",
-        "symfony/assetic-bundle": "^2.7",
+        "symfony/assetic-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "oro/doctrine-extensions": "dev-master",
         "jms/serializer-bundle": "^1.1",

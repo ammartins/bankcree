@@ -20,12 +20,8 @@ class CategoriesType extends AbstractType
         $em = $options['entity_manager'];
         $parents = $em
             ->getRepository('CategoriesBundle:Categories')
-            ->findBy(
-                array(),
-                array(
-                    'name' => 'ASC'
-                )
-            );
+            ->findAllParents();
+            // );
 
         $parent = [null];
 
@@ -36,7 +32,7 @@ class CategoriesType extends AbstractType
             $parent[$par->getId()] = $par->getName();
         }
 
-        if (!$options['data']->getId()) {
+        if ($options['data']->getId()) {
             $builder->add(
                 'parent',
                 ChoiceType::class,
