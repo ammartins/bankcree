@@ -42,6 +42,23 @@ class MatchService
             $special = 0;
 
             $itemDescription = $this->cleanUp($match->getDescription());
+            $customRegex = $type[0]->getCustomRegex();
+
+            // If Category contains a custom regex just match against it
+            if ($type[0]->getCustomRegex() &&
+                preg_match(
+                    "/$customRegex/",
+                    $transaction->getDescription()
+                )
+            ) {
+                $transaction->setCategories($type[0]);
+                $transaction->setMatchPercentage(100);
+
+                $this->entityManager->persist($transaction);
+                $this->entityManager->flush();
+
+                continue;
+            }
 
             foreach ($itemDescription as $item1) {
                 if (in_array($item1, $matchDescription)) {
@@ -106,7 +123,6 @@ class MatchService
     public function matchToClean($toBeSave, $transaction)
     {
         $results = array();
-        $categorieDesc = preg_split('/[\s\/\*]/', $toBeSave->getDescription());
         $categorieDesc = $this->cleanUp($toBeSave->getDescription());
 
         foreach ($transaction as $item) {
@@ -117,10 +133,22 @@ class MatchService
             $score = 0;
             $special = 0;
 
-            $itemDescription = $item->getDescription();
-            $itemDescription = preg_replace('!\s+!', ' ', $itemDescription);
-            $itemDescription = preg_split('/[\s\/\*]/', $itemDescription);
+            $customRegex = $toBeSave->getCategories()->getCustomRegex();
 
+            // If Category contains a custom regex just match against it
+            if ($toBeSave->getCategories()->getCustomRegex() &&
+                preg_match(
+                    "/$customRegex/",
+                    $item->getDescription()
+                )
+            ) {
+                $item->setMatchPercentage(100);
+                $results[$item->getId()] = $item;
+                continue;
+            }
+
+            $itemDescription = preg_replace('!\s+!', ' ', $item->getDescription());
+            $itemDescription = preg_split('/[\s\/\*]/', $itemDescription);
             $itemDescription = $this->cleanUp($item->getDescription());
 
             foreach ($itemDescription as $item1) {
@@ -132,7 +160,7 @@ class MatchService
 
             $matchPercent = round((($score*100)/(count($itemDescription))), 0);
 
-            if ($matchPercent > 60) {
+            if ($matchPercent > 50) {
                 $item->setMatchPercentage($matchPercent);
                 $results[$item->getId()] = $item;
                 $score = 0;

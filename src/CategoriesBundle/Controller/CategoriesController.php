@@ -78,10 +78,16 @@ class CategoriesController extends Controller
 
         $category = $em->getRepository('CategoriesBundle:Categories')->find($id);
 
+        /**
+         * All transactions that were already matched against given category
+         */
         $transactions = $em
             ->getRepository('TransactionsBundle:Transactions')
             ->findBy(array('categories' => $id));
 
+        /**
+         * All transactions that don't have a matching category yet
+         */
         $toMatch = $em
             ->getRepository('TransactionsBundle:Transactions')
             ->findBy(array('categories' => null ));
