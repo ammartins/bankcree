@@ -14,6 +14,12 @@
 </div>
 
 <div class="form-group">
+    <label for="account_id">{{ form_label(form.customRegex) }}</label>
+    {% include '::errors.html.twig' with {'errors': form.customRegex.vars.errors} %}
+    {{ form_widget(form.customRegex, { 'attr': {'class': 'form-control'} }) }}
+</div>
+
+<div class="form-group">
     <label for="short_description">{{ form_label(form.companyLogo) }}</label>
     {% include '::errors.html.twig' with {'errors': form.companyLogo.vars.errors} %}
     {{ form_widget(form.companyLogo, { 'attr': {'class': 'form-control'} }) }}
