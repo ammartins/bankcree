@@ -13,7 +13,7 @@
             <a class="nav-item nav-link {% if year["year"] == currentYear %}active{% endif %}"
               id="{{ year['year'] }}-tab"
               data-toggle="tab"
-              href="#{{ year['year'] }}"
+              href="#nav-{{ year['year'] }}"
               role="tab"
               aria-controls="{{ year['year'] }}"
               aria-selected="{% if loop.first %}true{% else %}false{% endif %}"
@@ -27,7 +27,7 @@
     <div class="card-body mb-0">
       <div class="tab-content">
         {% for year in years %}
-          <div class="tab-pane {% if year["year"] == currentYear %}show active{% endif %}" id="{{ year['year'] }}" role="tabpanel" aria-labelledby="{{ year['year'] }}-tab">
+          <div class="tab-pane {% if year["year"] == currentYear %}show active{% endif %}" id="nav-{{ year['year'] }}" role="tabpanel" aria-labelledby="{{ year['year'] }}-tab">
               {% for key, info in data[year['year']] %}
                 {% if loop.first %}
                   <div class="card-deck mb-4">
