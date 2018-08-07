@@ -18,7 +18,6 @@ class Version20170723183319 extends AbstractMigration
         $this->addSql("ALTER TABLE budget ADD name_id INT DEFAULT NULL, DROP name");
         $this->addSql("ALTER TABLE budget ADD CONSTRAINT FK_73F2F77B71179CD6 FOREIGN KEY (name_id) REFERENCES transaction_type (id)");
         $this->addSql("CREATE UNIQUE INDEX UNIQ_73F2F77B71179CD6 ON budget (name_id)");
-
     }
 
     /**

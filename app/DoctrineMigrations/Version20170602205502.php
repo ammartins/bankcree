@@ -24,7 +24,6 @@ class Version20170602205502 extends AbstractMigration
             "ALTER TABLE transactions DROP FOREIGN KEY transactions_ibfk_1"
         );
         $this->addSql("ALTER TABLE transactions DROP transactions_type");
-
     }
 
     /**

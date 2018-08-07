@@ -78,6 +78,11 @@ class Categories
      */
     private $companyLogo;
 
+    /**
+     * @ORM\Column(name="custom_regex", type="string" , nullable=true)
+     */
+    private $custom_regex;
+
     public function __construct()
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
@@ -215,6 +220,17 @@ class Categories
     public function setCompanyLogo($companyLogo)
     {
         $this->companyLogo = $companyLogo;
+        return $this;
+    }
+
+    public function getCustomRegex()
+    {
+        return $this->custom_regex;
+    }
+
+    public function setCustomRegex($custom_regex)
+    {
+        $this->custom_regex = $custom_regex;
         return $this;
     }
 

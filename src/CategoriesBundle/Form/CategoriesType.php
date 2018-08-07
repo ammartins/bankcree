@@ -18,10 +18,7 @@ class CategoriesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $em = $options['entity_manager'];
-        $parents = $em
-            ->getRepository('CategoriesBundle:Categories')
-            ->findAllParents();
-            // );
+        $parents = $em->getRepository('CategoriesBundle:Categories')->findAllParents();
 
         $parent = [null];
 
@@ -32,7 +29,7 @@ class CategoriesType extends AbstractType
             $parent[$par->getId()] = $par->getName();
         }
 
-        if ($options['data']->getId()) {
+        if ($options['data']->getId() && in_array($options['data']->getId(), $parent)) {
             $builder->add(
                 'parent',
                 ChoiceType::class,
@@ -44,6 +41,7 @@ class CategoriesType extends AbstractType
 
         $builder
             ->add('name')
+            ->add('customRegex')
             ->add('recurring')
             ->add('savings')
             ->add('companyLogo')
