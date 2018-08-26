@@ -29,7 +29,7 @@ class CategoriesType extends AbstractType
             $parent[$par->getId()] = $par->getName();
         }
 
-        if ($options['data']->getId() && in_array($options['data']->getId(), $parent)) {
+        if (!$options['data']->getId()) {
             $builder->add(
                 'parent',
                 ChoiceType::class,
