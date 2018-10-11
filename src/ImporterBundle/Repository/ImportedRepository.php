@@ -29,4 +29,21 @@ class ImportedRepository extends \Doctrine\ORM\EntityRepository
 
         return $query->getResult();
     }
+
+    /*
+     * @param integer $account
+     *
+     */
+    public function getImported($account)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $query = $qb
+            ->select('i')
+            ->from('ImporterBundle:Imported', 'i')
+            ->where('i.account = ?1')
+            ->setParameter(1, $account)->getQuery();
+
+        return $query->getResult();
+    }
 }
