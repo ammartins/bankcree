@@ -22,8 +22,8 @@ pipeline {
     }
     stage('SonarQube analysis') {
         steps {
-            def scannerHome = tool 'SonarQube Scanner 2.8';
             sh '''
+                def scannerHome = tool 'SonarQube Scanner 2.8';
                 ${scannerHome}/bin/sonar-scanner \
                 -Dsonar.projectKey=abn-php-macOS \
                 -Dsonar.organization=ammartins-github \
