@@ -48,7 +48,7 @@ class ImportService
         return true;
     }
 
-    public function importFiles($importFrom)
+    public function importFiles($importFrom, $userID)
     {
         $finder = new Finder();
         $finder->files()->in($importFrom)->name('*.TAB');
@@ -56,6 +56,11 @@ class ImportService
         foreach ($finder as $file) {
             $path = explode("/", $file->getPath());
             $filename = $file->getBasename();
+
+            // Skip importing if user id does not match folder structure
+            if ($path[4] != $userID) {
+                continue;
+            }
 
             // Get the date that the file was created
             preg_match("/([A-Z]*)([0-9]{6})/", $filename, $matches);

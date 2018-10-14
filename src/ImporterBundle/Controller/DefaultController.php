@@ -13,7 +13,12 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $data = $em->getRepository('ImporterBundle:Imported')->findAll();
+        $user = $this->get('security.context')->getToken();
+        $userId = $user->getUser()->getId();
+
+        $data = $em
+            ->getRepository('ImporterBundle:Imported')
+            ->getImported($userId);
 
         return $this
             ->render(
@@ -29,9 +34,13 @@ class DefaultController extends Controller
      */
     public function importAllAction()
     {
+        $user = $this->get('security.context')->getToken();
+        $userId = $user->getUser()->getId();
+
         $importer = $this->get('importer.import');
         $importFrom = $this->container->getParameter('data_folder');
-        $importer->importFiles($importFrom);
+
+        $importer->importFiles($importFrom, $userId);
 
         return $this->redirectToRoute('importer');
     }

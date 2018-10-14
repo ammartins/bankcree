@@ -60,6 +60,23 @@ class User implements UserInterface, \Serializable
      */
     private $bankAccount;
 
+    /**
+     * @ORM\Column(name="is_savings", type="boolean")
+     */
+    private $isSavings;
+
+    public function setIsSavings($isSavings)
+    {
+        $this->isSavings = $isSavings;
+
+        return $this;
+    }
+
+    public function getIsSavings()
+    {
+        return $this->isSavings;
+    }
+
     public function __construct()
     {
         $this->isActive = true;
