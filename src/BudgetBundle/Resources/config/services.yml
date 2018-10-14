@@ -1,0 +1,7 @@
+services:
+    budget.budgets:
+      class: BudgetBundle\Service\BudgetService
+      arguments:
+        - "@doctrine.orm.entity_manager"
+        - "@security.token_storage"
+        - "@event_dispatcher"

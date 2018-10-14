@@ -13,7 +13,7 @@ use TransactionsBundle\Entity\Transactions;
  */
 class BudgetRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findBudgets()
+    public function findBudgets($year, $month)
     {
         $budgets = $this->getEntityManager()
             ->createQuery(
@@ -26,8 +26,8 @@ class BudgetRepository extends \Doctrine\ORM\EntityRepository
                     FROM CategoriesBundle:Categories cc
                     JOIN BudgetBundle:Budget b WITH cc.name = b.name
                 )
-                AND YEAR(t.createAt) = ".date("Y")."
-                AND MONTH(t.createAt) = ".date("m")."
+                AND YEAR(t.createAt) = $year
+                AND MONTH(t.createAt) = $month
                 AND tt.id = t.categories
                 GROUP BY tt.name"
             )->execute();

@@ -1,31 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block menu %}
-  {% include 'menu.html.twig' %}
+    {% include 'menu.html.twig' %}
 {% endblock %}
 
 {% block body %}
-  <div class="text-right">
-    <a class="btn btn-success" href="{{ path('budget_new') }}">New</a>
-  </div>
-    <div class="table-responsive">
-  <table class="table table-condensed table-hover">
-    <tr>
-      <th class="text-left">Categorie</th>
-      <th class="text-right">Limit</th>
-      <th class="text-right">Current Ammount</th>
-      <th class="text-right">Options</th>
-    </tr>
-    {% for budget in budgets %}
-      <tr class="{% if budget.limit < budget.amount %}table-danger{% else %}table-success{% endif %}">
-        <td>{{ budget.name }}</td>
-        <td class="text-right">{{ budget.limit }} €</td>
-        <td class="text-right">{{ budget.amount }}  €</td>
-        <td class="text-right">
-          <a href="{{ path('budgets_delete', {"id": budget.id}) }}">Delete</a>
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
+    <div class="text-right">
+        <a class="btn btn-success" href="{{ path('budget_new') }}">New</a>
     </div>
+    {% include 'BudgetBundle:Budget:data.html.twig' %}
 {% endblock %}

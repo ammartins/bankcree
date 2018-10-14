@@ -125,6 +125,9 @@ class TransactionsController extends Controller
             $income = $serializer->serialize($income, 'json');
             $expenses = $serializer->serialize($expenses, 'json');
 
+            $budgets = $this->get('budget.budgets');
+            $budgets = $budgets->getBudgets($year, $month);
+
             return $this->render(
                 'TransactionsBundle:default:index.html.twig',
                 array(
@@ -145,6 +148,7 @@ class TransactionsController extends Controller
                     "income" => $income,
                     "expenses" => $expenses,
                     "spends" => $spends,
+                    'budgets' => $budgets,
                     "menu" => 1,
                 )
             );
