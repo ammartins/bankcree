@@ -13,17 +13,27 @@ pipeline {
         '''
       }
     }
-    stage('Prepare Sonar run') {
+    stage('SonarQube analysis') {
         steps {
-            sh '''
-                echo "/Users/antoniom/Downloads/sonar-scanner-3.2.0.1227-macosx/bin/sonar-scanner -Dsonar.projectKey=abn-php-macOS -Dsonar.organization=ammartins-github -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=4e22c72ef0f3c3f2c914ff84e33e8f810c923111"
-            '''
+          sh "/srv/app-sonar-2.4/sonar-runner-2.4/bin/sonar-runner \
+                -Dsonar.projectKey=abn-php-macOS \
+                -Dsonar.organization=ammartins-github \
+                -Dsonar.sources=src \
+                -Dsonar.host.url=https://sonarcloud.io \
+                -Dsonar.login=4e22c72ef0f3c3f2c914ff84e33e8f810c923111"
         }
     }
     stage('Lint') {
       steps {
         sh '''
             phplint \'**/*.php\' \'!vendor/**\' \'!app/cache/**\'
+        '''
+      }
+    }
+    stage('PHPCS') {
+      steps {
+        sh '''
+            vendor/squizlabs/php_codesniffer/bin/phpcs src
         '''
       }
     }

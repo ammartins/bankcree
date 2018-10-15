@@ -24,6 +24,7 @@
                 <div class="nav nav-tabs card-header-tabs" id="years" role="tablist">
                       <a class="nav-item nav-link active" href="#table" role="tab" data-toggle="tab">Month</a>
                       <a class="nav-item nav-link" href="#dailygraph" role="tab" data-toggle="tab">Graphs</a>
+                      <a class="nav-item nav-link" href="#monthBudget" role="tab" data-toggle="tab">Budget</a>
                 </div>
             </nav>
 
@@ -37,6 +38,11 @@
         <div role="tabpanel" class="tab-pane" id="dailygraph">
             <div class="col-md-12 mt-3">
             {% include 'TransactionsBundle:partial:_dailygraph.html.twig' %}
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="monthBudget">
+            <div class="col-md-12 mt-3">
+            {% include 'TransactionsBundle:partial:_budget.html.twig' %}
             </div>
         </div>
     </div>

@@ -20,40 +20,13 @@ class BudgetController extends Controller
     /**
      * @param Request $request
      *
-     * @Route("/budget", name="budget")
+     * @Route("/budget/", name="budget")
+     * @Route("/budget/{year}/{month}", name="budget_1")
      */
-    public function budgetAction()
+    public function budgetAction($year = null, $month = null)
     {
-        $em = $this->getDoctrine()->getManager();
-        $budgets = $em->getRepository('BudgetBundle:Budget')->findAll();
-        $budgetStatus = $em->getRepository('BudgetBundle:Budget')->findBudgets();
-
-        $result = [];
-        foreach ($budgets as $budget) {
-            $result[$budget->getName()] = [
-                "name" => $budget->getName(),
-                "limit" => $budget->getBudgetLimit(),
-                "amount" => 0,
-                "id" => $budget->getId()
-            ];
-            foreach ($budgetStatus as $budgetst) {
-                if ($budgetst["name"] === $budget->getName()) {
-                    $result[$budget->getName()]["amount"] += $budgetst["amount"]*-1;
-                    continue;
-                }
-                if ($budgetst['parent']
-                ) {
-                    $parentCategory = $em
-                        ->getRepository('CategoriesBundle:Categories')
-                        ->findById($budgetst['parent']);
-                    // TODO try to not have if inside of if
-                    if ($parentCategory[0]->getName() === $budget->getName()) {
-                        $result[$parentCategory[0]->getName()]["amount"] += $budgetst["amount"]*-1;
-                        continue;
-                    }
-                }
-            }
-        }
+        $budgets = $this->get('budget.budgets');
+        $result = $budgets->getBudgets($year, $month);
 
         return $this->render(
             'BudgetBundle:Budget:budgetIndex.html.twig',
