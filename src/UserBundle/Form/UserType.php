@@ -17,6 +17,7 @@ class UserType extends AbstractType
         $builder
             ->add('email')
             ->add('bankAccount')
+            ->add('isSavings')
             ->add('update', SubmitType::class);
     }
 
@@ -37,6 +38,4 @@ class UserType extends AbstractType
     {
         return 'userbundle_user';
     }
-
-
 }

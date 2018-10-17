@@ -18,6 +18,8 @@ use TransactionsBundle\Form\TransactionsType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 class TransactionsController extends Controller
 {
     /**
@@ -50,6 +52,18 @@ class TransactionsController extends Controller
         $by_year_data = [];
         $by_year_matched = [];
         $by_year_total = [];
+
+        $ignoreSavings = $this
+            ->get('security.context')
+            ->getToken()
+            ->getUser()
+            ->getIsSavings();
+
+        if ($ignoreSavings) {
+            $data[0] = $this
+                ->get('transactions.helper')
+                ->calculateSavings($data);
+        }
 
         foreach ($data[0] as $month) {
             $year_of_month = $month['year'];
