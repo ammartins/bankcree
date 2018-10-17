@@ -18,6 +18,7 @@ class UserType extends AbstractType
             ->add('email')
             ->add('bankAccount')
             ->add('isSavings')
+            ->add('ignoreSavings')
             ->add('update', SubmitType::class);
     }
 

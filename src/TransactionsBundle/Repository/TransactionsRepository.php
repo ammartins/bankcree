@@ -294,12 +294,16 @@ class TransactionsRepository extends EntityRepository
 
         $data2 = $this->getEntityManager()
             ->createQuery(
-                "SELECT YEAR(p.createAt) as year, Month(p.createAt) as month, count(p.id), SUM(p.amount)
+                "SELECT
+                    YEAR(p.createAt) as year,
+                    Month(p.createAt) as month,
+                    count(p.id),
+                    SUM(CASE WHEN p.amount>0 THEN p.amount ELSE 0 END) as positive,
+                    SUM(CASE WHEN p.amount< 0 THEN p.amount ELSE 0 END) as negative
                 FROM TransactionsBundle:Transactions p
                 JOIN CategoriesBundle:Categories c
                 WHERE p.categories = c.id
                 AND c.savings = 1
-                AND p.amount  < 0
                 GROUP BY month, year
                 ORDER BY Year(p.createAt), Month(p.createAt)"
             )->execute();

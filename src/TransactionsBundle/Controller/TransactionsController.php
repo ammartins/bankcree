@@ -53,16 +53,21 @@ class TransactionsController extends Controller
         $by_year_matched = [];
         $by_year_total = [];
 
-        $ignoreSavings = $this
+        $user = $this
             ->get('security.context')
             ->getToken()
-            ->getUser()
-            ->getIsSavings();
+            ->getUser();
 
-        if ($ignoreSavings) {
+        if ($user->getIsSavings()) {
             $data[0] = $this
                 ->get('transactions.helper')
                 ->calculateSavings($data);
+        }
+
+        if ($user->getIgnoreSavings()) {
+            $data[0] = $this
+                ->get('transactions.helper')
+                ->calculateSavingsIgnoreIncome($data);
         }
 
         foreach ($data[0] as $month) {

@@ -33,7 +33,20 @@ class HelperService
         foreach ($data[0] as $key => $account) {
             foreach ($data[1] as $savings) {
                 if ($account['year'] == $savings['year'] and $account['month'] == $savings['month']) {
-                    $data[0][$key][2] -= $savings[2];
+                    $data[0][$key][2] -= $savings['positive'];
+                }
+            }
+        }
+        return $data[0];
+    }
+
+    public function calculateSavingsIgnoreIncome($data)
+    {
+        foreach ($data[0] as $key => $account) {
+            foreach ($data[1] as $savings) {
+                if ($account['year'] == $savings['year'] and $account['month'] == $savings['month']) {
+                    $value = $savings['positive'] - $savings['negative'];
+                    $data[0][$key][2] -= $value;
                 }
             }
         }
