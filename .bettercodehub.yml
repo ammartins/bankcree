@@ -9,3 +9,4 @@ exclude:
 - /app/.*
 - /bin/.*
 - /componentes/.*
+- /src/TransactionsBundle/Resources/public/js/highcharts.js
