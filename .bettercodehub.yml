@@ -10,3 +10,4 @@ exclude:
 - /bin/.*
 - /componentes/.*
 - /src/TransactionsBundle/Resources/public/js/highcharts.js
+- /src/TransactionsBundle/Resources/public/js/tableSorter.js
