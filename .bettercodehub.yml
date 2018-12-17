@@ -1,6 +1,9 @@
 component_depth: 1
 languages:
 - php
+- js
+- html
+- css
 exclude:
 - /vendor/.*
 - /web/.*
