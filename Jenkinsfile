@@ -23,7 +23,8 @@ pipeline {
                 -Dsonar.organization=ammartins-github \
                 -Dsonar.sources=src \
                 -Dsonar.host.url=https://sonarcloud.io \
-                -Dsonar.login=${SONAR_TOKEN}"
+                -Dsonar.login=${SONAR_TOKEN} \
+                -Dsonar.branch.name=${BRANCH_NAME}"
         }
     }
     stage('Lint') {
