@@ -35,18 +35,24 @@
         <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     </head>
     <body>
-        {% include 'menu.html.twig' %}
-        <br />
-        <div class="row">
-            {% include "side_menu.html.twig" %}
-            <div class="col-9">
-                {% for flash_message in app.session.flashBag.get('notice') %}
-                    <div class="alert alert-success">
-                        {{ flash_message }}
+        <div class="d-flex h-100 flex-column">
+            {% include 'menu.html.twig' %}
+            <div class="row flex-fill">
+                <div class="col-1 fin-menu">
+                    {% include "side_menu.html.twig" %}
+                </div>
+                <div class="col-11">
+                    <div class="container">
+                    {% for flash_message in app.session.flashBag.get('notice') %}
+                        <div class="alert alert-success">
+                            {{ flash_message }}
+                        </div>
+                    {% endfor %}
+                    <br /><br />
+                    {% block body %}{% endblock %}
+                    {% block javascripts %}{% endblock %}
                     </div>
-                {% endfor %}
-                {% block body %}{% endblock %}
-                {% block javascripts %}{% endblock %}
+                </div>
             </div>
         </div>
     </body>
