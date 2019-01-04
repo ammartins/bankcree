@@ -39,12 +39,12 @@
         <div class="d-flex h-100 flex-column">
             {% include 'menu.html.twig' %}
             <div class="row flex-fill">
-                <div class="col-1 fin-menu">
+                <div class="col-2 fin-menu">
                     {% include "side_menu.html.twig" %}
                 </div>
                 <div class="col-1">
                 </div>
-                <div class="col-9">
+                <div class="col-8">
                     {% for flash_message in app.session.flashBag.get('notice') %}
                     <div class="alert alert-success">
                         {{ flash_message }}

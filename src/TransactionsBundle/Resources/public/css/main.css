@@ -1,5 +1,5 @@
 html,body{
-    height:100%;
+    min-height: 100%;
     color: #1b404b;
     background-color: #f0f1f3;
     line-height: 22px;
