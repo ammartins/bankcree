@@ -19,13 +19,7 @@
         </div>
 
         <div class="form-group">
-            <label for="isSavings">Ignore Savings as negative ammount</label>
-            {% include '::errors.html.twig' with {'errors': form.isSavings.vars.errors} %}
-            {{ form_widget(form.isSavings, { 'attr': {'class': 'form-control'} }) }}
-        </div>
-
-        <div class="form-group">
-            <label for="ignoreSavings">Ignore Savings as Income</label>
+            <label for="ignoreSavings">Ignore Savings</label>
             {% include '::errors.html.twig' with {'errors': form.ignoreSavings.vars.errors} %}
             {{ form_widget(form.ignoreSavings, { 'attr': {'class': 'form-control'} }) }}
         </div>
