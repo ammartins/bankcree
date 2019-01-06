@@ -1,4 +1,11 @@
 <?php
+/**
+ * MyClass Class Doc Comment
+ *
+ * @category Class
+ * @author   Ammartins
+ *
+ */
 
 namespace ImporterBundle;
 
