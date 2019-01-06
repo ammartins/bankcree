@@ -295,7 +295,7 @@ class TransactionsRepository extends EntityRepository
                     WHERE c.savings = 1"
                 )->execute();
 
-            foreach ($savingsTag as $key => $value) {
+            foreach ($savingsTag as $value) {
                 if ($inList != "(") {
                     $inList = $inList.",".$value["id"];
                     continue;

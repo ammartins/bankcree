@@ -1,6 +1,6 @@
 <?php
 /**
- * MyClass Class Doc Comment
+ * ImporterBundle Class
  *
  * @category Class
  * @author   Ammartins

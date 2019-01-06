@@ -1,12 +1,12 @@
 <?php
 /**
- * MyClass Class Doc Comment
+ * TransactionsBundle Class
  *
  * @category Class
  * @author   Ammartins
  *
  */
- 
+
 namespace TransactionsBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
