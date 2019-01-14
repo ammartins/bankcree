@@ -4,6 +4,7 @@
 }
 #top-menu .nav-menu {
   transform: translateY(-50%);
+  text-align: right;
 }
 #top-menu .nav-menu a, #top-menu .nav-menu a:hover, #top-menu .nav-menu a:visited {
   line-height: 31px;

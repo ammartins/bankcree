@@ -2,21 +2,29 @@
 <html>
     <head>
         <meta charset="UTF-8" />
+
         <title>{% block title %}Welcome!{% endblock %}</title>
+
         {% block stylesheets %}{% endblock %}
+
         {% stylesheets '@bootstrap_css' %}
             <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
         {% endstylesheets %}
+
         {% stylesheets '@TransactionsBundle/Resources/public/css/menu.css' %}
             <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
         {% endstylesheets %}
+
         {% stylesheets '@TransactionsBundle/Resources/public/css/main.css' %}
             <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
         {% endstylesheets %}
+
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
         {% javascripts '@jquery' '@bootstrap_js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
+
         {% javascripts
           '@TransactionsBundle/Resources/public/js/highcharts.js'
           '@TransactionsBundle/Resources/public/js/helpers.js'
@@ -24,19 +32,31 @@
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
+
         <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     </head>
     <body>
-        {% block menu %}{% endblock %}
-        <br />
-        <div class="container">
-            {% for flash_message in app.session.flashBag.get('notice') %}
-                <div class="alert alert-success">
-                    {{ flash_message }}
+        <div class="d-flex h-100 flex-column">
+            {% include 'menu.html.twig' %}
+            <div class="row flex-fill">
+                <div class="col-2 fin-menu">
+                    {% include "side_menu.html.twig" %}
                 </div>
-            {% endfor %}
-            {% block body %}{% endblock %}
-            {% block javascripts %}{% endblock %}
+                <div class="col-1">
+                </div>
+                <div class="col-8">
+                    {% for flash_message in app.session.flashBag.get('notice') %}
+                    <div class="alert alert-success">
+                        {{ flash_message }}
+                    </div>
+                    {% endfor %}
+                    <br /><br />
+                    {% block body %}{% endblock %}
+                </div>
+                <div class="col-1">
+                </div>
+            </div>
         </div>
+        {% block javascripts %}{% endblock %}
     </body>
 </html>
