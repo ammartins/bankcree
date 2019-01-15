@@ -1,4 +1,11 @@
 <?php
+/**
+ * TransactionsBundle Class
+ *
+ * @category Class
+ * @author   Ammartins
+ *
+ */
 
 namespace TransactionsBundle;
 

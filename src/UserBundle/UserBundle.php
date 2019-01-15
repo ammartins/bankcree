@@ -1,4 +1,11 @@
 <?php
+/**
+ * UserBundle Class
+ *
+ * @category Class
+ * @author   Ammartins
+ *
+ */
 
 namespace UserBundle;
 

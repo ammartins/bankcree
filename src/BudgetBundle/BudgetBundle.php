@@ -1,4 +1,11 @@
 <?php
+/**
+ * BudgetBundle Class
+ *
+ * @category Class
+ * @author   Ammartins
+ *
+ */
 
 namespace BudgetBundle;
 
