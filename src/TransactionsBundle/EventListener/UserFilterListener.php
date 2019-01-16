@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * User Listener
+ */
+
 namespace TransactionsBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;

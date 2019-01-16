@@ -1,4 +1,11 @@
 <?php
+/**
+ * ImporterBundle Class
+ *
+ * @category Class
+ * @author   Ammartins
+ *
+ */
 
 namespace ImporterBundle;
 

@@ -282,29 +282,40 @@ class TransactionsRepository extends EntityRepository
         return $data;
     }
 
-    public function groupByYear()
+    public function groupByYear($ignoreSavings)
     {
+
+        $inList = "p.categories is not null";
+        if ($ignoreSavings) {
+            $inList = "(";
+            $savingsTag = $this->getEntityManager()
+                ->createQuery(
+                    "SELECT c.id
+                    FROM CategoriesBundle:Categories c
+                    WHERE c.savings = 1"
+                )->execute();
+
+            foreach ($savingsTag as $value) {
+                if ($inList != "(") {
+                    $inList = $inList.",".$value["id"];
+                    continue;
+                }
+                $inList .= $value["id"];
+            }
+            $inList .= ")";
+            $inList = "p.categories not in ".$inList;
+        }
+
         $data = $this->getEntityManager()
             ->createQuery(
                 "SELECT YEAR(p.createAt) as year, Month(p.createAt) as month, count(p.id), SUM(p.amount)
                 FROM TransactionsBundle:Transactions p
+                WHERE $inList or p.categories is null
                 GROUP BY month, year
                 ORDER BY Year(p.createAt), Month(p.createAt)"
             )->execute();
 
-        $data2 = $this->getEntityManager()
-            ->createQuery(
-                "SELECT YEAR(p.createAt) as year, Month(p.createAt) as month, count(p.id), SUM(p.amount)
-                FROM TransactionsBundle:Transactions p
-                JOIN CategoriesBundle:Categories c
-                WHERE p.categories = c.id
-                AND c.savings = 1
-                AND p.amount  < 0
-                GROUP BY month, year
-                ORDER BY Year(p.createAt), Month(p.createAt)"
-            )->execute();
-
-        return array($data, $data2);
+        return $data;
     }
 
     public function getMatched()

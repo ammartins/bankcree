@@ -1,4 +1,11 @@
 <?php
+/**
+ * CategoriesBundle Class
+ *
+ * @category Class
+ * @author   Ammartins
+ *
+ */
 
 namespace CategoriesBundle;
 

@@ -18,6 +18,8 @@ use TransactionsBundle\Form\TransactionsType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 class TransactionsController extends Controller
 {
     /**
@@ -34,10 +36,13 @@ class TransactionsController extends Controller
          * all the transactions from that month
          */
         $em = $this->getDoctrine()->getManager();
+        // Get Loggedin user
+        $user = $this->get('security.context')->getToken()->getUser();
 
+        // Remove Savings from math if user desires so
         $data = $em
             ->getRepository('TransactionsBundle:Transactions')
-            ->groupByYear();
+            ->groupByYear($user->getIgnoreSavings());
 
         $matched = $em
             ->getRepository('TransactionsBundle:Transactions')
@@ -51,7 +56,7 @@ class TransactionsController extends Controller
         $by_year_matched = [];
         $by_year_total = [];
 
-        foreach ($data[0] as $month) {
+        foreach ($data as $month) {
             $year_of_month = $month['year'];
             $by_year_total[$year_of_month] =
             array_key_exists($year_of_month, $by_year_total) ?
@@ -59,7 +64,7 @@ class TransactionsController extends Controller
             : $month[2];
         }
 
-        foreach ($data[0] as $month) {
+        foreach ($data as $month) {
             $year_of_month = $month['year'];
             $by_year_data[$year_of_month][] = $month;
         }

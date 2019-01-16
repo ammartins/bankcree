@@ -65,6 +65,23 @@ class User implements UserInterface, \Serializable
      */
     private $isSavings;
 
+    /**
+     * @ORM\Column(name="ignore_savings", type="boolean")
+     */
+    private $ignoreSavings;
+
+    public function setIgnoreSavings($ignoreSavings)
+    {
+        $this->ignoreSavings = $ignoreSavings;
+
+        return $this;
+    }
+
+    public function getIgnoreSavings()
+    {
+        return $this->ignoreSavings;
+    }
+
     public function setIsSavings($isSavings)
     {
         $this->isSavings = $isSavings;
