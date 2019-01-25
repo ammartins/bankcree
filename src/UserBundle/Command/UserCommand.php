@@ -63,7 +63,7 @@ class UserCommand extends ContainerAwareCommand
         $password = $input->getArgument('password');
         $accountNumber = $input->getArgument('bankaccount');
         $isSavings = $input->getArgument('isSavings');
-        $ignoreSavings = $input->getArgument('ignoreSavings')
+        $ignoreSavings = $input->getArgument('ignoreSavings');
 
         // $isActive = 1;
         $createdAt = new \DateTime();
