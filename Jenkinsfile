@@ -15,7 +15,7 @@ pipeline {
     }
     stage('Set Ref to master') {
         steps {
-            sh "git fetch --no-tags ${env.projUrl} +refs/heads/master:refs/remotes/origin/master"
+            sh "git fetch --no-tags https://github.com/ammartins/bankcree +refs/heads/master:refs/remotes/origin/master"
         }
     }
     stage('SonarQube analysis') {
