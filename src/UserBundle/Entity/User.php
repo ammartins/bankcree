@@ -70,6 +70,11 @@ class User implements UserInterface, \Serializable
      */
     private $ignoreSavings;
 
+    /**
+    * @ORM\Column(name="bank", type="string", length=255)
+    */
+   private $bankName;
+
     public function setIgnoreSavings($ignoreSavings)
     {
         $this->ignoreSavings = $ignoreSavings;
@@ -189,6 +194,18 @@ class User implements UserInterface, \Serializable
     public function getEmail()
     {
         return $this->email;
+    }
+
+    public function setBankName($bankName)
+    {
+        $this->bankName = $bankName;
+
+        return $this;
+    }
+
+    public function getBankName()
+    {
+        return $this->bankName;
     }
 
     /**
