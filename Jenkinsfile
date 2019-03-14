@@ -24,7 +24,9 @@ pipeline {
                 -Dsonar.sources=src \
                 -Dsonar.host.url=https://sonarcloud.io \
                 -Dsonar.login=${SONAR_TOKEN} \
-                -Dsonar.branch.name=${BRANCH_NAME}"
+                -Dsonar.branch.name=${BRANCH_NAME} \
+                -Dsonar.pullrequest.provider=github \
+                -Dsonar.pullrequest.github.repository=bankcree"
         }
     }
     stage('Lint') {
