@@ -38,6 +38,10 @@ class MatchService
         }
 
         foreach ($matches as $match) {
+            if ($type[0]->getAccountId() != $match->getAccountId()) {
+                continue;
+            }
+
             $score = 0;
             $special = 0;
 
