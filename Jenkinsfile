@@ -18,6 +18,7 @@ pipeline {
             SONAR_TOKEN = credentials('sonar-run')
         }
         steps {
+          sh "git fetch --no-tags ${env.projUrl} +refs/heads/master:refs/remotes/origin/master"
           sh "/srv/app-sonar-2.4/sonar-runner-2.4/bin/sonar-runner \
                 -Dsonar.projectKey=abn-php-macOS \
                 -Dsonar.organization=ammartins-github \
