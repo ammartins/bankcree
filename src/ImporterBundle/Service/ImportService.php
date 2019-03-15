@@ -64,10 +64,10 @@ class ImportService
             }
 
             // Get Extension
-            preg_match("/\.([a-zA-Z]*)/", $filename, $extension);
+            $extension = pathinfo($filename, PATHINFO_EXTENSION);
 
             $createdAt = new \DateTime();
-            if ($extension[1] === 'TAB') {
+            if ($extension === 'TAB') {
                 // Get the date that the file was created
                 preg_match("/([A-Z]*)([0-9]{6})/", $filename, $matches);
                 $date = str_split($matches[2], 2);
@@ -94,10 +94,10 @@ class ImportService
         $bankN = $user->getBankName();
 
         switch($bankN) {
-            case "Revolut":
+            case "revolut":
                 $this->revolutImport($fileLocation, $account);
                 break;
-            case "Abnamro":
+            case "abnamro":
                 $this->abnImport($fileLocation, $account);
                 break;
             default:
@@ -113,7 +113,6 @@ class ImportService
         $fileContentArray = explode("\n", $fileContent);
 
         $user = $this->tokenStorage->getToken()->getUser();
-        $bankAcc = $user->getBankAccount();
 
         if ($fileContent) {
             $fileContentArray = array_reverse($fileContentArray);
