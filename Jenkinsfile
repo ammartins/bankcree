@@ -44,7 +44,7 @@ pipeline {
     stage('PHPCS') {
       steps {
         sh '''
-            vendor/squizlabs/php_codesniffer/bin/phpcs src
+            # vendor/squizlabs/php_codesniffer/bin/phpcs src
         '''
       }
     }
