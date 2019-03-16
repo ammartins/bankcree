@@ -93,7 +93,7 @@ class ImportService
         $user = $this->tokenStorage->getToken()->getUser();
         $bankN = $user->getBankName();
 
-        switch($bankN) {
+        switch ($bankN) {
             case "revolut":
                 $this->revolutImport($fileLocation, $account);
                 break;
@@ -108,11 +108,9 @@ class ImportService
     public function revolutImport($fileLocation, $account)
     {
         $fileContent = file_get_contents($fileLocation);
-        $fileContent = substr( $fileContent, strpos($fileContent, "\n")+1 );
+        $fileContent = substr($fileContent, strpos($fileContent, "\n")+1);
 
         $fileContentArray = explode("\n", $fileContent);
-
-        $user = $this->tokenStorage->getToken()->getUser();
 
         if ($fileContent) {
             $fileContentArray = array_reverse($fileContentArray);
