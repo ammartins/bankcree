@@ -26,7 +26,7 @@ class BudgetService
 
     public function getBudgets($year, $month)
     {
-        if (!$year and !$month) {
+        if (!$year && !$month) {
             $year = date('Y');
             $month = date('m');
         }
@@ -51,10 +51,8 @@ class BudgetService
                         ->em
                         ->getRepository('CategoriesBundle:Categories')
                         ->findById($budgetst['parent']);
-                        // TODO try to not have if inside of if
                     if ($parentCategory[0]->getName() === $budget->getName()) {
                         $result[$parentCategory[0]->getName()]["amount"] += $budgetst["amount"]*-1;
-                        continue;
                     }
                 }
             }
