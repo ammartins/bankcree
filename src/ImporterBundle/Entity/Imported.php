@@ -36,27 +36,6 @@ class Imported
     private $account;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="transactions", type="integer")
-     */
-    private $transactions;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="success", type="integer")
-     */
-    private $success;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="failed", type="integer")
-     */
-    private $failed;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="importedAt", type="datetime")
@@ -126,78 +105,6 @@ class Imported
     public function getAccount()
     {
         return $this->account;
-    }
-
-    /**
-     * Set transactions
-     *
-     * @param integer $transactions
-     *
-     * @return Imported
-     */
-    public function setTransactions($transactions)
-    {
-        $this->transactions = $transactions;
-
-        return $this;
-    }
-
-    /**
-     * Get transactions
-     *
-     * @return int
-     */
-    public function getTransactions()
-    {
-        return $this->transactions;
-    }
-
-    /**
-     * Set success
-     *
-     * @param integer $success
-     *
-     * @return Imported
-     */
-    public function setSuccess($success)
-    {
-        $this->success = $success;
-
-        return $this;
-    }
-
-    /**
-     * Get success
-     *
-     * @return int
-     */
-    public function getSuccess()
-    {
-        return $this->success;
-    }
-
-    /**
-     * Set failed
-     *
-     * @param integer $failed
-     *
-     * @return Imported
-     */
-    public function setFailed($failed)
-    {
-        $this->failed = $failed;
-
-        return $this;
-    }
-
-    /**
-     * Get failed
-     *
-     * @return int
-     */
-    public function getFailed()
-    {
-        return $this->failed;
     }
 
     /**

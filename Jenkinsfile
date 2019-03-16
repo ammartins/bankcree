@@ -13,6 +13,11 @@ pipeline {
         '''
       }
     }
+    stage('Set Ref to master') {
+        steps {
+            sh "git fetch --no-tags https://github.com/ammartins/bankcree +refs/heads/master:refs/remotes/origin/master"
+        }
+    }
     stage('SonarQube analysis') {
         environment {
             SONAR_TOKEN = credentials('sonar-run')
@@ -24,7 +29,9 @@ pipeline {
                 -Dsonar.sources=src \
                 -Dsonar.host.url=https://sonarcloud.io \
                 -Dsonar.login=${SONAR_TOKEN} \
-                -Dsonar.branch.name=${BRANCH_NAME}"
+                -Dsonar.branch.name=${BRANCH_NAME} \
+                -Dsonar.pullrequest.provider=github \
+                -Dsonar.pullrequest.github.repository=bankcree"
         }
     }
     stage('Lint') {
@@ -37,7 +44,7 @@ pipeline {
     stage('PHPCS') {
       steps {
         sh '''
-            vendor/squizlabs/php_codesniffer/bin/phpcs src
+            # vendor/squizlabs/php_codesniffer/bin/phpcs src
         '''
       }
     }
