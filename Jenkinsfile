@@ -55,7 +55,8 @@ pipeline {
                 git clone https://github.com/ammartins/bankcree &&
                 cd bankcree/ &&
                 git pull origin dev &&
-                git push origin master
+                git status &&
+                rm -rf /tmp/bankcree/
             '''
         }
     }
