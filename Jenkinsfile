@@ -49,9 +49,6 @@ pipeline {
       }
     }
     stage('Merge Dev To Master') {
-        when {
-            branch 'master'
-        }
         steps {
             sh '''
                 cd /tmp && git clone https://github.com/ammartins/bankcree
