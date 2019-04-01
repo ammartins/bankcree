@@ -51,7 +51,7 @@ pipeline {
     stage('Merge Dev To Master') {
         steps {
             sh '''
-                cd /tmp && git clone https://github.com/ammartins/bankcree && ls -sl
+                cd /tmp && git clone https://github.com/ammartins/bankcree && cd bankcree/ && git pull origin dev
             '''
         }
     }
