@@ -39,6 +39,10 @@ class TransactionsController extends Controller
         // Get Loggedin user
         $user = $this->get('security.context')->getToken()->getUser();
 
+        if ($user->getBankName() === "") {
+            $this->addFlash('error', 'Please Set Your Bank in Profile Page.');
+        }
+
         // Remove Savings from math if user desires so
         $data = $em
             ->getRepository('TransactionsBundle:Transactions')

@@ -8,9 +8,6 @@
                     <th scope="col">Filename</th>
                     <th scope="col">Created</th>
                     <th scope="col">Imported</th>
-                    <th scope="col">Transactions</th>
-                    <th scope="col">Success</th>
-                    <th scope="col">Failed</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,9 +16,6 @@
                         <td>{{ imported.fileName }}</td>
                         <td>{{ imported.createdAt | date }}</td>
                         <td>{{ imported.importedAt | date }}</td>
-                        <td>{{ imported.transactions }}</td>
-                        <td>{{ imported.success  }}</td>
-                        <td>{{ imported.failed  }}</td>
                 {% endfor %}
             </tbody>
         </table>
