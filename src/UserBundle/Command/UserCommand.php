@@ -37,6 +37,11 @@ class UserCommand extends ContainerAwareCommand
                 'Account Number'
             )
             ->addArgument(
+                'bankName',
+                InputArgument::REQUIRED,
+                'Bank Name'
+            )
+            ->addArgument(
                 'isSavings',
                 InputArgument::REQUIRED,
                 'Savings Account'
@@ -62,6 +67,7 @@ class UserCommand extends ContainerAwareCommand
         $email = $input->getArgument('email');
         $password = $input->getArgument('password');
         $accountNumber = $input->getArgument('bankaccount');
+        $bankName = $input->getArgument('bankName');
         $isSavings = $input->getArgument('isSavings');
         $ignoreSavings = $input->getArgument('ignoreSavings');
 
@@ -77,6 +83,7 @@ class UserCommand extends ContainerAwareCommand
         $user->setCreatedAt($createdAt);
         $user->setPassword(password_hash($password, 1));
         $user->setBankAccount($accountNumber);
+        $user->setBankName($bankName);
         $user->setIsSavings($isSavings);
         $user->setIgnoreSavings($ignoreSavings);
 
