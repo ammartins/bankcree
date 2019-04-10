@@ -159,7 +159,7 @@ class ImportService
                 $transaction->setStartSaldo($startSaldo);
                 $transaction->setEndsaldo($endSaldo);
                 $transaction->setDescription(utf8_encode($info[1]));
-                $transaction->setShortDescription($info[4]);
+                $transaction->setShortDescription(utf8_encode($info[4]));
                 $transaction->setAccountId($account);
 
                 $this->em->persist($transaction);
