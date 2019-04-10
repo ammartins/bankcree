@@ -73,7 +73,7 @@ class User implements UserInterface, \Serializable
     /**
     * @ORM\Column(name="bank", type="string", length=255)
     */
-   private $bankName;
+    private $bankName;
 
     public function setIgnoreSavings($ignoreSavings)
     {
