@@ -23,7 +23,7 @@ pipeline {
             SONAR_TOKEN = credentials('sonar-run')
         }
         steps {
-          sh "/srv/app-sonar-2.4/sonar-runner-2.4/bin/sonar-runner \
+          sh "/srv/app-sonar-2.4/sonar-runner-2.4/bin/sonar-runner -e \
                 -Dsonar.projectKey=abn-php-macOS \
                 -Dsonar.organization=ammartins-github \
                 -Dsonar.sources=src \
