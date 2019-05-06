@@ -14,25 +14,26 @@ pipeline {
       }
     }
     stage('Set Ref to master') {
-        steps {
-            sh "git fetch --no-tags https://github.com/ammartins/bankcree +refs/heads/master:refs/remotes/origin/master"
-        }
+      steps {
+        sh 'git fetch --no-tags https://github.com/ammartins/bankcree +refs/heads/master:refs/remotes/origin/master'
+      }
     }
     stage('SonarQube analysis') {
-        environment {
-            SONAR_TOKEN = credentials('sonar-run')
-        }
-        steps {
-          sh "/srv/app-sonar-2.4/sonar-runner-2.4/bin/sonar-runner \
-                -Dsonar.projectKey=abn-php-macOS \
-                -Dsonar.organization=ammartins-github \
-                -Dsonar.sources=src \
-                -Dsonar.host.url=https://sonarcloud.io \
-                -Dsonar.login=${SONAR_TOKEN} \
-                -Dsonar.branch.name=${BRANCH_NAME} \
-                -Dsonar.pullrequest.provider=github \
-                -Dsonar.pullrequest.github.repository=bankcree"
-        }
+      environment {
+        SONAR_TOKEN = credentials('sonar-run')
+      }
+      steps {
+        sh "/srv/app-sonar-2.4/sonar-runner-2.4/bin/sonar-runner \
+                        -Dsonar.projectKey=abn-php-macOS \
+                        -Dsonar.organization=ammartins-github \
+                        -Dsonar.sources=src \
+                        -Dsonar.host.url=https://sonarcloud.io \
+                        -Dsonar.login=${SONAR_TOKEN} \
+                        -Dsonar.branch.name=${BRANCH_NAME} \
+                        -Dsonar.pullrequest.provider=github \
+                        -Dsonar.pullrequest.github.repository=bankcree" \
+                        -e
+      }
     }
     stage('Lint') {
       steps {
@@ -49,8 +50,8 @@ pipeline {
       }
     }
     stage('Merge Dev To Master') {
-        steps {
-            sh '''
+      steps {
+        sh '''
                 cd /tmp &&
                 git clone https://github.com/ammartins/bankcree &&
                 cd bankcree/ &&
@@ -58,7 +59,7 @@ pipeline {
                 git status &&
                 rm -rf /tmp/bankcree/
             '''
-        }
+      }
     }
   }
 }
