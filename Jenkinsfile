@@ -14,9 +14,9 @@ pipeline {
       }
     }
     stage('Set Ref to master') {
-        steps {
-            sh "git fetch --no-tags https://github.com/ammartins/bankcree +refs/heads/master:refs/remotes/origin/master"
-        }
+      steps {
+        sh 'git fetch --no-tags https://github.com/ammartins/bankcree +refs/heads/master:refs/remotes/origin/master'
+      }
     }
     stage('SonarQube analysis') {
         environment {
@@ -49,8 +49,8 @@ pipeline {
       }
     }
     stage('Merge Dev To Master') {
-        steps {
-            sh '''
+      steps {
+        sh '''
                 cd /tmp &&
                 git clone https://github.com/ammartins/bankcree &&
                 cd bankcree/ &&
@@ -58,7 +58,7 @@ pipeline {
                 git status &&
                 rm -rf /tmp/bankcree/
             '''
-        }
+      }
     }
   }
 }
