@@ -153,10 +153,6 @@ class CategoriesController extends Controller
         $results = array();
         $macthingCategories = array();
         $transactionsResult = array();
-        // Cleanup element to be match description
-        $transacDescription = $matchService->cleanUp(
-            $toBeSave->getDescription()
-        );
 
         foreach ($transactions as $item) {
             $item = $em
