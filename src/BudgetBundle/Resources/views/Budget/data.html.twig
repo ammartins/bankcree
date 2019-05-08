@@ -12,9 +12,17 @@
             <td class="text-right">{{ budget.limit }} €</td>
             <td class="text-right">{{ budget.amount }}  €</td>
             <td class="text-right">
-                <a href="{{ path('budgets_delete', {"id": budget.id}) }}">Delete</a>
+                <p><a href="#{{ budget.id }}" rel="modal:open">Delete</a></p>
             </td>
         </tr>
         {% endfor %}
     </table>
 </div>
+
+<!-- Modal HTML embedded directly into document -->
+{% for budget in budgets %}
+    <div id="{{ budget.id }}" class="modal">
+        <p>Delete this budget.</p>
+        <a href="{{ path('budgets_delete', {"id": budget.id}) }}">Delete</a>
+    </div>
+{% endfor %}

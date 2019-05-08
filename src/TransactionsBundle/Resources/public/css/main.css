@@ -15,3 +15,12 @@ html,body{
 .fin-menu {
     background-color: #485f71;
 }
+
+.modal {
+    height: auto;
+}
+
+.showTransaction {
+    max-width: 75% !important;
+    /* width: 75% !important; */
+}

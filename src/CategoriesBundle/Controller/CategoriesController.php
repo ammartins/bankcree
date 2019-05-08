@@ -355,7 +355,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * @Route("/categories/delete/{id}", name="categories_delete")
+     * @Route("/delete/categories/{id}", name="categories_delete")
      *
      * @param int     $id
      * @param Request $request
@@ -363,11 +363,19 @@ class CategoriesController extends Controller
     public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $transaction  = $em
+        $category  = $em
             ->getRepository('CategoriesBundle:Categories')
             ->find($id);
 
-        $em->remove($transaction);
+        $transactions = $em
+            ->getRepository('TransactionsBundle:Transactions')
+            ->findBy(array('categories' => $id));
+
+        foreach ($transactions as $transaction) {
+            $transaction->setCategories(null);
+        }
+
+        $em->remove($category);
         $em->flush();
 
         return $this->redirectToRoute(

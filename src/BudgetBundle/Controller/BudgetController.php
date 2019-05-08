@@ -97,12 +97,13 @@ class BudgetController extends Controller
     }
 
     /**
-     * @Route("/budget/delete/{id}", name="budgets_delete")
+     * @Route("/delete/budget/{id}", name="budgets_delete")
      */
     public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $budget  = $em->getRepository('BudgetBundle:Budget')->find($id);
+        $budget = $em->getRepository('BudgetBundle:Budget')->find($id);
+
         $em->remove($budget);
         $em->flush();
 
