@@ -108,6 +108,7 @@ class MatchService
             if ($matchPercent >= 80) {
                 $results[] = $category->getName();
                 $match->setMatchPercentage($matchPercent);
+                $openTransaction->setMatchPercentage($matchPercent);
                 $transactions[] = $match;
                 continue;
             }

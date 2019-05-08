@@ -75,7 +75,6 @@ class CategoriesController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $category = $em->getRepository('CategoriesBundle:Categories')->find($id);
 
         /**
@@ -92,20 +91,31 @@ class CategoriesController extends Controller
             ->getRepository('TransactionsBundle:Transactions')
             ->findBy(array('categories' => null ));
 
-        $results[$id] = array();
+        $results = array();
+        $transactionsResult = array();
 
         $matchService = $this->container->get('transactions.match');
 
-        foreach ($transactions as $match) {
-            if ($match->getCategories()) {
-                $matches = $matchService->matchToClean($match, $openTransactions);
-                if (count($matches) > 0) {
-                    foreach ($matches as $matchR) {
-                        $categorieId = $match->getCategories()->getId();
-                        $results[$categorieId][$matchR->getId()] = $matchR;
-                    }
-                }
-                continue;
+        foreach ($openTransactions as $openTransaction) {
+            $matches = $matchService->match(
+                $transactions,
+                $openTransaction,
+                $category->getId()
+            );
+
+            $categoryName = $category->getName();
+
+            if (!array_key_exists($categoryName, $results)) {
+                $results[$categoryName] = 0;
+            }
+
+            if (count($matches[0])) {
+                $results[$categoryName] += 1;
+                $transactionsResult[] = $openTransaction;
+            }
+
+            if ($results[$categoryName] == 0) {
+                unset($results[$categoryName]);
             }
         }
 
@@ -115,7 +125,7 @@ class CategoriesController extends Controller
             'CategoriesBundle:Categories:show.html.twig',
             array(
             'category' => $category,
-            'transactions' => $results[$tranId] ? $results[$tranId] : [],
+            'transactions' => $transactionsResult,
             'match' => $transactions,
             )
         );
@@ -177,7 +187,10 @@ class CategoriesController extends Controller
                 $transactionsResult[] = $macthingCategories[1];
                 continue;
             }
-            unset($results[$categoryName]);
+
+            if ($results[$categoryName] == 0) {
+                unset($results[$categoryName]);
+            }
         }
 
         $form = $this->createForm(
