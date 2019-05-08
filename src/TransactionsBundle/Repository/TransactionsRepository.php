@@ -92,15 +92,8 @@ class TransactionsRepository extends EntityRepository
 
     public function getMatchTransactions($transactionId)
     {
-        $transaction = $this
-            ->getEntityManager()
-            ->createQuery(
-                "SELECT p.amount, p.description
-                FROM TransactionsBundle:Transactions p
-                WHERE p.id = $transactionId"
-            )->execute();
-
-        $data = $this
+        // Get all transactions that have a category
+        return $this
             ->getEntityManager()
             ->createQuery(
                 "SELECT p.id, p.createAt, p.amount, p.description, t.name
@@ -108,8 +101,6 @@ class TransactionsRepository extends EntityRepository
                 JOIN CategoriesBundle:Categories t
                 WHERE p.categories = t.id"
             )->execute();
-
-        return array('data' => $data, 'transaction' => $transaction);
     }
 
     public function getDescriptionUsage($month, $year)
