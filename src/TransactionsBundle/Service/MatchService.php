@@ -33,7 +33,12 @@ class MatchService
         $results = array();
         $transactions = array();
 
-        $category = $this->categoryRepository->findOneById($category);
+        $category = $this->categoryRepository->findOneBy(
+            array(
+                "id" => $category,
+                "accountId" => $openTransaction->getAccountId()
+            )
+        );
         $matchDescription = $this->cleanUp($openTransaction->getDescription());
 
         foreach ($matches as $match) {
@@ -46,10 +51,6 @@ class MatchService
                     ->entityManager
                     ->getRepository('TransactionsBundle:Transactions')
                     ->findOneById($match['id']);
-            }
-
-            if ($category->getAccountId() != $match->getAccountId()) {
-                continue;
             }
 
             $score = 0;
