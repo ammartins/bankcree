@@ -24,7 +24,7 @@
             </thead>
             <tbody>
                 {% for item in transactions %}
-                <tr class='{% if match[0].amount == item.amount %}success{% endif %}'>
+                <tr class='{% if match[0].amount == item.amount %}table-success{% endif %}'>
                     <td>{{ item.id }}</td>
                     <td>{{ item.matchPercentage }}</td>
                     <td>{{ item.createAt|date("d/m/Y") }}</td>

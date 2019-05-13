@@ -142,7 +142,6 @@ class CategoriesController extends Controller
      */
     public function matchAction($year, $month, $id, Request $request)
     {
-        // dump($id);
         $em = $this->getDoctrine()->getManager();
         $serializer = $this->get('jms_serializer');
         $matchService = $this->get('transactions.match');
@@ -164,32 +163,34 @@ class CategoriesController extends Controller
         $macthingCategories = array();
         $transactionsResult = array();
 
-        foreach ($transactions as $item) {
-            $item = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->findOneById($item['id']);
+        if ($toBeSave->getCategories() == null) {
+            foreach ($transactions as $item) {
+                $item = $em
+                    ->getRepository('TransactionsBundle:Transactions')
+                    ->findOneById($item['id']);
 
-            $categoryName = $item->getCategories()->getName();
+                $categoryName = $item->getCategories()->getName();
 
-            if (!array_key_exists($categoryName, $results)) {
-                $results[$categoryName] = 0;
-            }
+                if (!array_key_exists($categoryName, $results)) {
+                    $results[$categoryName] = 0;
+                }
 
-            $macthingCategories = $matchService
-                ->match(
-                    array($item),
-                    $toBeSave,
-                    $item->getCategories()->getId()
-                );
+                $macthingCategories = $matchService
+                    ->match(
+                        array($item),
+                        $toBeSave,
+                        $item->getCategories()->getId()
+                    );
 
-            if (in_array($categoryName, $macthingCategories[0])) {
-                $results[$categoryName] += 1;
-                $transactionsResult[] = $macthingCategories[1];
-                continue;
-            }
+                if (in_array($categoryName, $macthingCategories[0])) {
+                    $results[$categoryName] += 1;
+                    $transactionsResult[] = $macthingCategories[1];
+                    continue;
+                }
 
-            if ($results[$categoryName] == 0) {
-                unset($results[$categoryName]);
+                if ($results[$categoryName] == 0) {
+                    unset($results[$categoryName]);
+                }
             }
         }
 

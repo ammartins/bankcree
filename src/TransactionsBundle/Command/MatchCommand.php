@@ -101,7 +101,9 @@ class MatchCommand extends ContainerAwareCommand
         $progress->start();
         foreach ($openTransactions as $toMatch) {
             $progress->advance();
-            $matchService->match($transactionMatched, $toMatch, $category);
+            if ($toMatch->getCategories() == null) {
+                $matchService->match($transactionMatched, $toMatch, $category);
+            }
         }
         $progress->finish();
         dump('Ended '.date('h:i:s A'));

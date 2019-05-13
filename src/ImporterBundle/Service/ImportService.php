@@ -164,11 +164,8 @@ class ImportService
 
                 $this->em->persist($transaction);
                 $this->em->flush();
-                // dump($info);
-                // dump($transaction);
             }
         }
-        // exit;
     }
 
     public function abnImport($fileLocation, $account)

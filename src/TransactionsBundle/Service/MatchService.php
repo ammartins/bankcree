@@ -30,10 +30,6 @@ class MatchService
 
     public function match($matches, $openTransaction, $category)
     {
-        if ($openTransaction->getCategories() != null) {
-            return;
-        }
-
         $results = array();
         $transactions = array();
 
@@ -105,7 +101,12 @@ class MatchService
                 break;
             }
 
-            if ($matchPercent >= 80) {
+            if ($matchPercent >= 50) {
+                /*
+                 * TODO Call method to add 10% if value is the same and
+                 * 10% if Recurrent and in +1/-1 Day of Diff
+                 */
+                $matchPercent += $this->inRange($match, $openTransaction, $matchPercent);
                 $results[] = $category->getName();
                 $match->setMatchPercentage($matchPercent);
                 $openTransaction->setMatchPercentage($matchPercent);
@@ -114,6 +115,41 @@ class MatchService
             }
         };
         return array($results, $transactions);
+    }
+
+    public function inRange($match, $openTransaction, $matchPercent)
+    {
+        if ($match->getAmount() == $openTransaction->getAmount()
+            and
+            (
+                $match
+                    ->getCreateAt()
+                    ->format('d')+1
+                ==
+                $openTransaction
+                    ->getCreateAt()
+                    ->format('d')
+                ||
+                $match
+                    ->getCreateAt()
+                    ->format('d')-1
+                ==
+                $openTransaction
+                    ->getCreateAt()
+                    ->format('d')
+                ||
+                $match
+                    ->getCreateAt()
+                    ->format('d')
+                ==
+                $openTransaction
+                    ->getCreateAt()
+                    ->format('d')
+            )
+        ) {
+            return 100-$matchPercent;
+        }
+        return 0;
     }
 
     public function cleanUp($description)
