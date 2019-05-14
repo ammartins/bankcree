@@ -64,18 +64,6 @@ class TransactionsRepository extends EntityRepository
             )->getResult();
     }
 
-    public function findAllByMonth($month, $year)
-    {
-        return $this->getEntityManager()
-            ->createQuery(
-                "SELECT p
-                FROM TransactionsBundle:Transactions p
-                WHERE MONTH(p.createAt) = $month
-                AND Year(p.createAt) = $year
-                ORDER BY p.createAt ASC"
-            )->getResult();
-    }
-
     public function getmonth($month, $year)
     {
         $data = $this->getEntityManager()
@@ -363,16 +351,34 @@ class TransactionsRepository extends EntityRepository
         return $data;
     }
 
-    public function getMonthExpenses()
+    // Find all from month and year
+    public function findAllByMonthYear($month, $year)
     {
-        // SELECT * FROM transactions AS t JOIN transaction_type AS tt ON
-        // tt.id = t.transaction_type WHERE YEAR(create_at) = 2018
-        // AND MONTH(create_at) = 3;
-        //
-        // $query = $qb
-        //     ->select('i')
-        //     ->from('ImporterBundle:Imported', 'i')
-        //     ->where('i.fileName = ?1')
-        //     ->setParameter(1, $filename)->getQuery();
+        return $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select('t')
+            ->from('TransactionsBundle:Transactions', 't')
+            ->where('Month(t.createAt) = ?1')
+            ->andWhere('Year(t.createAt) = ?2')
+            ->setParameter(1, $month)
+            ->setParameter(2, $year)
+            ->orderBy('t.createAt')
+            ->getQuery()
+            ->getResult();
+    }
+
+    // Find Last Element
+    public function findLastOne()
+    {
+        return $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select('t')
+            ->from('TransactionsBundle:Transactions', 't')
+            ->orderBy('t.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
     }
 }

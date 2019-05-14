@@ -218,7 +218,7 @@ class CategoriesController extends Controller
             $this->addFlash('notice', 'Transaction was successfully updated.');
 
             return $this->redirectToRoute(
-                'home',
+                'main_dashboard',
                 array(
                     'year' => $year,
                     'month' => $month

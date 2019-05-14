@@ -20,10 +20,10 @@ $(document).ready(
         }
 
     /***************************************************************************
-    *                         This is for the Pie Chart                        *
+     *                        This is for the Pie Chart                        *
      **************************************************************************/
         // Calculate Total Expenses
-        for(key in obj) {
+        for (key in obj) {
             if (obj.hasOwnProperty(key)) {
                 if (obj[key].total > 0) {
                     total += parseInt(obj[key].total);
@@ -39,7 +39,7 @@ $(document).ready(
         // total is 100 so sd[key] is percent
         // 100 - total
         // x   -  sd[key]
-        for(key in obj) {
+        for (key in obj) {
             if (obj.hasOwnProperty(key) && parseInt(obj[key].total) < 0) {
                 sdF[idx++] = {
                     "name": obj[key].shortDescription,
@@ -84,11 +84,12 @@ $(document).ready(
             }
         );
 
-        /***************************************************************************
+     /***************************************************************************
      *               This is for the Month Net Worth per days                  *
      **************************************************************************/
         frr = [];
-        for(key in objD) {
+        console.log(objD);
+        for (key in objD) {
             if (objD[key].hasOwnProperty('days')) {
                 frr[objD[key].days] = parseInt(objD[key].amount);
             }
@@ -167,124 +168,6 @@ $(document).ready(
                     name: 'Total',
                     data: frr
                 }]
-            }
-        );
-
-        /***************************************************************************
-     *                    This is for the Year Expenses Graph                  *
-     **************************************************************************/
-        // This is for the Year graphMonthYear
-        idx = 0;
-        for(key in objM) {
-            if (objM.hasOwnProperty(key)) {
-                if (objM.hasOwnProperty(key) ) {
-                    perMonth[idx++] = parseInt(objM[key].amount);
-                }
-            }
-        }
-
-        idx = 0;
-        for(key in objM2) {
-            if (objM2.hasOwnProperty(key)) {
-                if (objM2.hasOwnProperty(key) ) {
-                    perMonth1[idx++] = parseInt(objM2[key].amount);
-                }
-            }
-        }
-
-        chart3 = new Highcharts.Chart(
-            {
-                chart: {
-                    renderTo: 'container3',
-                    type: gtype
-                },
-                title: {
-                    text: 'Year Expensives'
-                },
-                xAxis: {
-                    categories: [
-                    "Jan","Fev","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
-                    ]
-                },
-                yAxis: {
-                    title: {
-                        text: 'Income'
-                    }
-                },
-                plotOptions: {
-                    column: {
-                        colorByPoint: true
-                    }
-                },
-                series: [
-                {
-                    name: 'Total Current Year',
-                    data: perMonth
-                },
-                {
-                    name: 'Total Previous Year',
-                    data: perMonth1
-                }
-                ]
-            }
-        );
-
-        /***************************************************************************
-     *              This is for the Month Income/Expenses Graph                *
-     **************************************************************************/
-        perMonth = [ 0,0,0,0,0,0,0,0,0,0,0,0];
-        perMonth1 = [ 0,0,0,0,0,0,0,0,0,0,0,0];
-        idx = 0;
-
-        for(key in objMI) {
-            if (objMI.hasOwnProperty(key)) {
-                if (objMI.hasOwnProperty(key) ) {
-                    perMonth[idx++] = parseInt(objMI[key].amount);
-                }
-            }
-        }
-
-        idx = 0;
-        for(key in objME) {
-            if (objME.hasOwnProperty(key)) {
-                if (objME.hasOwnProperty(key) ) {
-                    perMonth1[idx++] = parseInt(objME[key].amount)*-1;
-                }
-            }
-        }
-
-        incomeExpensesMonth = new Highcharts.Chart(
-            {
-                chart: {
-                    renderTo: 'container4',
-                    type: gtype
-                },
-                title: {
-                    text: 'Month Income/Expenses'
-                },
-                xAxis: {
-                    categories: months
-                },
-                yAxis: {
-                    title: {
-                        text: 'Income/Expenses'
-                    }
-                },
-                plotOptions: {
-                    column: {
-                        colorByPoint: true
-                    }
-                },
-                series: [
-                {
-                    name: 'Total Income',
-                    data: perMonth
-                },
-                {
-                    name: 'Total Expenses',
-                    data: perMonth1
-                }
-                ]
             }
         );
     }

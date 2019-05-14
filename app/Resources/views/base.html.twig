@@ -21,6 +21,8 @@
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
+        <script type="text/javascript" src="https://unpkg.com/popper.js"></script>
+
         {% javascripts '@jquery' '@bootstrap_js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
@@ -41,7 +43,6 @@
     </head>
     <body>
         <div class="d-flex h-100 flex-column">
-            {% include 'menu.html.twig' %}
             <div class="row flex-fill">
                 <div class="col-2 fin-menu">
                     {% include "side_menu.html.twig" %}
@@ -59,7 +60,7 @@
                         {{ flash_message }}
                     </div>
                     {% endfor %}
-                    <br /><br />
+                    <br />
                     {% block body %}{% endblock %}
                 </div>
                 <div class="col-1">

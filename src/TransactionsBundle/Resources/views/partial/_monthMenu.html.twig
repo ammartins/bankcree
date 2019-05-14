@@ -2,7 +2,7 @@
     <ul class="pagination justify-content-center">
         {% for y in years %}
             <li class="page-item {% if y.year == year %}active{% endif %}">
-                <a class="page-link" href="{{ path('home', {'year' : y.year, 'month' : month}) }}">
+                <a class="page-link" href="{{ path('main_dashboard', {'year' : y.year, 'month' : month}) }}">
                     {{ y.year }}
                 </a>
             </li>
@@ -13,7 +13,7 @@
     <ul class="pagination justify-content-center">
         {% for m in months %}
             <li class="page-item {% if m.months == month %}active{% endif %}">
-                <a class="page-link" href="{{ path('home', {'year' : year,'month' : m.months}) }}">
+                <a class="page-link" href="{{ path('main_dashboard', {'year' : year,'month' : m.months}) }}">
                     {{ m.monthName|date('F') }}
                 </a>
             </li>
