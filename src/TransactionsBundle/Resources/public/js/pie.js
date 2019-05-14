@@ -88,7 +88,6 @@ $(document).ready(
      *               This is for the Month Net Worth per days                  *
      **************************************************************************/
         frr = [];
-        console.log(objD);
         for (key in objD) {
             if (objD[key].hasOwnProperty('days')) {
                 frr[objD[key].days] = parseInt(objD[key].amount);
