@@ -65,7 +65,14 @@ class DashBoardController extends Controller
         $graphDataType = $serializer->serialize($graphDataType, 'json');
 
         $profits = $expenses = 0;
+        $ignoreSavings = $user->getIgnoreSavings();
         foreach ($currentTransactions as $transaction) {
+            if ($transaction->getCategories() and
+                $transaction->getCategories()->getSavings() and
+                $ignoreSavings
+            ) {
+                continue;
+            }
             if ($transaction->getAmount() > 0) {
                 $profits += $transaction->getAmount();
                 continue;
