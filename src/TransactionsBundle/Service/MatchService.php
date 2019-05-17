@@ -103,10 +103,6 @@ class MatchService
             }
 
             if ($matchPercent >= 50) {
-                /*
-                 * TODO Call method to add 10% if value is the same and
-                 * 10% if Recurrent and in +1/-1 Day of Diff
-                 */
                 $matchPercent += $this->inRange($match, $openTransaction, $matchPercent);
                 $results[] = $category->getName();
                 $match->setMatchPercentage($matchPercent);

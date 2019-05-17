@@ -218,7 +218,7 @@ class CategoriesController extends Controller
             $this->addFlash('notice', 'Transaction was successfully updated.');
 
             return $this->redirectToRoute(
-                'home',
+                'main_dashboard',
                 array(
                     'year' => $year,
                     'month' => $month
@@ -415,13 +415,14 @@ class CategoriesController extends Controller
             }
 
             return $response;
-        } else {
-            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-            // set a HTTP response header
-            $response->headers->set('Content-Type', 'text/html');
-            // print the HTTP headers followed by the content
-            $response->send();
-            return $response;
         }
+
+        $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        // set a HTTP response header
+        $response->headers->set('Content-Type', 'text/html');
+        // print the HTTP headers followed by the content
+        $response->send();
+
+        return $response;
     }
 }
