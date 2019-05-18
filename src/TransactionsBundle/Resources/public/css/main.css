@@ -20,11 +20,6 @@ html,body{
     height: auto;
 }
 
-.showTransaction {
-    max-width: 75% !important;
-    /* width: 75% !important; */
-}
-
 .card {
     border: 0;
 }
