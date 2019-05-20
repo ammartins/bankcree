@@ -1,10 +1,10 @@
 services:
-  filter_listener:
-    class: TransactionsBundle\EventListener\UserFilterListener
-    arguments:
-      - "@doctrine.orm.entity_manager"
-      - "@security.token_storage"
-    tags:
-      -
-        name: kernel.event_listener
-        event: kernel.request
+    filter_listener:
+        class: TransactionsBundle\EventListener\UserFilterListener
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@security.token_storage"
+        tags:
+            -
+                name: kernel.event_listener
+                event: kernel.request

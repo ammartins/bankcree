@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <script type="text/javascript">
+        obj = jQuery.parseJSON('{{ data.pieChart|raw }}');
+        objD = jQuery.parseJSON('{{ graphDay|raw }}');
+    </script>
+
+    {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-deck mb-4">
+                <div class="card text-center">
+                    <div class="dropdown show">
+                        <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ year }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            {% for y in years %}
+                                <a class="page-link" href="{{ path('main_dashboard', {'year' : y.year, 'month' : month}) }}">
+                                    {{ y.year }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card text-center">
+                    <div class="dropdown show">
+                        <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ month }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            {% for m in months %}
+                                <a class="page-link" href="{{ path('main_dashboard', {'year' : year,'month' : m.months}) }}">
+                                    {{ m.monthName|date('F') }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body mb-0">
+            <div class="card-deck mb-4">
+                <div class="card text-center">
+                    <h5>Account Balance</h5>
+                    <h3>€ {{ (transactions|last).endsaldo }}</h3>
+                </div>
+                <div class="card text-center">
+                    <h5>Expenses</h5>
+                    <h3>€ {{ data.expenses }}</h3>
+                </div>
+                <div class="card text-center">
+                    <h5>Profits</h5>
+                    <h3>€ {{ data.profits }}</h3>
+                </div>
+            </div>
+            <div class="card-deck mb-4">
+                <div class="card text-center">
+                    {% include 'TransactionsBundle:partial:_piegraph.html.twig' %}
+                </div>
+                <div class="card text-center">
+                    <div id="container"></div>
+                </div>
+            </div>
+            <div class="card-deck mb-4">
+                <div class="card text-center">
+                    {% include 'TransactionsBundle:partial:_month.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

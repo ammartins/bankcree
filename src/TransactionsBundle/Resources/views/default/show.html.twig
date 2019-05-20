@@ -1,54 +1,32 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-  <div id="{{ transaction.id }}">
-    <h1>Description</h1>
+<div id="{{ transaction.id }}">
+    <h3 class="text-center">Description</h3>
     <div class="row">
-      <div class="col-md-2">
-        <h5>Created at:</h5>
-        <h5>Transaction:</h5>
-        <br />
-        <h5>Starting Amount:</h5>
-        <h5>Transaction Amount:</h5>
-        <h5>End Amount:</h5>
-        <br />
-        <h5>Full Description:</h5>
-        <br />
-        <br />
-        <br />
-        <h4>Short Description:</h5>
-        {% if transaction.categories %}
-          <h5>{{ transaction.categories.name }}</h5>
-        {% else %}
-          <h5>{{ transaction.shortDescription }}</h5>
-        {% endif %}
-      </div>
-      <div class="col-md-6">
-        <h5>{{ transaction.createAt|date("d/m/Y") }}</h5>
-        <h5>{{ transaction.transactionHash }}</h5>
-        <br />
-        <h5>{{ transaction.startsaldo }} €</h5>
-        <h5>{{ transaction.amount }} €</h5>
-        <h5>{{ transaction.endsaldo }} €</h5>
-        <br />
-        <h5>{{ transaction.description }}</h5>
-      </div>
+        <div class="col-md-4">
+            <p>Created at:</p>
+            <p>Transaction:</p>
+            <p>Starting Amount:</p>
+            <p>Transaction Amount:</p>
+            <p>End Amount:</p>
+            <p>Full Description:</p>
+        </div>
+        <div class="col-md-6">
+            <p>{{ transaction.createAt|date("d/m/Y") }}</p>
+            <p>{{ transaction.transactionHash }}</p>
+            <p>{{ transaction.startsaldo }} €</p>
+            <p>{{ transaction.amount }} €</p>
+            <p>{{ transaction.endsaldo }} €</p>
+            <p>{{ transaction.description }}</p>
+        </div>
     </div>
     <br />
     <br />
     <span>
-      Recurring Payment:
-      {% if transaction.categories and transaction.categories.recurring %}
+        Recurring Payment:
+        {% if transaction.categories and transaction.categories.recurring %}
         <i class="fas fa-check"></i>
-      {% else %}
+        {% else %}
         <i class="fas fa-times"></i>
-      {% endif %}
+        {% endif %}
     </span>
-  </div>
-  <div class="text-right">
-    <a type="button" class="btn btn-primary" href="{{ path('home', {
-      'month': month,
-      'year': year,
-    }) }}">Back</a>
-  </div,
-{% endblock %}
+</div>
+</div>

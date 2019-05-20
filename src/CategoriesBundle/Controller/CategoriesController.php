@@ -75,7 +75,6 @@ class CategoriesController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $category = $em->getRepository('CategoriesBundle:Categories')->find($id);
 
         /**
@@ -88,24 +87,35 @@ class CategoriesController extends Controller
         /**
          * All transactions that don't have a matching category yet
          */
-        $toMatch = $em
+        $openTransactions = $em
             ->getRepository('TransactionsBundle:Transactions')
             ->findBy(array('categories' => null ));
 
-        $results[$id] = array();
+        $results = array();
+        $transactionsResult = array();
 
         $matchService = $this->container->get('transactions.match');
 
-        foreach ($transactions as $match) {
-            if ($match->getCategories()) {
-                $matches = $matchService->matchToClean($match, $toMatch);
-                if (count($matches) > 0) {
-                    foreach ($matches as $matchR) {
-                        $categorieId = $match->getCategories()->getId();
-                        $results[$categorieId][$matchR->getId()] = $matchR;
-                    }
-                }
-                continue;
+        foreach ($openTransactions as $openTransaction) {
+            $matches = $matchService->match(
+                $transactions,
+                $openTransaction,
+                $category->getId()
+            );
+
+            $categoryName = $category->getName();
+
+            if (!array_key_exists($categoryName, $results)) {
+                $results[$categoryName] = 0;
+            }
+
+            if (count($matches[0])) {
+                $results[$categoryName] += 1;
+                $transactionsResult[] = $openTransaction;
+            }
+
+            if ($results[$categoryName] == 0) {
+                unset($results[$categoryName]);
             }
         }
 
@@ -115,7 +125,7 @@ class CategoriesController extends Controller
             'CategoriesBundle:Categories:show.html.twig',
             array(
             'category' => $category,
-            'transactions' => $results[$tranId] ? $results[$tranId] : [],
+            'transactions' => $transactionsResult,
             'match' => $transactions,
             )
         );
@@ -136,36 +146,51 @@ class CategoriesController extends Controller
         $serializer = $this->get('jms_serializer');
         $matchService = $this->get('transactions.match');
 
+        // Element to be matched.
         $toBeSave = $em
-            ->getRepository('TransactionsBundle:Transactions')->find($id);
+            ->getRepository('TransactionsBundle:Transactions')
+            ->find($id);
 
-        $transaction = $em
+        /*
+         * All transactions that were matched with $id
+         * also the transaction to be compared against.
+         */
+        $transactions = $em
             ->getRepository('TransactionsBundle:Transactions')
             ->getMatchTransactions($id);
 
         $results = array();
-        $transacDescription = $transaction['transaction'][0]['description'];
-        $transacDescription = $matchService->cleanUp($transacDescription);
+        $macthingCategories = array();
+        $transactionsResult = array();
 
-        foreach ($transaction['data'] as $item) {
-            $score = 0;
-            $itemDescription = $matchService->cleanUp($item['description']);
+        if ($toBeSave->getCategories() == null) {
+            foreach ($transactions as $item) {
+                $item = $em
+                    ->getRepository('TransactionsBundle:Transactions')
+                    ->findOneById($item['id']);
 
-            foreach ($itemDescription as $value) {
-                if (in_array($value, $transacDescription)) {
-                    $score += 1;
+                $categoryName = $item->getCategories()->getName();
+
+                if (!array_key_exists($categoryName, $results)) {
+                    $results[$categoryName] = 0;
                 }
-            }
 
-            if ($score > (count($itemDescription))/2) {
-                $item['percentage'] = round(
-                    (($score*100)/(count($transacDescription))),
-                    0
-                );
+                $macthingCategories = $matchService
+                    ->match(
+                        array($item),
+                        $toBeSave,
+                        $item->getCategories()->getId()
+                    );
 
-                $results[] = $item;
-                $score = 0;
-                continue;
+                if (in_array($categoryName, $macthingCategories[0])) {
+                    $results[$categoryName] += 1;
+                    $transactionsResult[] = $macthingCategories[1];
+                    continue;
+                }
+
+                if ($results[$categoryName] == 0) {
+                    unset($results[$categoryName]);
+                }
             }
         }
 
@@ -176,11 +201,11 @@ class CategoriesController extends Controller
             'entity_manager' => $em
             )
         );
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryId = $form->getData()->getCategories();
+
             $category = $em
                 ->getRepository('CategoriesBundle:Categories')
                 ->findById($categoryId);
@@ -193,10 +218,10 @@ class CategoriesController extends Controller
             $this->addFlash('notice', 'Transaction was successfully updated.');
 
             return $this->redirectToRoute(
-                'home',
+                'main_dashboard',
                 array(
-                'year' => $year,
-                'month' => $month
+                    'year' => $year,
+                    'month' => $month
                 ),
                 301
             );
@@ -204,25 +229,15 @@ class CategoriesController extends Controller
             $this->addFlash('notice', 'Transaction was not updated.');
         }
 
-        // Even more hugly code :P
-        $type = array();
-        foreach ($results as $result) {
-            if (array_key_exists($result['name'], $type)) {
-                $type[$result['name']] += 1;
-                continue;
-            }
-            $type[$result['name']] = 1;
-        }
-
-        $type = $serializer->serialize($type, 'json');
+        $results = $serializer->serialize($results, 'json');
 
         return $this->render(
             'CategoriesBundle:Categories:match.html.twig',
             array(
-            'type' => $type,
+            'type' => $results,
             'form' => $form->createView(),
-            'transactions' => $results,
-            'transaction' => $transaction['transaction'][0],
+            'transaction' => $toBeSave,
+            'transactions' => $transactionsResult,
             'year' => $year,
             'month' => $month
             )
@@ -341,7 +356,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * @Route("/categories/delete/{id}", name="categories_delete")
+     * @Route("/delete/categories/{id}", name="categories_delete")
      *
      * @param int     $id
      * @param Request $request
@@ -349,11 +364,19 @@ class CategoriesController extends Controller
     public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $transaction  = $em
+        $category  = $em
             ->getRepository('CategoriesBundle:Categories')
             ->find($id);
 
-        $em->remove($transaction);
+        $transactions = $em
+            ->getRepository('TransactionsBundle:Transactions')
+            ->findBy(array('categories' => $id));
+
+        foreach ($transactions as $transaction) {
+            $transaction->setCategories(null);
+        }
+
+        $em->remove($category);
         $em->flush();
 
         return $this->redirectToRoute(
@@ -392,13 +415,14 @@ class CategoriesController extends Controller
             }
 
             return $response;
-        } else {
-            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-            // set a HTTP response header
-            $response->headers->set('Content-Type', 'text/html');
-            // print the HTTP headers followed by the content
-            $response->send();
-            return $response;
         }
+
+        $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        // set a HTTP response header
+        $response->headers->set('Content-Type', 'text/html');
+        // print the HTTP headers followed by the content
+        $response->send();
+
+        return $response;
     }
 }

@@ -28,37 +28,48 @@ class MatchService
         $this->entityManager = $entityManager;
     }
 
-    public function match($matches, $transaction, $category)
+    public function match($matches, $openTransaction, $category)
     {
-        $matchDescription = $this->cleanUp($transaction->getDescription());
-        $type = $this->categoryRepository->findById($category);
+        $results = array();
+        $transactions = array();
 
-        if ($transaction->getCategories() != null) {
-            return;
-        }
+        $category = $this->categoryRepository->findOneBy(
+            array(
+                "id" => $category,
+                "accountId" => $openTransaction->getAccountId()
+            )
+        );
+        $matchDescription = $this->cleanUp($openTransaction->getDescription());
 
         foreach ($matches as $match) {
-            if ($type[0]->getAccountId() != $match->getAccountId()) {
-                continue;
+            /*
+             * If matches come from UI
+             * TODO SHOULD CLEAN THIS
+             */
+            if (gettype($match) === 'array') {
+                $match = $this
+                    ->entityManager
+                    ->getRepository('TransactionsBundle:Transactions')
+                    ->findOneById($match['id']);
             }
 
             $score = 0;
             $special = 0;
 
             $itemDescription = $this->cleanUp($match->getDescription());
-            $customRegex = $type[0]->getCustomRegex();
+            $customRegex = $category->getCustomRegex();
 
             // If Category contains a custom regex just match against it
-            if ($type[0]->getCustomRegex() &&
+            if ($category->getCustomRegex() &&
                 preg_match(
                     "/$customRegex/",
-                    $transaction->getDescription()
+                    $openTransaction->getDescription()
                 )
             ) {
-                $transaction->setCategories($type[0]);
-                $transaction->setMatchPercentage(100);
+                $openTransaction->setCategories($category);
+                $openTransaction->setMatchPercentage(100);
 
-                $this->entityManager->persist($transaction);
+                $this->entityManager->persist($openTransaction);
                 $this->entityManager->flush();
 
                 continue;
@@ -72,19 +83,70 @@ class MatchService
 
             $matchPercent = round((($score*100)/(count($itemDescription))), 0);
 
-            if ($matchPercent >= 100 || ($matchPercent >= 90 && $match->getAmount() == $transaction->getAmount())) {
-                $transaction->setCategories($type[0]);
-                $transaction->setMatchPercentage($matchPercent);
+            if ($matchPercent >= 100 ||
+                (
+                    $matchPercent >= 90 &&
+                    $match->getAmount() == $openTransaction->getAmount()
+                )
+            ) {
+                $openTransaction->setCategories($category);
+                $openTransaction->setMatchPercentage($matchPercent);
 
-                $this->entityManager->persist($transaction);
+                $this->entityManager->persist($openTransaction);
                 $this->entityManager->flush();
 
-                $score = 0;
-                $special = 0;
+                $score = $special = 0;
+
+                $results[] = $category;
 
                 break;
             }
+
+            if ($matchPercent >= 50) {
+                $matchPercent += $this->inRange($match, $openTransaction, $matchPercent);
+                $results[] = $category->getName();
+                $match->setMatchPercentage($matchPercent);
+                $openTransaction->setMatchPercentage($matchPercent);
+                $transactions[] = $match;
+                continue;
+            }
+        };
+        return array($results, $transactions);
+    }
+
+    public function inRange($match, $openTransaction, $matchPercent)
+    {
+        if ($match->getAmount() == $openTransaction->getAmount()
+            and
+            (
+                $match
+                    ->getCreateAt()
+                    ->format('d')+1
+                ==
+                $openTransaction
+                    ->getCreateAt()
+                    ->format('d')
+                ||
+                $match
+                    ->getCreateAt()
+                    ->format('d')-1
+                ==
+                $openTransaction
+                    ->getCreateAt()
+                    ->format('d')
+                ||
+                $match
+                    ->getCreateAt()
+                    ->format('d')
+                ==
+                $openTransaction
+                    ->getCreateAt()
+                    ->format('d')
+            )
+        ) {
+            return 100-$matchPercent;
         }
+        return 0;
     }
 
     public function cleanUp($description)
@@ -122,57 +184,5 @@ class MatchService
         }
 
         return $description;
-    }
-
-    public function matchToClean($toBeSave, $transaction)
-    {
-        $results = array();
-        $categorieDesc = $this->cleanUp($toBeSave->getDescription());
-
-        foreach ($transaction as $item) {
-            if ($item->getCategories()) {
-                continue;
-            }
-
-            $score = 0;
-            $special = 0;
-
-            $customRegex = $toBeSave->getCategories()->getCustomRegex();
-
-            // If Category contains a custom regex just match against it
-            if ($toBeSave->getCategories()->getCustomRegex() &&
-                preg_match(
-                    "/$customRegex/",
-                    $item->getDescription()
-                )
-            ) {
-                $item->setMatchPercentage(100);
-                $results[$item->getId()] = $item;
-                continue;
-            }
-
-            $itemDescription = preg_replace('!\s+!', ' ', $item->getDescription());
-            $itemDescription = preg_split('/[\s\/\*]/', $itemDescription);
-            $itemDescription = $this->cleanUp($item->getDescription());
-
-            foreach ($itemDescription as $item1) {
-                if (in_array(strtolower($item1), array_map('strtolower', $categorieDesc))
-                ) {
-                    $score += 1;
-                }
-            }
-
-            $matchPercent = round((($score*100)/(count($itemDescription))), 0);
-
-            if ($matchPercent > 50) {
-                $item->setMatchPercentage($matchPercent);
-                $results[$item->getId()] = $item;
-                $score = 0;
-                $special = 0;
-                continue;
-            }
-        }
-
-        return $results;
     }
 }

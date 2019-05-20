@@ -23,7 +23,7 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "twitter/bootstrap": "4.*",
         "components/jquery": "1.11.1",
-        "FortAwesome/Font-Awesome": "*",
+        "fortawesome/font-awesome": "*",
         "symfony/assetic-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "oro/doctrine-extensions": "dev-master",

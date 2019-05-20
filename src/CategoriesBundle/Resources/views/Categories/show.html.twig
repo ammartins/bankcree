@@ -1,64 +1,66 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-  <div class="row">
-    <div class="col-md-2">
-      <h4>Match Transaction:</h4>
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Match Transaction:</h4>
+        </div>
+        <div class="col-md-6">
+            <h4>{{ category.name }}</h4>
+        </div>
     </div>
-    <div class="col-md-8">
-      <h4>{{ category.name }}</h4>
-    </div>
-  </div>
-  <br />
+    <br />
     <div class="table-responsive">
-  <table class="table table-condensed table-hover">
-    <thead>
-      <tr>
-        <th class="text-left">Id</th>
-        <th class="text-left">Percentage</th>
-        <th class="text-left">Transaction Date</th>
-        <th class="text-right">Amount</th>
-        <th class="text-right">Short Description</th>
-        <th class="text-right">Options</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in transactions %}
-        <tr class='{% if match[0].amount == item.amount %}success{% endif %}'>
-          <td>{{ item.id }}</td>
-          <td>{{ item.matchPercentage }}</td>
-          <td>{{ item.createAt|date("d/m/Y") }}</td>
-          <td class="text-right">{{ item.amount }} €</td>
-          <td class="text-right">{{ item.description  }}</td>
-          <td class="text-right">
-            <input type="checkbox" {% if match[0].amount == item.amount %}checked{% endif %} name="{{ item.id }}" />
-          </td>
-      {% endfor %}
-    </tbody>
-  </table>
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th class="text-left">Id</th>
+                    <th class="text-left">Percentage</th>
+                    <th class="text-left">Transaction Date</th>
+                    <th class="text-right">Amount</th>
+                    <th class="text-right">Short Description</th>
+                    <th class="text-right">Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in transactions %}
+                <tr class='{% if match[0].amount == item.amount %}table-success{% endif %}'>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.matchPercentage }}</td>
+                    <td>{{ item.createAt|date("d/m/Y") }}</td>
+                    <td class="text-right">{{ item.amount }} €</td>
+                    <td class="text-right">{{ item.description  }}</td>
+                    <td class="text-right">
+                        <input type="checkbox" {% if match[0].amount == item.amount %}checked{% endif %} name="{{ item.id }}" />
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-  <input type="submit" value="Match Transactions" name="match" id="match" />
-  <input type="submit" value="Check All" name="select_all" id="select_all" />
 
-  <script type="text/javascript">
-    $("#match").click(function(){
-      var data = [];
-      $('.table input:checked').each(function() {
-        data.push($(this).attr('name'));
-      });
+    <input type="submit" value="Match Transactions" name="match" id="match" />
+    <input type="submit" value="Check All" name="select_all" id="select_all" />
 
-      $.ajax({
-        type: "POST",
-        url: "/categories/matching",
-        data: { selected: data, type: {{ category.id }} },
-        success: function(data, dataType) {
-          console.log("all work");
-          location.reload();
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-          alert('Error : ' + errorThrown);
-        }
-      });
-    });
-  </script>
+    <script type="text/javascript">
+        $("#match").click(function(){
+            var data = [];
+            $('.table input:checked').each(function() {
+                data.push($(this).attr('name'));
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/categories/matching",
+                data: { selected: data, type: {{ category.id }} },
+                success: function(data, dataType) {
+                    console.log("all work");
+                    location.reload();
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert('Error : ' + errorThrown);
+                }
+            });
+        });
+    </script>
 {% endblock %}

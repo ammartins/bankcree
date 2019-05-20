@@ -1,64 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-  <div class="well">
-    <!--p>
-      <a type="button" data-toggle="modal" data-target="#exampleModal">
-        Create Cetegory
-      </a>
-    </p-->
-    <p>{{ transaction.description }}</p>
-    <p>{{ transaction.amount }}</p>
-  </div>
+    <div class="well">
+        <p>{{ transaction.description }}</p>
+        <p>{{ transaction.amount }}</p>
+    </div>
     <div class="table-responsive">
-  <table class="table table-condensed table-hover">
-    <tr>
-      <th class="text-left">Description</th>
-      <th class="text-left">Short Description</th>
-      <th class="text-left">Matching %</th>
-      <th class="text-left">Amount</th>
-    </tr>
-    {% for transact in transactions %}
-      <tr {% if transaction.amount ==  transact.amount %}class="bg-warning"{% endif %}>
-        <td class="text-left">{{ transact.description }}</td>
-        <td class="text-left">{{ transact.name }}</td>
-        <td class="text-left">{{ transact.percentage}}</td>
-        <td class="text-left">{{ transact.amount}}</td>
-      </tr>
-    {% endfor %}
-  </table>
+        <table class="table table-condensed table-hover">
+            <tr>
+                <th class="text-left">Description</th>
+                <th class="text-left">Short Description</th>
+                <th class="text-left">Matching %</th>
+                <th class="text-left">Amount</th>
+            </tr>
+            {% for transact in transactions %}
+            <tr {% if transaction.amount ==  transact[0].amount %}class="bg-warning"{% endif %}>
+            <td class="text-left">{{ transact[0].description }}</td>
+            <td class="text-left">{{ transact[0].categories.name }}</td>
+            <td class="text-left">{{ transact[0].matchPercentage}}</td>
+            <td class="text-left">{{ transact[0].amount}}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
-  {{ form_start(form) }}
+    {{ form_start(form) }}
     <div class="form-group">
-      <label for="short_description">{{ form_label(form.categories) }}</label>
-      {% include '::errors.html.twig' with {'errors': form.categories.vars.errors} %}
-      {{ form_widget(form.categories, { 'attr': {'class': 'form-control'} }) }}
+        <label for="short_description">{{ form_label(form.categories) }}</label>
+        {% include '::errors.html.twig' with {'errors': form.categories.vars.errors} %}
+        {{ form_widget(form.categories, { 'attr': {'class': 'form-control'} }) }}
     </div>
-  {{ form_end(form) }}
+    {{ form_end(form) }}
 
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          {{ render(controller('CategoriesBundle:Categories:new')) }}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script type="text/javascript">
-    $(document).ready(function() {
-      var type   = jQuery.parseJSON('{{ type|raw }}');
-      $.each( type, function( key, value ) {
-        $("#transactions_categories option:contains(" + key + ")").attr('selected', 'selected');
-      });
-    });
-  </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var type   = jQuery.parseJSON('{{ type|raw }}');
+            console.log(type);
+            $.each( type, function( key, value ) {
+                $("#transactions_categories option:contains(" + key + ")").attr('selected', 'selected');
+            });
+        });
+    </script>
 {% endblock %}

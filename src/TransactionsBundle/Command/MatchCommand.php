@@ -33,11 +33,13 @@ class MatchCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $category = $input->getArgument('transaction_type');
         $em = $this->getContainer()->get('doctrine')->getManager();
 
+        // Category to match transactions
+        $category = $input->getArgument('transaction_type');
+
         // List of Transactions Without Category
-        $transactions = $em
+        $openTransactions = $em
             ->getRepository('TransactionsBundle:Transactions')
             ->findBy(array('categories' => null));
 
@@ -56,7 +58,7 @@ class MatchCommand extends ContainerAwareCommand
 
                 $this->cycleTransactions(
                     $transactionMatched,
-                    $transactions,
+                    $openTransactions,
                     $category->getId(),
                     $output
                 );
@@ -70,7 +72,7 @@ class MatchCommand extends ContainerAwareCommand
 
             $this->cycleTransactions(
                 $transactionMatched,
-                $transactions,
+                $openTransactions,
                 $category,
                 $output
             );
@@ -79,7 +81,7 @@ class MatchCommand extends ContainerAwareCommand
 
     protected function cycleTransactions(
         $transactionMatched,
-        $transactions,
+        $openTransactions,
         $category,
         $output
     ) {
@@ -97,9 +99,11 @@ class MatchCommand extends ContainerAwareCommand
             ->get('transactions.match');
 
         $progress->start();
-        foreach ($transactions as $toMatch) {
+        foreach ($openTransactions as $toMatch) {
             $progress->advance();
-            $matchService->match($transactionMatched, $toMatch, $category);
+            if ($toMatch->getCategories() == null) {
+                $matchService->match($transactionMatched, $toMatch, $category);
+            }
         }
         $progress->finish();
         dump('Ended '.date('h:i:s A'));
