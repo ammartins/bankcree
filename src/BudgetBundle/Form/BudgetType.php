@@ -41,6 +41,7 @@ class BudgetType extends AbstractType
         $builder
             ->add('name')
             ->add('budgetLimit')
+            ->add('annually')
             ->add(
                 'name',
                 ChoiceType::class,
