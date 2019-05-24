@@ -25,13 +25,12 @@ class BudgetController extends Controller
      */
     public function budgetAction($year = null, $month = null)
     {
-        $budgets = $this->get('budget.budgets');
-        $result = $budgets->getBudgets($year, $month);
+        $budgets = $this->get('budget.budgets')->getBudgets($year, $month);
 
         return $this->render(
             'BudgetBundle:Budget:budgetIndex.html.twig',
             array(
-                'budgets' => $result,
+                'budgets' => $budgets,
             )
         );
     }
@@ -58,13 +57,22 @@ class BudgetController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $name = $em->getRepository('CategoriesBundle:Categories')
-                ->findBy(array('id' => $form->getData()->getName()));
+            $name = $em
+                ->getRepository('CategoriesBundle:Categories')
+                ->findBy(
+                    array(
+                        'id' => $form->getData()->getName()
+                    )
+                );
 
             $budget->setName($name[0]->getName());
 
             $userId = $this->get('security.context')->getToken()->getUser()->getId();
             $budget->setAccountId($userId);
+
+            if ($budget->getAnnually()) {
+                $budget->setBudgetLimit($budget->getBudgetLimit()*12);
+            }
 
             $em->persist($budget);
             $em->flush();

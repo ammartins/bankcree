@@ -9,9 +9,15 @@
     </div>
 
     <div class="form-group">
-        <label for="account_id">{{ form_label(form.budgetLimit) }}</label>
+        <label for="account_id">{{ form_label(form.budgetLimit) }} - Set montlhy value</label>
         {% include '::errors.html.twig' with {'errors': form.budgetLimit.vars.errors} %}
         {{ form_widget(form.budgetLimit, { 'attr': {'class': 'form-control'} }) }}
+    </div>
+
+    <div class="form-group">
+        <label for="account_id">{{ form_label(form.annually) }}</label>
+        {% include '::errors.html.twig' with {'errors': form.annually.vars.errors} %}
+        {{ form_widget(form.annually, { 'attr': {'class': 'form-control'} }) }}
     </div>
 
     <div class="text-right">

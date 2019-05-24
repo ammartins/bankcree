@@ -25,7 +25,11 @@
             <tbody>
                 {% for item in transactions %}
                 <tr class='{% if match[0].amount == item.amount %}table-success{% endif %}'>
-                    <td>{{ item.id }}</td>
+                    <td>
+                        <a href="{{ path('match', {'year' : item.createAt|date("Y"),'month' : item.createAt|date("m"), 'id' : item.id}) }}">
+                            {{ item.id }}
+                        </a>
+                    </td>
                     <td>{{ item.matchPercentage }}</td>
                     <td>{{ item.createAt|date("d/m/Y") }}</td>
                     <td class="text-right">{{ item.amount }} €</td>
