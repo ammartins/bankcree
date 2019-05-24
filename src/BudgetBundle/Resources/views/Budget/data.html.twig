@@ -2,27 +2,33 @@
     <table class="table table-condensed table-hover">
         <tr>
             <th class="text-left">Categorie</th>
+            <th class="text-right">Annually</th>
             <th class="text-right">Limit</th>
             <th class="text-right">Current Ammount</th>
             <th class="text-right">Options</th>
         </tr>
         {% for budget in budgets %}
-        <tr class="{% if budget.limit < budget.amount %}table-danger{% else %}table-success{% endif %}">
-            <td>{{ budget.name }}</td>
-            <td class="text-right">{{ budget.limit }} €</td>
-            <td class="text-right">{{ budget.amount }}  €</td>
+            {% for entity in budget %}
+        <tr class="{% if entity.limit < entity.amount %}table-danger{% else %}table-success{% endif %}">
+            <td>{{ entity.name }}</td>
+            <td class="text-right">{{ entity.annually ? 'Yes' : 'No' }}</td>
+            <td class="text-right">{{ entity.limit }} €</td>
+            <td class="text-right">{{ entity.amount }}  €</td>
             <td class="text-right">
-                <p><a href="#{{ budget.id }}" rel="modal:open">Delete</a></p>
+                <p><a href="#{{ entity.id }}" rel="modal:open">Delete</a></p>
             </td>
         </tr>
+            {% endfor %}
         {% endfor %}
     </table>
 </div>
 
 <!-- Modal HTML embedded directly into document -->
 {% for budget in budgets %}
-    <div id="{{ budget.id }}" class="modal">
+    {% for entity in budget %}
+    <div id="{{ entity.id }}" class="modal">
         <p>Delete this budget.</p>
-        <a href="{{ path('budgets_delete', {"id": budget.id}) }}">Delete</a>
+        <a href="{{ path('budgets_delete', {"id": entity.id}) }}">Delete</a>
     </div>
+    {% endfor %}
 {% endfor %}

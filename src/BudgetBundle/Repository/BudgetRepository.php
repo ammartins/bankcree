@@ -15,7 +15,8 @@ class BudgetRepository extends \Doctrine\ORM\EntityRepository
 {
     public function findBudgets($year, $month)
     {
-        $budgets = $this->getEntityManager()
+        $budgets = $this
+            ->getEntityManager()
             ->createQuery(
                 "SELECT tt.name, sum(t.amount) as amount, IDENTITY(tt.parent) as parent
                 FROM TransactionsBundle:Transactions t
@@ -28,6 +29,28 @@ class BudgetRepository extends \Doctrine\ORM\EntityRepository
                 )
                 AND YEAR(t.createAt) = $year
                 AND MONTH(t.createAt) = $month
+                AND tt.id = t.categories
+                GROUP BY tt.name"
+            )->execute();
+
+        return $budgets;
+    }
+
+    public function findBudgetPerYear($year)
+    {
+        $budgets = $this
+            ->getEntityManager()
+            ->createQuery(
+                "SELECT tt.name, sum(t.amount) as amount, IDENTITY(tt.parent) as parent
+                FROM TransactionsBundle:Transactions t
+                JOIN CategoriesBundle:Categories tt
+                WHERE t.categories IN
+                (
+                    SELECT tt.id
+                    FROM CategoriesBundle:Categories cc
+                    JOIN BudgetBundle:Budget b WITH cc.name = b.name
+                )
+                AND YEAR(t.createAt) = $year
                 AND tt.id = t.categories
                 GROUP BY tt.name"
             )->execute();

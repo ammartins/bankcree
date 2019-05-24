@@ -44,6 +44,13 @@ class Budget
     private $categories;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="annually", type="boolean")
+     */
+    private $annually;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="budgetLimit", type="integer")
@@ -159,5 +166,29 @@ class Budget
     public function getBudgetLimit()
     {
         return $this->budgetLimit;
+    }
+
+    /**
+     * Set annually
+     *
+     * @param boolean $annually
+     *
+     * @return Budget
+     */
+    public function setAnnually($annually)
+    {
+        $this->annually = $annually;
+
+        return $this;
+    }
+
+    /**
+     * Get annually
+     *
+     * @return int
+     */
+    public function getAnnually()
+    {
+        return $this->annually;
     }
 }

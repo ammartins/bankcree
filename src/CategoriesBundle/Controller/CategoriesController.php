@@ -253,11 +253,11 @@ class CategoriesController extends Controller
     public function newAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $transaction  = new Categories();
+        $category  = new Categories();
 
         $form = $this->createForm(
             CategoriesType::class,
-            $transaction,
+            $category,
             array(
             'entity_manager' => $em
             )
@@ -268,22 +268,34 @@ class CategoriesController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             // Setting User
             $user = $this->get('security.token_storage')->getToken()->getUser();
-            $transaction->setAccountId($user->getId());
+            $category->setAccountId($user->getId());
 
             if ($form->getData()->getParent() == 0) {
-                $transaction->setParent(null);
+                $category->setParent(null);
             }
 
             if ($form->getData()->getParent() > 0) {
                 $parent = $em
                     ->getRepository('CategoriesBundle:Categories')
                     ->findBy(array('id' => $form->getData()->getParent()));
-                $transaction->setParent($parent[0]);
+                $category->setParent($parent[0]);
             }
 
-            $em->persist($transaction);
+            $em->persist($category);
             $em->flush();
             $this->addFlash('notice', 'Transaction was successfully created.');
+
+            if ($request->query->get('month') && $request->query->get('year')) {
+                return $this->redirectToRoute(
+                    'match',
+                    array(
+                        'year' => $request->query->get('year'),
+                        'month' => $request->query->get('month'),
+                        'id' => $request->query->get('id'),
+                    ),
+                    301
+                );
+            }
 
             return $this->redirectToRoute(
                 'categories',
@@ -295,7 +307,7 @@ class CategoriesController extends Controller
         return $this->render(
             'CategoriesBundle:Categories:edit.html.twig',
             array(
-            'Categories' => $transaction,
+            'Categories' => $category,
             'form' => $form->createView(),
             )
         );

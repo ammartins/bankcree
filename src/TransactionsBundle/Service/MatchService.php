@@ -39,6 +39,11 @@ class MatchService
                 "accountId" => $openTransaction->getAccountId()
             )
         );
+
+        if (!$category) {
+            return $results;
+        }
+
         $matchDescription = $this->cleanUp($openTransaction->getDescription());
 
         foreach ($matches as $match) {
