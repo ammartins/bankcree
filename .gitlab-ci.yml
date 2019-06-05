@@ -9,6 +9,8 @@ cache:
 
 before_script:
 # Install and run Composer
+- apt-get update
+- apt-get install git
 - curl -sS https://getcomposer.org/installer | php
 - php composer.phar install
 
