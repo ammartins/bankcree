@@ -1,26 +1,30 @@
 <div class="table-responsive">
-    <table class="table table-condensed table-hover">
-        <tr>
-            <th class="text-left">Categorie</th>
-            <th class="text-right">Annually</th>
-            <th class="text-right">Limit</th>
-            <th class="text-right">Current Ammount</th>
-            <th class="text-right">Options</th>
-        </tr>
-        {% for budget in budgets %}
-            {% for entity in budget %}
-        <tr class="{% if entity.limit < entity.amount %}table-danger{% else %}table-success{% endif %}">
-            <td>{{ entity.name }}</td>
-            <td class="text-right">{{ entity.annually ? 'Yes' : 'No' }}</td>
-            <td class="text-right">{{ entity.limit }} €</td>
-            <td class="text-right">{{ entity.amount }}  €</td>
-            <td class="text-right">
-                <p><a href="#{{ entity.id }}" rel="modal:open">Delete</a></p>
-            </td>
-        </tr>
-            {% endfor %}
+    {% for budget in budgets %}
+        {% for entity in budget %}
+        <div style="text-align: center; padding: 0 4%; float: left">
+            <h5>{{ entity.name }} {{ entity.annually ? "- Anual" : "" }}</h5 >
+            <div class="
+                    c100
+                    p{{ ((entity.amount/entity.limit)*100)|round }}
+                    center
+                    {% if (((entity.amount/entity.limit)*100)|round)>50 %}
+                        orange
+                    {% endif %}
+                    {% if (((entity.amount/entity.limit)*100)|round)<50 %}
+                        green
+                    {% endif %}
+                ">
+                <span>{{ entity.amount }} €</span>
+                <div class="slice">
+                    <div class="bar"></div>
+                    <div class="fill"></div>
+                </div>
+            </div>
+            <p><a href="#{{ entity.id }}" rel="modal:open">Delete</a></p>
+            <p>&nbsp</p>
+        </div>
         {% endfor %}
-    </table>
+    {% endfor %}
 </div>
 
 <!-- Modal HTML embedded directly into document -->

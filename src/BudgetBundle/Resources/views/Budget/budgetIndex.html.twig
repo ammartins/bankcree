@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% stylesheets '@BudgetBundle/Resources/public/css/circle.css' %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
+    {% endstylesheets %}
     <div class="text-right">
         <a class="btn btn-success" href="{{ path('budget_new') }}">New</a>
     </div>
