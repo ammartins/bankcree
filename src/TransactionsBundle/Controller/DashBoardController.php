@@ -80,6 +80,18 @@ class DashBoardController extends Controller
             $expenses += $transaction->getAmount();
         }
 
+        // Current transactions group by day and category type
+        $transactionsDay = $em
+            ->getRepository('TransactionsBundle:Transactions')
+            ->finAllGroupDay($month, $year);
+
+        // dump($transactionsDay);
+        // foreach ($transactionsDay as $td) {
+        //     dump($td);
+        // }
+        // $transactionsDay = $serializer->serialize($transactionsDay, 'json');
+        // exit;
+
         return $this->render(
             'TransactionsBundle:main:dash.html.twig',
             array(
@@ -95,6 +107,7 @@ class DashBoardController extends Controller
                 'year' => $year,
                 'dataJson' => $serializer->serialize($currentTransactions, 'json'),
                 'graphDay' => $graphAmountDay,
+                'graphMonth' => $transactionsDay,
             )
         );
     }

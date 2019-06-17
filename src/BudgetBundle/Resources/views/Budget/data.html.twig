@@ -1,28 +1,21 @@
 <div class="table-responsive">
+    {% set status = 1 %}
     {% for budget in budgets %}
         {% for entity in budget %}
-        <div style="text-align: center; padding: 0 4%; float: left">
-            <h5>{{ entity.name }} {{ entity.annually ? "- Anual" : "" }}</h5 >
-            <div class="
-                    c100
-                    p{{ ((entity.amount/entity.limit)*100)|round }}
-                    center
-                    {% if (((entity.amount/entity.limit)*100)|round)>50 %}
-                        orange
-                    {% endif %}
-                    {% if (((entity.amount/entity.limit)*100)|round)<50 %}
-                        green
-                    {% endif %}
-                ">
-                <span>{{ entity.amount }} €</span>
-                <div class="slice">
-                    <div class="bar"></div>
-                    <div class="fill"></div>
+        {% set percent = ((entity.amount/entity.limit)*100)|round %}
+        <a href="#{{ entity.id }}" rel="modal:open">
+            <div style="text-align: center; padding: 0 4%; float: left">
+                <h5>{{ entity.name }} {{ entity.annually ? "- Anual" : "" }}</h5 >
+                <div class="c100 p{{ percent<=100 ? percent : 100 }} center {% if percent>=50 and percent<101 %}orange{% elseif percent<50 %}green{% else %}red{% endif %}">
+                    <span>{{ percent }}%</span>
+                    <div class="slice">
+                        <div class="bar"></div>
+                        <div class="fill"></div>
+                    </div>
                 </div>
+                <p>&nbsp</p>
             </div>
-            <p><a href="#{{ entity.id }}" rel="modal:open">Delete</a></p>
-            <p>&nbsp</p>
-        </div>
+        </a>
         {% endfor %}
     {% endfor %}
 </div>

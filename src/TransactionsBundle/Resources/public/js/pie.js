@@ -3,14 +3,8 @@ $(document).ready(
         $(".table").tablesorter({debug: false});
         // Data For Graphs
         var sdF = [];
-        var perMonth = [ 0,0,0,0,0,0,0,0,0,0,0,0];
-        var perMonth1 = [ 0,0,0,0,0,0,0,0,0,0,0,0];
-        var months = [
-        "Jan","Fev","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
-        ];
         var idx = 0;
         var total = 0;
-        var key;
 
         // Disaply Bar or Columns
         if (window.innerHeight > window.innerWidth) {
@@ -111,7 +105,7 @@ $(document).ready(
         netWorth = new Highcharts.Chart(
             {
                 chart: {
-                    renderTo: 'container',
+                    renderTo: 'container5',
                 },
                 title: {
                     text: 'Net Worth'
