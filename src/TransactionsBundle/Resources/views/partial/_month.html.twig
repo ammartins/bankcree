@@ -31,7 +31,7 @@
                 {% else %}
                     <td>
                         {% if not transaction.categories %}
-                            <a href="{{ path('match', {'id': transaction.id,'month': month,'year': year,}) }}">Match</a>
+                            <a href="{{ path('match', {'id': transaction.id,'month': month,'year': year,}) }}"><i class="fa fa-edit"></i> Match</a>
                         {% endif %}
                     </td>
                 {% endif %}
@@ -52,11 +52,12 @@
                 </td>
                 <td>{{ transaction.amount }}</td>
                 <td>
-                    <a href="#{{ transaction.id }}" rel="modal:open">Show</a>
+                    <a href="#{{ transaction.id }}" rel="modal:open"><i class="fa fa-barcode"></i> Show</a>
                     <div style="max-width: 75%;" id="{{ transaction.id }}" class="showTransaction modal">
                         {% include 'TransactionsBundle:default:show.html.twig' %}
                     </div>
-                    <a href="{{ path('edit', {'id': transaction.id,'month': month,'year': year,}) }}">Edit</a>
+                    |
+                    <a href="{{ path('edit', {'id': transaction.id,'month': month,'year': year,}) }}"><i class="fa fa-desktop"></i> Edit</a>
                 </td>
             </tr>
         {% endfor %}

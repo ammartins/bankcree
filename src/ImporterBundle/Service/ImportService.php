@@ -50,7 +50,7 @@ class ImportService
         $finder = new Finder();
         // TAB Files
         $finder->files()->in($importFrom)->name('*.TAB');
-        // // CSV FILES
+        // CSV FILES
         $finder->files()->in($importFrom)->name('*.csv');
 
         foreach ($finder as $file) {
@@ -178,7 +178,9 @@ class ImportService
         $bankAcc = $user->getBankAccount();
 
         if ($fileContent) {
-            $fileContentArray = array_reverse($fileContentArray);
+            if ($user->getBankName() != 'abnamro') {
+                $fileContentArray = array_reverse($fileContentArray);
+            }
             foreach ($fileContentArray as $line) {
                 // Clean end of string
                 $line = rtrim($line);
