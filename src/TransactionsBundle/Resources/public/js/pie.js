@@ -78,90 +78,64 @@ $(document).ready(
             }
         );
 
-     /***************************************************************************
-     *               This is for the Month Net Worth per days                  *
+    /***************************************************************************
+     *                        This is for the Pie Chart                        *
      **************************************************************************/
-        frr = [];
-        for (key in objD) {
-            if (objD[key].hasOwnProperty('days')) {
-                frr[objD[key].days] = parseInt(objD[key].amount);
-            }
-        }
-
-        days = frr.length-1;
-
-        while (days > 0) {
-            if (frr[days] === undefined) {
-                i = -1;
-                while (frr[days-i] === undefined) {
-                    i--;
+        graphData = [];
+        for (key in objM) {
+            if (objM[key][0]['categories']) {
+                if (!graphData[objM[key][0]['categories']['name']]) {
+                    graphData[objM[key][0]['categories']['name']] =
+                    {
+                        'name': objM[key][0]['categories']['name'],
+                        data: [0,0,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                    };
                 }
-                frr[days] = frr[days-i];
+                graphData[objM[key][0]['categories']['name']]['data'][objM[key]['dia']] = parseInt(objM[key]['transacs']);
             }
-            days--;
         }
-        frr[0] = frr[1];
 
-        netWorth = new Highcharts.Chart(
-            {
-                chart: {
-                    renderTo: 'container5',
-                },
+        endResult = [];
+        for (obj in graphData) {
+            endResult.push(graphData[obj]);
+        }
+
+        console.log(endResult);
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Daily Categories'
+            },
+            yAxis: {
+                min: 0,
                 title: {
-                    text: 'Net Worth'
+                    text: 'Here'
                 },
-                xAxis: {
-                    categories: frr.keys
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Income'
-                    },
-                    plotBands: [
-                    {
-                        from: 499, to: 500, color: 'red'
-                    },
-                    {
-                        from: 999, to: 1000, color: 'orange'
-                    },
-                    {
-                        from: 1999, to: 2000, color: 'green'
-                    },
-                    ]
-                },
-                plotOptions: {
-                    area: {
-                        fillColor: {
-                            linearGradient: {
-                                x1: 0,
-                                y1: 0,
-                                x2: 0,
-                                y2: 1
-                            },
-                            stops: [
-                            [0, Highcharts.getOptions().colors[2]],
-                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                            ]
-                        },
-                        marker: {
-                            radius: 2
-                        },
-                        lineWidth: 1,
-                        states: {
-                            hover: {
-                                lineWidth: 1
-                            }
-                        },
-                        threshold: null
+                stackLabels: {
+                    enabled: false,
+                    style: {
+                        fontWeight: 'bold',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
                     }
-                },
-                series: [{
-                    type: 'area',
-                    name: 'Total',
-                    data: frr
-                }]
-            }
-        );
+                }
+            },
+            tooltip: {
+                headerFormat: '<b>{point.x}</b><br/>',
+                pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: false,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                    }
+                }
+            },
+            series: endResult
+        })
     }
 );

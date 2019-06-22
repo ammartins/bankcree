@@ -4,13 +4,12 @@
     <script type="text/javascript">
         obj = jQuery.parseJSON('{{ data.pieChart|raw }}');
         objD = jQuery.parseJSON('{{ graphDay|raw }}');
-        
+        objM = jQuery.parseJSON('{{ graphMonth|raw }}' )
     </script>
 
     {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    {% include 'TransactionsBundle:partial:_monthGraphStatus.html.twig' %}
     <div class="card">
         <div class="card-header">
             <div class="card-deck mb-4">
