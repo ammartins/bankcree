@@ -85,12 +85,7 @@ class DashBoardController extends Controller
             ->getRepository('TransactionsBundle:Transactions')
             ->finAllGroupDay($month, $year);
 
-        dump($transactionsDay);
-        foreach ($transactionsDay as $td) {
-            dump($td);
-        }
         $transactionsDay = $serializer->serialize($transactionsDay, 'json');
-        // exit;
 
         return $this->render(
             'TransactionsBundle:main:dash.html.twig',

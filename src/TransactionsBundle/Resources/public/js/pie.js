@@ -91,7 +91,7 @@ $(document).ready(
                         data: [0,0,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
                     };
                 }
-                graphData[objM[key][0]['categories']['name']]['data'][objM[key]['dia']] = parseInt(objM[key]['transacs']);
+                graphData[objM[key][0]['categories']['name']]['data'][objM[key]['dia']] = parseInt(objM[key]['cost']);
             }
         }
 
@@ -99,8 +99,6 @@ $(document).ready(
         for (obj in graphData) {
             endResult.push(graphData[obj]);
         }
-
-        console.log(endResult);
 
         Highcharts.chart('container', {
             chart: {
@@ -110,7 +108,6 @@ $(document).ready(
                 text: 'Daily Categories'
             },
             yAxis: {
-                min: 0,
                 title: {
                     text: 'Here'
                 },
