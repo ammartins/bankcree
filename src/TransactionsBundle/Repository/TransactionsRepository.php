@@ -405,14 +405,14 @@ class TransactionsRepository extends EntityRepository
             ->getResult();
     }
 
-    // Get Month Costs based on Categoy (TODO: thik abour null category)
-    public function getMonthBreakDown($month, $year)
-    {
-        /* select tt.name, sum(t.amount)
-            from transactions as t join transaction_type as tt
-            where tt.id = t.transaction_type and t.create_at like '2019-06%'
-            group by transaction_type \G
-        */
-        return "";
-    }
+    // // Get Month Costs based on Categoy (TODO: thik abour null category)
+    // public function getMonthBreakDown($month, $year)
+    // {
+    //     /* select tt.name, sum(t.amount)
+    //         from transactions as t join transaction_type as tt
+    //         where tt.id = t.transaction_type and t.create_at like '2019-06%'
+    //         group by transaction_type \G
+    //     */
+    //     return "";
+    // }
 }
