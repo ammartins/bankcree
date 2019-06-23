@@ -1,20 +1,20 @@
 <div class="table-responsive">
-    <table class="table table-condensed table-hover">
-        <tr>
-            <th class="text-left">Categorie</th>
-            <th class="text-right">Limit</th>
-            <th class="text-right">Current Ammount</th>
-            <th class="text-right">Options</th>
-        </tr>
-        {% for budget in budgets %}
-        <tr class="{% if budget.limit < budget.amount %}table-danger{% else %}table-success{% endif %}">
-            <td>{{ budget.name }}</td>
-            <td class="text-right">{{ budget.limit }} €</td>
-            <td class="text-right">{{ budget.amount }}  €</td>
-            <td class="text-right">
-                <p><a href="#{{ budget.id }}" rel="modal:open">Delete</a></p>
-            </td>
-        </tr>
+    {% for budget in budgets %}
+        {% for entity in budget %}
+        {% set percent = ((entity.amount/entity.limit)*100)|round %}
+        <a href="#{{ entity.id }}" rel="modal:open">
+            <div style="text-align: center; padding: 0 4%; float: left">
+                <h5>{{ entity.name }} {{ entity.annually ? "- Anual" : "" }}</h5 >
+                <div class="c100 p{{ percent<=100 ? percent : 100 }} center {% if percent>=50 and percent<101 %}orange{% elseif percent<50 %}green{% else %}red{% endif %}">
+                    <span>{{ entity.amount }} </span>
+                    <div class="slice">
+                        <div class="bar"></div>
+                        <div class="fill"></div>
+                    </div>
+                </div>
+                <p>&nbsp</p>
+            </div>
+        </a>
         {% endfor %}
     </table>
 </div>
