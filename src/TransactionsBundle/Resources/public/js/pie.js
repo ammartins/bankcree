@@ -3,14 +3,8 @@ $(document).ready(
         $(".table").tablesorter({debug: false});
         // Data For Graphs
         var sdF = [];
-        var perMonth = [ 0,0,0,0,0,0,0,0,0,0,0,0];
-        var perMonth1 = [ 0,0,0,0,0,0,0,0,0,0,0,0];
-        var months = [
-        "Jan","Fev","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
-        ];
         var idx = 0;
         var total = 0;
-        var key;
 
         // Disaply Bar or Columns
         if (window.innerHeight > window.innerWidth) {
@@ -67,7 +61,7 @@ $(document).ready(
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            format: "{point.name} {point.value}€",
+                            format: "{point.name} {point.value}",
                             style: {
                                 color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                             }
@@ -84,90 +78,63 @@ $(document).ready(
             }
         );
 
-     /***************************************************************************
-     *               This is for the Month Net Worth per days                  *
+    /***************************************************************************
+     *                        This is for the Pie Chart                        *
      **************************************************************************/
-        frr = [];
-        for (key in objD) {
-            if (objD[key].hasOwnProperty('days')) {
-                frr[objD[key].days] = parseInt(objD[key].amount);
-            }
-        }
-
-        days = frr.length-1;
-
-        while (days > 0) {
-            if (frr[days] === undefined) {
-                i = -1;
-                while (frr[days-i] === undefined) {
-                    i--;
-                }
-                frr[days] = frr[days-i];
-            }
-            days--;
-        }
-        frr[0] = frr[1];
-
-        netWorth = new Highcharts.Chart(
-            {
-                chart: {
-                    renderTo: 'container',
-                },
-                title: {
-                    text: 'Net Worth'
-                },
-                xAxis: {
-                    categories: frr.keys
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Income'
-                    },
-                    plotBands: [
-                    {
-                        from: 499, to: 500, color: 'red'
-                    },
-                    {
-                        from: 999, to: 1000, color: 'orange'
-                    },
-                    {
-                        from: 1999, to: 2000, color: 'green'
-                    },
-                    ]
-                },
-                plotOptions: {
-                    area: {
-                        fillColor: {
-                            linearGradient: {
-                                x1: 0,
-                                y1: 0,
-                                x2: 0,
-                                y2: 1
-                            },
-                            stops: [
-                            [0, Highcharts.getOptions().colors[0]],
-                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                            ]
-                        },
-                        marker: {
-                            radius: 2
-                        },
-                        lineWidth: 1,
-                        states: {
-                            hover: {
-                                lineWidth: 1
-                            }
-                        },
-                        threshold: null
+        graphData = [];
+        for (key in objM) {
+            if (objM[key][0]['categories']) {
+                if (parseInt(objM[key]['cost']) < 0 && !objM[key][0]['categories']['savings']) {
+                    if (!graphData[objM[key][0]['categories']['name']]) {
+                        graphData[objM[key][0]['categories']['name']] =
+                        {
+                            'name': objM[key][0]['categories']['name'],
+                            data: [0,0,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                        };
                     }
-                },
-                series: [{
-                    type: 'area',
-                    name: 'Total',
-                    data: frr
-                }]
+                    graphData[objM[key][0]['categories']['name']]['data'][objM[key]['dia']] = parseInt(objM[key]['cost']);
+                }
             }
-        );
+        }
+
+        endResult = [];
+        for (obj in graphData) {
+            endResult.push(graphData[obj]);
+        }
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Daily Categories'
+            },
+            yAxis: {
+                title: {
+                    text: 'Here'
+                },
+                stackLabels: {
+                    enabled: false,
+                    style: {
+                        fontWeight: 'bold',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                    }
+                }
+            },
+            tooltip: {
+                headerFormat: '<b>{point.x}</b><br/>',
+                pointFormat: '{series.name}: {point.y} <br/>Total: {point.stackTotal} '
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: false,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                    }
+                }
+            },
+            series: endResult
+        })
     }
 );
