@@ -61,7 +61,7 @@ $(document).ready(
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            format: "{point.name} {point.value}€",
+                            format: "{point.name} {point.value}",
                             style: {
                                 color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                             }
@@ -123,7 +123,7 @@ $(document).ready(
             },
             tooltip: {
                 headerFormat: '<b>{point.x}</b><br/>',
-                pointFormat: '{series.name}: {point.y} €<br/>Total: {point.stackTotal} €'
+                pointFormat: '{series.name}: {point.y} <br/>Total: {point.stackTotal} '
             },
             plotOptions: {
                 column: {

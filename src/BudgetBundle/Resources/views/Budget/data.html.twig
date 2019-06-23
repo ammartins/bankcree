@@ -7,7 +7,7 @@
             <div style="text-align: center; padding: 0 4%; float: left">
                 <h5>{{ entity.name }} {{ entity.annually ? "- Anual" : "" }}</h5 >
                 <div class="c100 p{{ percent<=100 ? percent : 100 }} center {% if percent>=50 and percent<101 %}orange{% elseif percent<50 %}green{% else %}red{% endif %}">
-                    <span>{{ entity.amount }} €</span>
+                    <span>{{ entity.amount }} </span>
                     <div class="slice">
                         <div class="bar"></div>
                         <div class="fill"></div>
