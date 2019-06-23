@@ -86,6 +86,8 @@ class DashBoardController extends Controller
             ->findAllGroupByDay($month, $year);
 
         $transactionsDay = $serializer->serialize($transactionsDay, 'json');
+        // AbnAmro transactions seem to have unparsed chars this solves it for now
+        $transactionsDay = str_replace("\u0000", " ", $transactionsDay);
 
         return $this->render(
             'TransactionsBundle:main:dash.html.twig',
