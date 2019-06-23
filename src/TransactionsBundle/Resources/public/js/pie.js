@@ -84,14 +84,14 @@ $(document).ready(
         graphData = [];
         for (key in objM) {
             if (objM[key][0]['categories']) {
-                if (!graphData[objM[key][0]['categories']['name']]) {
-                    graphData[objM[key][0]['categories']['name']] =
-                    {
-                        'name': objM[key][0]['categories']['name'],
-                        data: [0,0,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-                    };
-                }
-                if (parseInt(objM[key]['cost']) < 0) {
+                if (parseInt(objM[key]['cost']) < 0 && !objM[key][0]['categories']['savings']) {
+                    if (!graphData[objM[key][0]['categories']['name']]) {
+                        graphData[objM[key][0]['categories']['name']] =
+                        {
+                            'name': objM[key][0]['categories']['name'],
+                            data: [0,0,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                        };
+                    }
                     graphData[objM[key][0]['categories']['name']]['data'][objM[key]['dia']] = parseInt(objM[key]['cost']);
                 }
             }
@@ -123,7 +123,7 @@ $(document).ready(
             },
             tooltip: {
                 headerFormat: '<b>{point.x}</b><br/>',
-                pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                pointFormat: '{series.name}: {point.y} €<br/>Total: {point.stackTotal} €'
             },
             plotOptions: {
                 column: {
