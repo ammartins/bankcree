@@ -83,7 +83,7 @@ class DashBoardController extends Controller
         // Current transactions group by day and category type
         $transactionsDay = $em
             ->getRepository('TransactionsBundle:Transactions')
-            ->finAllGroupDay($month, $year);
+            ->findAllGroupByDay($month, $year);
 
         $transactionsDay = $serializer->serialize($transactionsDay, 'json');
 
