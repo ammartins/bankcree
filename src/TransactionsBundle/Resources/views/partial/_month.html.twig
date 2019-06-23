@@ -7,60 +7,60 @@
 
     <input type="button" class="btn-info" id="toggleView" value="Match" />
     <div class="table-responsive">
-    <table class="table table-hover table-sm tablesorter" cellspacing="0">
-        <thead class="thead-dark">
-            <tr>
-                <th>Date</th>
-                <th>Parent</th>
-                <th>Category</th>
-                <th>Saldo</th>
-                <th>Amount</th>
-                <th></th>
-            </tr>
-        </thead>
-        {% for transaction in transactions %}
-            <tr {% if transaction.categories %}class="hideTransaction"{% endif %}>
-                <td>{{ transaction.createAt.date|date('Y-m-d') }}</td>
-                {% if transaction.categories and transaction.categories.parent %}
-                    <td>{{ transaction.categories.parent.name }}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
-                {% if transaction.categories %}
-                    <td>{{ transaction.categories.name|capitalize }}</td>
-                {% else %}
+        <table class="table table-hover table-sm tablesorter" cellspacing="0">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Parent</th>
+                    <th>Category</th>
+                    <th>Saldo</th>
+                    <th>Amount</th>
+                    <th></th>
+                </tr>
+            </thead>
+            {% for transaction in transactions %}
+                <tr {% if transaction.categories %}class="hideTransaction"{% endif %}>
+                    <td>{{ transaction.createAt.date|date('Y-m-d') }}</td>
+                    {% if transaction.categories and transaction.categories.parent %}
+                        <td>{{ transaction.categories.parent.name }}</td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                    {% if transaction.categories %}
+                        <td>{{ transaction.categories.name|capitalize }}</td>
+                    {% else %}
+                        <td>
+                            {% if not transaction.categories %}
+                                <a href="{{ path('match', {'id': transaction.id,'month': month,'year': year,}) }}"><i class="fa fa-edit"></i> Match</a>
+                            {% endif %}
+                        </td>
+                    {% endif %}
                     <td>
-                        {% if not transaction.categories %}
-                            <a href="{{ path('match', {'id': transaction.id,'month': month,'year': year,}) }}"><i class="fa fa-edit"></i> Match</a>
+                        {% if transaction.amount < 0 %}
+                        {% if transaction.endSaldo < transaction.startSaldo %}
+                            {{ transaction.endSaldo }}
+                        {% else %}
+                            {{ transaction.startSaldo }}
+                        {% endif %}
+                        {% else %}
+                        {% if transaction.endSaldo > transaction.startSaldo %}
+                            {{ transaction.endSaldo }}
+                        {% else %}
+                            {{ transaction.startSaldo }}
+                        {% endif %}
                         {% endif %}
                     </td>
-                {% endif %}
-                <td>
-                    {% if transaction.amount < 0 %}
-                      {% if transaction.endSaldo < transaction.startSaldo %}
-                        {{ transaction.endSaldo }}
-                      {% else %}
-                        {{ transaction.startSaldo }}
-                      {% endif %}
-                    {% else %}
-                      {% if transaction.endSaldo > transaction.startSaldo %}
-                        {{ transaction.endSaldo }}
-                      {% else %}
-                        {{ transaction.startSaldo }}
-                      {% endif %}
-                    {% endif %}
-                </td>
-                <td>{{ transaction.amount }}</td>
-                <td>
-                    <a href="#{{ transaction.id }}" rel="modal:open"><i class="fa fa-barcode"></i> Show</a>
-                    <div style="max-width: 75%;" id="{{ transaction.id }}" class="showTransaction modal">
-                        {% include 'TransactionsBundle:default:show.html.twig' %}
-                    </div>
-                    |
-                    <a href="{{ path('edit', {'id': transaction.id,'month': month,'year': year,}) }}"><i class="fa fa-desktop"></i> Edit</a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+                    <td>{{ transaction.amount }}</td>
+                    <td>
+                        <a href="#{{ transaction.id }}" rel="modal:open"><i class="fa fa-barcode"></i> Show</a>
+                        <div style="max-width: 75%;" id="{{ transaction.id }}" class="showTransaction modal">
+                            {% include 'TransactionsBundle:default:show.html.twig' %}
+                        </div>
+                        |
+                        <a href="{{ path('edit', {'id': transaction.id,'month': month,'year': year,}) }}"><i class="fa fa-desktop"></i> Edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
 {% endblock %}

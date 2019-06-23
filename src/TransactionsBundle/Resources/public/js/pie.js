@@ -91,7 +91,9 @@ $(document).ready(
                         data: [0,0,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
                     };
                 }
-                graphData[objM[key][0]['categories']['name']]['data'][objM[key]['dia']] = parseInt(objM[key]['cost']);
+                if (parseInt(objM[key]['cost']) < 0) {
+                    graphData[objM[key][0]['categories']['name']]['data'][objM[key]['dia']] = parseInt(objM[key]['cost']);
+                }
             }
         }
 
