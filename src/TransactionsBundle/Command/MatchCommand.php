@@ -87,8 +87,6 @@ class MatchCommand extends ContainerAwareCommand
     ) {
         dump('Starting '.date('h:i:s A'));
 
-        $results = array();
-
         $progress = new ProgressBar($output, count((array)$transactionMatched));
         $progress->setFormat('verbose');
 

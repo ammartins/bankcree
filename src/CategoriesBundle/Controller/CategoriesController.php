@@ -119,8 +119,6 @@ class CategoriesController extends Controller
             }
         }
 
-        $tranId = $category->getId();
-
         return $this->render(
             'CategoriesBundle:Categories:show.html.twig',
             array(
@@ -157,7 +155,7 @@ class CategoriesController extends Controller
          */
         $transactions = $em
             ->getRepository('TransactionsBundle:Transactions')
-            ->getMatchTransactions($id);
+            ->getMatchTransactions();
 
         $results = array();
         $macthingCategories = array();

@@ -105,7 +105,7 @@ swiftmailer:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ 'TransactionsBundle', 'UserBundle' ]
+    bundles:        [ 'TransactionsBundle', 'UserBundle', 'BudgetBundle' ]
 
     filters:
         cssrewrite: ~
