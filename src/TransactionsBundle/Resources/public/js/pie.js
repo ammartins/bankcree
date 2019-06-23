@@ -83,16 +83,16 @@ $(document).ready(
      **************************************************************************/
         graphData = [];
         for (key in objM) {
-            if (objM[key][0]['categories']) {
-                if (parseInt(objM[key]['cost']) < 0 && !objM[key][0]['categories']['savings']) {
-                    if (!graphData[objM[key][0]['categories']['name']]) {
-                        graphData[objM[key][0]['categories']['name']] =
+            if (objM[key]['category']) {
+                if (parseInt(objM[key]['cost']) < 0 && !objM[key]['savings']) {
+                    if (!graphData[objM[key]['category']]) {
+                        graphData[objM[key]['category']] =
                         {
-                            'name': objM[key][0]['categories']['name'],
+                            'name': objM[key]['category'],
                             data: [0,0,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
                         };
                     }
-                    graphData[objM[key][0]['categories']['name']]['data'][objM[key]['dia']] = parseInt(objM[key]['cost']);
+                    graphData[objM[key]['category']]['data'][objM[key]['dia']] = parseInt(objM[key]['cost']);
                 }
             }
         }

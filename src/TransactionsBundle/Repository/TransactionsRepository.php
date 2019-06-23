@@ -389,7 +389,7 @@ class TransactionsRepository extends EntityRepository
             ->getEntityManager()
             ->createQueryBuilder()
             ->select(
-                't,
+                't.id,
                 count(t.id) as transacs,
                 Day(t.createAt) as dia,
                 sum(t.amount) as cost'

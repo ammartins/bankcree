@@ -85,9 +85,16 @@ class DashBoardController extends Controller
             ->getRepository('TransactionsBundle:Transactions')
             ->findAllGroupByDay($month, $year);
 
+        foreach ($transactionsDay as $key => $tday) {
+            $trans = $em->getRepository('TransactionsBundle:Transactions')->findById($tday['id']);
+            if ($trans[0]->getCategories()) {
+                $transactionsDay[$key]['category'] = $trans[0]->getCategories()->getName();
+                $transactionsDay[$key]['savings'] = $trans[0]->getCategories()->getSavings();
+                continue;
+            }
+            $transactionsDay[$key]['id'] = "";
+        }
         $transactionsDay = $serializer->serialize($transactionsDay, 'json');
-        // AbnAmro transactions seem to have unparsed chars this solves it for now
-        $transactionsDay = str_replace("\u0000", " ", $transactionsDay);
 
         return $this->render(
             'TransactionsBundle:main:dash.html.twig',
