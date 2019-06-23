@@ -78,7 +78,7 @@ class TransactionsRepository extends EntityRepository
         return $data;
     }
 
-    public function getMatchTransactions($transactionId)
+    public function getMatchTransactions()
     {
         // Get all transactions that have a category
         return $this

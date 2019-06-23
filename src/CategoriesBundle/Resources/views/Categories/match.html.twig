@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="text-right">
+        <a class="btn btn-success" href="{{ path('categories_new', {'year' : year,'month' : month, 'id' : transaction.id}) }}">New</a>
+    </div>
     <div class="well">
         <p>{{ transaction.description }}</p>
         <p>{{ transaction.amount }}</p>
@@ -15,14 +18,15 @@
             </tr>
             {% for transact in transactions %}
             <tr {% if transaction.amount ==  transact[0].amount %}class="bg-warning"{% endif %}>
-            <td class="text-left">{{ transact[0].description }}</td>
-            <td class="text-left">{{ transact[0].categories.name }}</td>
-            <td class="text-left">{{ transact[0].matchPercentage}}</td>
-            <td class="text-left">{{ transact[0].amount}}</td>
+                <td class="text-left">{{ transact[0].description }}</td>
+                <td class="text-left">{{ transact[0].categories.name }}</td>
+                <td class="text-left">{{ transact[0].matchPercentage}}</td>
+                <td class="text-left">{{ transact[0].amount}}</td>
             </tr>
             {% endfor %}
         </table>
     </div>
+
     {{ form_start(form) }}
     <div class="form-group">
         <label for="short_description">{{ form_label(form.categories) }}</label>
@@ -33,7 +37,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var type   = jQuery.parseJSON('{{ type|raw }}');
+            var type = jQuery.parseJSON('{{ type|raw }}');
             console.log(type);
             $.each( type, function( key, value ) {
                 $("#transactions_categories option:contains(" + key + ")").attr('selected', 'selected');

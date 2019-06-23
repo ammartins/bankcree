@@ -16,13 +16,15 @@
             </div>
         </a>
         {% endfor %}
-    </table>
+    {% endfor %}
 </div>
 
 <!-- Modal HTML embedded directly into document -->
 {% for budget in budgets %}
-    <div id="{{ budget.id }}" class="modal">
+    {% for entity in budget %}
+    <div id="{{ entity.id }}" class="modal">
         <p>Delete this budget.</p>
-        <a href="{{ path('budgets_delete', {"id": budget.id}) }}">Delete</a>
+        <a href="{{ path('budgets_delete', {"id": entity.id}) }}">Delete</a>
     </div>
+    {% endfor %}
 {% endfor %}

@@ -11,10 +11,6 @@
             <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
         {% endstylesheets %}
 
-        {% stylesheets '@TransactionsBundle/Resources/public/css/menu.css' %}
-            <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
-        {% endstylesheets %}
-
         {% stylesheets '@TransactionsBundle/Resources/public/css/main.css' %}
             <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
         {% endstylesheets %}
@@ -43,6 +39,7 @@
     </head>
     <body>
         <div class="d-flex h-100 flex-column">
+            <div class="row flex-fill top-top"></div>
             <div class="row flex-fill">
                 <div class="col-2 fin-menu">
                     {% include "side_menu.html.twig" %}
