@@ -25,6 +25,9 @@
                                 </a>
                             {% endfor %}
                         </div>
+                        <a href="{{ path('main_dashboard', {'year' : year-1,'month' : month}) }}">&lt;&lt;</a>
+                        Year
+                        <a href="{{ path('main_dashboard', {'year' : year+1,'month' : month}) }}">&gt;&gt;</a>
                     </div>
                 </div>
                 <div class="card text-center">
@@ -39,6 +42,9 @@
                                 </a>
                             {% endfor %}
                         </div>
+                        <a href="{{ path('main_dashboard', {'year' : year,'month' : month-1}) }}">&lt;&lt;</a>
+                        Month
+                        <a href="{{ path('main_dashboard', {'year' : year,'month' : month+1}) }}">&gt;&gt;</a>
                     </div>
                 </div>
             </div>

@@ -1,61 +1,57 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-  {{ form_start(form) }}
-    <div class="form-group">
-        <label for="transaction_hash">{{ form_label(form.transactionHash) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.transactionHash.vars.errors} %}
-        {{ form_widget(form.transactionHash, { 'attr': {'class': 'form-control'} }) }}
-    </div>
+    {{ form_start(form) }}
+        <div class="form-group">
+            <label for="transaction_hash">{{ form_label(form.transactionHash) }}</label>
+            {% include '::errors.html.twig' with {'errors': form.transactionHash.vars.errors} %}
+            {{ form_widget(form.transactionHash, { 'attr': {'class': 'form-control'} }) }}
+        </div>
 
-    <div class="form-group">
-        <label for="create_at">{{ form_label(form.createAt) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.createAt.vars.errors} %}
-        {{ form_widget(form.createAt, { 'attr': {'class': 'form-control'} }) }}
-    </div>
+        <div class="form-group">
+            <label for="start_saldo">{{ form_label(form.startsaldo) }}</label>
+            {% include '::errors.html.twig' with {'errors': form.startsaldo.vars.errors} %}
+            {{ form_widget(form.startsaldo, { 'attr': {'class': 'form-control'} }) }}
+        </div>
 
-    <div class="form-group">
-        <label for="start_saldo">{{ form_label(form.startsaldo) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.startsaldo.vars.errors} %}
-        {{ form_widget(form.startsaldo, { 'attr': {'class': 'form-control'} }) }}
-    </div>
+        <div class="form-group">
+            <label for="end_saldo">{{ form_label(form.endsaldo) }}</label>
+            {% include '::errors.html.twig' with {'errors': form.endsaldo.vars.errors} %}
+            {{ form_widget(form.endsaldo, { 'attr': {'class': 'form-control'} }) }}
+        </div>
 
-    <div class="form-group">
-        <label for="end_saldo">{{ form_label(form.endsaldo) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.endsaldo.vars.errors} %}
-        {{ form_widget(form.endsaldo, { 'attr': {'class': 'form-control'} }) }}
-    </div>
+        <div class="form-group">
+            <label for="amount">{{ form_label(form.amount) }}</label>
+            {% include '::errors.html.twig' with {'errors': form.amount.vars.errors} %}
+            {{ form_widget(form.amount, { 'attr': {'class': 'form-control'} }) }}
+        </div>
 
-    <div class="form-group">
-        <label for="amount">{{ form_label(form.amount) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.amount.vars.errors} %}
-        {{ form_widget(form.amount, { 'attr': {'class': 'form-control'} }) }}
-    </div>
+        <div class="form-group">
+            <label for="description">{{ form_label(form.description) }}</label>
+            {% include '::errors.html.twig' with {'errors': form.description.vars.errors} %}
+            {{ form_widget(form.description, { 'attr': {'class': 'form-control'} }) }}
+        </div>
 
-    <div class="form-group">
-        <label for="description">{{ form_label(form.description) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.description.vars.errors} %}
-        {{ form_widget(form.description, { 'attr': {'class': 'form-control'} }) }}
-    </div>
+        <div class="form-group">
+            <label for="categories">{{ form_label(form.categories) }}</label>
+            {% include '::errors.html.twig' with {'errors': form.categories.vars.errors} %}
+            {{ form_widget(form.categories, { 'attr': {'class': 'form-control'} }) }}
+        </div>
 
-    <div class="form-group">
-        <label for="short_description">{{ form_label(form.transaction_type) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.transaction_type.vars.errors} %}
-        {{ form_widget(form.transaction_type, { 'attr': {'class': 'form-control'} }) }}
-    </div>
+        <div class="text-right">
+            {{ form_widget(form.save, { 'attr': {'class': 'btn btn-success'}}) }}
+            <a type="button" class="btn btn-primary" href="{{ path('main_dashboard', {
+               'month': month,
+                'year': year,
+            }) }}">Back</a>
+        </div>
+    {{ form_end(form) }}
 
-    <div class="form-group">
-        <label for="account_id">{{ form_label(form.accountId) }}</label>
-        {% include '::errors.html.twig' with {'errors': form.accountId.vars.errors} %}
-        {{ form_widget(form.accountId, { 'attr': {'class': 'form-control'} }) }}
-    </div>
-
-    <div class="text-right">
-      {{ form_widget(form.save, { 'attr': {'class': 'btn btn-success'}}) }}
-      <a type="button" class="btn btn-primary" href="{{ path('main_dashboard', {
-        'month': month,
-        'year': year,
-      }) }}">Back</a>
-    </div>
-  {{ form_end(form) }}
+    <script>
+        $(document).ready(
+            function () {
+                $('#transactions_categories').val($('#transactions_categoryId').val());
+            }
+        )
+    </script>
 {% endblock %}

@@ -13,6 +13,10 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+// Transactions For Match Form
+use TransactionsBundle\Entity\Transactions;
+use TransactionsBundle\Form\TransactionsType;
+
 class TransactionsController extends Controller
 {
     /**
@@ -52,24 +56,39 @@ class TransactionsController extends Controller
             TransactionsType::class,
             $transaction,
             array (
-            'entity_manager' => $em
+               'entity_manager' => $em
             )
         );
         $form->handleRequest($request);
 
         // If the form is being submitted and it is valid lets save this
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('account.account_service')->save($transaction);
+            $category = $em
+                ->getRepository('CategoriesBundle:Categories')
+                ->find($form->getData()->getCategories());
+            
+            $transaction->setCategories($category);
+            $em->persist($transaction);
+            $em->flush();
             $this->addFlash('notice', 'Transaction was successfully updated.');
 
             return $this->redirectToRoute(
                 'main_dashboard',
                 array(
-                'year' => $year,
-                'month' => $month
+                    'year' => $year,
+                    'month' => $month
                 ),
                 301
             );
         }
+
+        return $this->render(
+            'TransactionsBundle:default:edit.html.twig',
+            array(
+                'form' => $form->createView(),
+                'year' => $year,
+                'month' => $month
+            )
+        );
     }
 }

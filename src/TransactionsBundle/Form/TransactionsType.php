@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use CategoriesBundle\Entity\Categories;
 use CategoriesBundle\Repository\CategoriesRepository;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class TransactionsType extends AbstractType
 {
@@ -27,7 +28,13 @@ class TransactionsType extends AbstractType
                 )
             );
 
-        $parent = [null];
+
+        // If categories is set the all add to form explodes ... SAD
+        $categoryId = null;
+        if ($options['data']->getCategories()) {
+            $categoryId = $options['data']->getCategories()->getId();
+        }
+        $options['data']->setCategories('null');
 
         foreach ($parents as $par) {
             if (!$par->getParent()) {
@@ -38,16 +45,21 @@ class TransactionsType extends AbstractType
             $parent[$par->getParent()->getName()][$par->getId()] = $par->getName();
         }
 
-        ksort($parent);
+        $builder->add(
+            'categories',
+            ChoiceType::class,
+            array(
+                'choices' => $parent
+            )
+        );
 
         $builder
-            ->add(
-                'categories',
-                ChoiceType::class,
-                array(
-                    'choices' => $parent
-                )
-            )
+            ->add('transactionHash')
+            ->add('startsaldo')
+            ->add('endsaldo')
+            ->add('amount')
+            ->add('description')
+            ->add('categoryId', HiddenType::class, ['data' => $categoryId, "mapped" => false])
             ->add('save', SubmitType::class);
     }
 
