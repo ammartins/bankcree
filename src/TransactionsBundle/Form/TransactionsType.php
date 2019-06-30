@@ -35,7 +35,6 @@ class TransactionsType extends AbstractType
             $categoryId = $options['data']->getCategories()->getId();
         }
         $options['data']->setCategories('null');
-        // exit;
 
         foreach ($parents as $par) {
             if (!$par->getParent()) {
