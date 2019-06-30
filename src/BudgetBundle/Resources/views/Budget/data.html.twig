@@ -24,6 +24,7 @@
     {% for entity in budget %}
     <div id="{{ entity.id }}" class="modal">
         <p>Delete this budget.</p>
+        <h3>Limit: {{ entity.limit }} - Current: {{ entity.amount }}</h3>
         <a href="{{ path('budgets_delete', {"id": entity.id}) }}">Delete</a>
     </div>
     {% endfor %}
