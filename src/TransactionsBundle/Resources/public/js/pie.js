@@ -1,11 +1,12 @@
 $(document).ready(
     function () {
         $(".table").tablesorter({debug: false});
+
         // Data For Graphs
         var sdF = [];
         var idx = 0;
         var total = 0;
-
+        
         // Disaply Bar or Columns
         if (window.innerHeight > window.innerWidth) {
             gtype = 'bar';
@@ -136,5 +137,77 @@ $(document).ready(
             },
             series: endResult
         })
+
+    /***************************************************************************
+     *             This is for the Month and Predictions Chart                 *
+     **************************************************************************/
+        // console.log(objR);
+        recurringData = [0]
+        currentMonthData = [0]
+        for(var n = 1; n < 31; n++) {
+            recurringData[n] = 0
+            currentMonthData[n] = 0
+        }
+        for (key in objR) {
+            recurringData[objR[key]['day']] = parseInt(objR[key]['median']*-1)
+        }
+
+        for(key in objDE) {
+            if (objDE[key]['total'] < 0) {
+                currentMonthData[objDE[key]['day']] = parseInt(objDE[key]['total']*-1)
+            }
+        }
+
+        console.log(currentMonthData)
+
+        Highcharts.chart('container3', {
+            title: {
+                text: 'Solar Employment Growth by Sector, 2010-2016'
+            },
+            subtitle: {
+                text: 'Source: thesolarfoundation.com'
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of Employees'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+
+            plotOptions: {
+                series: {
+                    label: {
+                        connectorAllowed: false
+                    },
+                    pointStart: 1
+                }
+            },
+            series: [{
+                name: 'Current Month',
+                data: currentMonthData
+            }, {
+                name: 'Prediction',
+                data: recurringData
+            }],
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+        });
     }
 );

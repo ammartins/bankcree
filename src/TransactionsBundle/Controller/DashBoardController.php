@@ -18,56 +18,58 @@ class DashBoardController extends Controller
         $serializer = $this->get('jms_serializer');
         // Get Loggedin user
         $user = $this->get('security.context')->getToken()->getUser();
+
         if ($user->getBankName() === "") {
             $this->addFlash('error', 'Please Set Your Bank in Profile Page.');
         }
 
         // Current Month Transactions
-        $currentTransactions = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->findAllByMonthYear($month, $year);
+        $currentTransactions = $em->getRepository('TransactionsBundle:Transactions')->findAllByMonthYear($month, $year);
+        // dump($currentTransactions);
+        // exit;
 
+        // In fone redirect for the Last Year/Month Available
         if (!count($currentTransactions)) {
             // Redirect to the Latest Month and Year available
-            $lastTransaction = $em
-                ->getRepository('TransactionsBundle:Transactions')
-                ->findLastOne();
+            $lastTransaction = $em->getRepository('TransactionsBundle:Transactions')->findLastOne();
             $date = $lastTransaction[0]->getCreateAt();
 
-            return $this
-               ->redirectToRoute(
-                   'main_dashboard',
-                   array(
-                       'year' => $date->format('Y'),
-                       'month' => $date->format('m'),
-                   )
-               );
+            return $this->redirectToRoute('main_dashboard',array('year' => $date->format('Y'),'month' => $date->format('m')));
         }
 
         // Get Data for Pie Chart Group By Category
-        $graphDataType = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getDescriptionUsage($month, $year);
+        $graphDataType = $em->getRepository('TransactionsBundle:Transactions')->getDescriptionUsage($month, $year);
+        $graphDataType = $serializer->serialize($graphDataType, 'json');
 
         // Get Data For Daily Graph
-        $amountDay = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getAmountPerDay($month, $year);
-        $graphAmountDay = $serializer->serialize($amountDay, 'json');
+        $amountDay = $em->getRepository('TransactionsBundle:Transactions')->getAmountPerDay($month, $year);
+        $amountDay = $serializer->serialize($amountDay, 'json');
 
-        $monthsData = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getMonths($year);
-        $allYears = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->getAllYears();
+        // Get Months of the current Year in display
+        $monthsData = $em->getRepository('TransactionsBundle:Transactions')->getMonths($year);
 
-        $graphDataType = $serializer->serialize($graphDataType, 'json');
+        // Get all years in place
+        $allYears = $em->getRepository('TransactionsBundle:Transactions')->getAllYears();
+
+        // Get Average Recurring payments and show them in a map of predictions
+        $recurringAvg = $em->getRepository('TransactionsBundle:Transactions')->getAveragePayments();
+        $recurringAvg = $serializer->serialize($recurringAvg, 'json');
+
+        // Get Amount spent per day
+        $amountPerDay = $em->getRepository('TransactionsBundle:Transactions')->getDailySpent($month, $year);
+        $amountPerDay = $serializer->serialize($amountPerDay, 'json');
+        
+
+        // Current transactions group by day and category type
+        $transactionsDay = $em->getRepository('TransactionsBundle:Transactions')->findAllGroupByDay($month, $year);
+
 
         $profits = $expenses = 0;
         $ignoreSavings = $user->getIgnoreSavings();
+
         foreach ($currentTransactions as $transaction) {
-            if ($transaction->getCategories() and
+            if (
+                $transaction->getCategories() and
                 $transaction->getCategories()->getSavings() and
                 $ignoreSavings
             ) {
@@ -79,11 +81,6 @@ class DashBoardController extends Controller
             }
             $expenses += $transaction->getAmount();
         }
-
-        // Current transactions group by day and category type
-        $transactionsDay = $em
-            ->getRepository('TransactionsBundle:Transactions')
-            ->findAllGroupByDay($month, $year);
 
         foreach ($transactionsDay as $key => $tday) {
             $trans = $em->getRepository('TransactionsBundle:Transactions')->findById($tday['id']);
@@ -110,8 +107,10 @@ class DashBoardController extends Controller
                 'month' => $month,
                 'year' => $year,
                 'dataJson' => $serializer->serialize($currentTransactions, 'json'),
-                'graphDay' => $graphAmountDay,
+                'graphDay' => $amountDay,
                 'graphMonth' => $transactionsDay,
+                'recurringAvg' => $recurringAvg,
+                'amountPerDay' => $amountPerDay,
             )
         );
     }

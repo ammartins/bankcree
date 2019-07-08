@@ -28,7 +28,6 @@ class TransactionsType extends AbstractType
                 )
             );
 
-
         // If categories is set the all add to form explodes ... SAD
         $categoryId = null;
         if ($options['data']->getCategories()) {

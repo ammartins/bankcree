@@ -91,24 +91,6 @@ class TransactionsRepository extends EntityRepository
             )->execute();
     }
 
-    public function getDescriptionUsage($month, $year)
-    {
-        $data = $this
-            ->getEntityManager()
-            ->createQuery(
-                "SELECT t.name as shortDescription, sum(p.amount) as total, count(p.categories) as ocurrencies
-                FROM TransactionsBundle:Transactions p
-                JOIN CategoriesBundle:Categories t
-                WHERE p.categories = t.id
-                AND Month(p.createAt) = $month
-                AND Year(p.createAt) = $year
-                AND t.name != ''
-                GROUP BY t.name"
-            )->execute();
-
-        return $data;
-    }
-
     public function getDescriptionUsageYear($year)
     {
         $data = $this->getEntityManager()
@@ -196,21 +178,6 @@ class TransactionsRepository extends EntityRepository
                 WHERE MONTH(p.createAt) = $month
                 AND YEAR(p.createAt) = $year
                 AND p.amount < 0"
-            )->execute();
-
-        return $data;
-    }
-
-    public function getAmountPerDay($month, $year)
-    {
-        $data = $this
-            ->getEntityManager()
-            ->createQuery(
-                "SELECT DAY(p.createAt) as days, p.endsaldo as amount
-                FROM TransactionsBundle:Transactions p
-                WHERE YEAR(p.createAt) = $year
-                AND MONTH(p.createAt) = $month
-                ORDER BY p.id ASC"
             )->execute();
 
         return $data;
@@ -351,7 +318,31 @@ class TransactionsRepository extends EntityRepository
         return $data;
     }
 
-    // Find all from month and year
+    /**
+     * Get amount spent per day
+     */
+    public function getAmountPerDay($month, $year)
+    {
+        return $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select(
+                'DAY(t.createAt) as days,
+                t.endsaldo as amount'
+            )
+            ->from('TransactionsBundle:Transactions', 't')
+            ->where('Year(t.createAt) = ?2')
+            ->andWhere('Month(t.createAt) = ?1')
+            ->setParameter(1, $month)
+            ->setParameter(2, $year)
+            ->orderBy('t.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Find all transactions from given Month and Year
+     */
     public function findAllByMonthYear($month, $year)
     {
         return $this
@@ -364,11 +355,15 @@ class TransactionsRepository extends EntityRepository
             ->setParameter(1, $month)
             ->setParameter(2, $year)
             ->orderBy('t.createAt')
+            ->orderBy('t.id')
             ->getQuery()
             ->getResult();
     }
 
-    // Find Last Element
+    /**
+     * Find last element (Used for Redirect of Dashbaord)
+     * TODO: Refactor this code
+     */
     public function findLastOne()
     {
         return $this
@@ -382,7 +377,9 @@ class TransactionsRepository extends EntityRepository
             ->getResult();
     }
 
-    // Find all month and year group by day and category type
+    /**
+     * Find all month and year group by day and category type
+     */
     public function findAllGroupByDay($month, $year)
     {
         return $this
@@ -401,6 +398,80 @@ class TransactionsRepository extends EntityRepository
             ->setParameter(2, $year)
             ->orderBy('t.createAt')
             ->groupBy('dia, t.categories')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Get Average payments of recurring categories
+     */
+    public function getAveragePayments()
+    {
+        return $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select(
+                'count(t.id) as nOfPayments,
+                DAY(t.createAt) as day,
+                c.name,
+                sum(t.amount) as total,
+                avg(t.amount) as median'
+            )
+            ->from('TransactionsBundle:Transactions', 't')
+            ->join('CategoriesBundle:Categories', 'c', 'with', 'c.id = t.categories')
+            ->where('c.recurring = 1')
+            ->groupBy('t.categories')
+            ->groupBy('c.name')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Get Amount per Day
+     */
+    public function getDailySpent($month, $year)
+    {
+        return $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select(
+                'count(t.id) as nOfPayments,
+                DAY(t.createAt) as day,
+                sum(t.amount) as total'
+            )
+            ->from('TransactionsBundle:Transactions', 't')
+            ->where('Month(t.createAt) = ?1')
+            ->andWhere('Year(t.createAt) = ?2')
+            ->setParameter(1, $month)
+            ->setParameter(2, $year)
+            ->groupBy('day')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Expenses per category and number of transactions of that category 
+     * Monthh and Year
+     */
+    public function getDescriptionUsage($month, $year)
+    {
+        return $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select(
+                'c.name as shortDescription,
+                sum(t.amount) as total,
+                count(t.categories) as ocurrencies'
+            )
+            ->from('TransactionsBundle:Transactions', 't')
+            ->join('CategoriesBundle:Categories', 'c', 'with', 'c.id = t.categories')
+            ->where('Month(t.createAt) = ?1')
+            ->andWhere('Year(t.createAt) = ?2')
+            ->andWhere('c.name != ?3')
+            ->setParameter(1, $month)
+            ->setParameter(2, $year)
+            ->setParameter(3, '')
+            ->groupBy('c.name')
             ->getQuery()
             ->getResult();
     }

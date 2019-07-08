@@ -5,6 +5,8 @@
         obj = jQuery.parseJSON('{{ data.pieChart|raw }}');
         objD = jQuery.parseJSON('{{ graphDay|raw }}');
         objM = jQuery.parseJSON('{{ graphMonth|raw }}');
+        objR = jQuery.parseJSON('{{ recurringAvg|raw }}');
+        objDE = jQuery.parseJSON(' {{ amountPerDay|raw }}');
     </script>
 
     {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}
