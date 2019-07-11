@@ -144,10 +144,14 @@ $(document).ready(
         // console.log(objR);
         recurringData = [0]
         currentMonthData = [0]
+        previouMonth = [0]
+
         for(var n = 1; n < 31; n++) {
             recurringData[n] = 0
             currentMonthData[n] = 0
+            previouMonth[n] = 0
         }
+
         for (key in objR) {
             recurringData[objR[key]['day']] = parseInt(objR[key]['median']*-1)
         }
@@ -158,7 +162,11 @@ $(document).ready(
             }
         }
 
-        console.log(currentMonthData)
+        for(key in objPM) {
+            if (objPM[key]['total'] < 0) {
+                previouMonth[objPM[key]['day']] = parseInt(objPM[key]['total']*-1)
+            }
+        }
 
         Highcharts.chart('container3', {
             title: {
@@ -192,6 +200,9 @@ $(document).ready(
             }, {
                 name: 'Prediction',
                 data: recurringData
+            }, {
+                name: 'Previous Month',
+                data: previouMonth
             }],
 
             responsive: {

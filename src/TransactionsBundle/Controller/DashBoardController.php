@@ -17,7 +17,7 @@ class DashBoardController extends Controller
         // Serializer
         $serializer = $this->get('jms_serializer');
         // Get Loggedin user
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         if ($user->getBankName() === "") {
             $this->addFlash('error', 'Please Set Your Bank in Profile Page.');
@@ -58,7 +58,10 @@ class DashBoardController extends Controller
         // Get Amount spent per day
         $amountPerDay = $em->getRepository('TransactionsBundle:Transactions')->getDailySpent($month, $year);
         $amountPerDay = $serializer->serialize($amountPerDay, 'json');
-        
+
+        // Get Last Month expenses per day
+        $previousMonth = $em->getRepository('TransactionsBundle:Transactions')->getDailySpent($month-1, $year);
+        $previousMonth = $serializer->serialize($previousMonth, 'json');        
 
         // Current transactions group by day and category type
         $transactionsDay = $em->getRepository('TransactionsBundle:Transactions')->findAllGroupByDay($month, $year);
@@ -111,6 +114,7 @@ class DashBoardController extends Controller
                 'graphMonth' => $transactionsDay,
                 'recurringAvg' => $recurringAvg,
                 'amountPerDay' => $amountPerDay,
+                'previousMonth' => $previousMonth,
             )
         );
     }
