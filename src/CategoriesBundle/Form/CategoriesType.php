@@ -26,7 +26,7 @@ class CategoriesType extends AbstractType
             if ($par->getParent()) {
                 continue;
             }
-            $parent[$par->getId()] = $par->getName();
+            $parent[$par->getName()] = $par->getId();
         }
 
         if (!$options['data']->getId()) {

@@ -10,25 +10,6 @@ namespace CategoriesBundle\Repository;
  */
 class CategoriesRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findCategories()
-    {
-        $qb = $this->createQueryBuilder('p');
-
-        return $qb;
-    }
-
-    public function findAllNotNUll()
-    {
-        $qb = $this->createQueryBuilder('p');
-
-        $qb->select('p')
-            ->from('CategoriesBundle:Categories', 'c')
-            ->where($qb->expr()->isNull('p.isParent'))
-            ->andWhere('p.parent is not null');
-
-        return $qb->getQuery()->getResult();
-    }
-
     public function findAllParents()
     {
         $qb = $this->createQueryBuilder('p');

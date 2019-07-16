@@ -36,7 +36,7 @@ class UserController extends Controller
     public function logoutAction()
     {
         //clear the token, cancel session and redirect
-        $this->get('security.context')->setToken(null);
+        $this->get('security.token_storage')->setToken(null);
         $this->get('request')->getSession()->invalidate();
 
         return $this->redirect($this->generateUrl('login'));
@@ -49,7 +49,7 @@ class UserController extends Controller
     {
         // Generate Form for Edit
         $em = $this->getDoctrine()->getManager();
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         $form = $this->createForm(
             UserType::class,

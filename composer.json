@@ -13,29 +13,30 @@
     },
     "require": {
         "php": ">=5.5",
-        "symfony/symfony": "2.8.*",
+        "symfony/symfony": "3.*",
         "doctrine/orm": "^2.4.8",
         "doctrine/doctrine-bundle": "~1.4",
-        "symfony/swiftmailer-bundle": "~2.3",
-        "symfony/monolog-bundle": "~2.4",
+        "symfony/swiftmailer-bundle": "v2.6.7",
+        "symfony/monolog-bundle": "v3.4.0",
         "sensio/distribution-bundle": "~5.0",
-        "sensio/framework-extra-bundle": "^3.0.2",
+        "sensio/framework-extra-bundle": "v5.2.4",
         "incenteev/composer-parameter-handler": "~2.0",
         "twitter/bootstrap": "4.*",
-        "components/jquery": "1.11.1",
+        "components/jquery": "3.3.1",
         "fortawesome/font-awesome": "*",
         "symfony/assetic-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "oro/doctrine-extensions": "dev-master",
-        "jms/serializer-bundle": "^1.1",
+        "jms/serializer-bundle": "2.4.4",
         "sentry/sentry": "^1.7",
-        "sentry/sentry-symfony": "^0.8.0",
+        "sentry/sentry-symfony": "1.0.3",
         "sensiolabs/ansi-to-html": "^1.1",
         "squizlabs/php_codesniffer": "*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
-        "symfony/phpunit-bridge": "^4.0"
+        "symfony/phpunit-bridge": "^4.0",
+        "symfony/web-server-bundle": "^3.4"
     },
     "scripts": {
         "post-install-cmd": [

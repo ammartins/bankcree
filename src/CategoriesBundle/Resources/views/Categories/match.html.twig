@@ -33,6 +33,12 @@
         {% include '::errors.html.twig' with {'errors': form.categories.vars.errors} %}
         {{ form_widget(form.categories, { 'attr': {'class': 'form-control'} }) }}
     </div>
+    <div class="text-right">
+        {{ form_widget(form.save, { 'attr': {'class': 'btn btn-success'}}) }}
+    </div>
+    <div style="display: none">
+        {{ form_rest(form) }}
+    </div>
     {{ form_end(form) }}
 
     <script type="text/javascript">
