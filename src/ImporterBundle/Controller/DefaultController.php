@@ -13,7 +13,7 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $user = $this->get('security.context')->getToken();
+        $user = $this->get('security.token_storage')->getToken();
         $userId = $user->getUser()->getId();
 
         $data = $em
@@ -34,7 +34,7 @@ class DefaultController extends Controller
      */
     public function importAllAction()
     {
-        $user = $this->get('security.context')->getToken();
+        $user = $this->get('security.token_storage')->getToken();
         $userId = $user->getUser()->getId();
 
         $importer = $this->get('importer.import');

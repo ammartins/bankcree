@@ -67,7 +67,7 @@ class BudgetController extends Controller
 
             $budget->setName($name[0]->getName());
 
-            $userId = $this->get('security.context')->getToken()->getUser()->getId();
+            $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
             $budget->setAccountId($userId);
 
             if ($budget->getAnnually()) {

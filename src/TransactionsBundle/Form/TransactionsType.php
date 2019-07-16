@@ -28,7 +28,6 @@ class TransactionsType extends AbstractType
                 )
             );
 
-
         // If categories is set the all add to form explodes ... SAD
         $categoryId = null;
         if ($options['data']->getCategories()) {
@@ -39,10 +38,10 @@ class TransactionsType extends AbstractType
         foreach ($parents as $par) {
             if (!$par->getParent()) {
                 $parent[$par->getName()][] = [];
-                $parent[$par->getName()][$par->getId()] = $par->getName();
+                $parent[$par->getName()][$par->getName()] = $par->getId();
                 continue;
             }
-            $parent[$par->getParent()->getName()][$par->getId()] = $par->getName();
+            $parent[$par->getParent()->getName()][$par->getName()] = $par->getId();
         }
 
         $builder->add(

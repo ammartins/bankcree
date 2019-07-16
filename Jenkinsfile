@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Composer') {
       steps {
-        sh 'composer install --dev'
+        sh 'composer install'
       }
     }
     stage('Install Assetics') {
