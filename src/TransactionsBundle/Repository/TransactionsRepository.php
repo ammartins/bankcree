@@ -63,28 +63,6 @@ class TransactionsRepository extends EntityRepository
     }
 
     /**
-     * Get amount spent per day
-     */
-    public function getAmountPerDay($month, $year)
-    {
-        return $this
-            ->getEntityManager()
-            ->createQueryBuilder()
-            ->select(
-                'DAY(t.createAt) as days,
-                t.endsaldo as amount'
-            )
-            ->from('TransactionsBundle:Transactions', 't')
-            ->where('Year(t.createAt) = ?2')
-            ->andWhere('Month(t.createAt) = ?1')
-            ->setParameter(1, $month)
-            ->setParameter(2, $year)
-            ->orderBy('t.id', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
      * Find all transactions from given Month and Year
      */
     public function findAllByMonthYear($month, $year)
@@ -162,29 +140,6 @@ class TransactionsRepository extends EntityRepository
             )
             ->from('TransactionsBundle:Transactions', 't')
             ->where('YEAR(t.createAt) > 2016')
-            ->groupBy('day')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * Get Amount per Day
-     */
-    public function getDailySpent($month, $year)
-    {
-        return $this
-            ->getEntityManager()
-            ->createQueryBuilder()
-            ->select(
-                'count(t.id) as nOfPayments,
-                DAY(t.createAt) as day,
-                sum(t.amount) as total'
-            )
-            ->from('TransactionsBundle:Transactions', 't')
-            ->where('Month(t.createAt) = ?1')
-            ->andWhere('Year(t.createAt) = ?2')
-            ->setParameter(1, $month)
-            ->setParameter(2, $year)
             ->groupBy('day')
             ->getQuery()
             ->getResult();

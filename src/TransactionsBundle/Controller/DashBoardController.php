@@ -40,19 +40,11 @@ class DashBoardController extends Controller
         $graphDataType = $em->getRepository('TransactionsBundle:Transactions')->getDescriptionUsage($month, $year);
         $graphDataType = $serializer->serialize($graphDataType, 'json');
 
-        // Get Data For Daily Graph
-        $amountDay = $em->getRepository('TransactionsBundle:Transactions')->getAmountPerDay($month, $year);
-        $amountDay = $serializer->serialize($amountDay, 'json');
-
         // Get Months of the current Year in display
         $monthsData = $em->getRepository('TransactionsBundle:Transactions')->getMonths($year);
 
         // Get all years in place
         $allYears = $em->getRepository('TransactionsBundle:Transactions')->getAllYears();
-
-        // Get Amount spent per day
-        $amountPerDay = $em->getRepository('TransactionsBundle:Transactions')->getDailySpent($month, $year);
-        $amountPerDay = $serializer->serialize($amountPerDay, 'json');
 
         // Get Saldo Per DAY
         $saldoDay = $em->getRepository('TransactionsBundle:Transactions')->getSaldo($month, $year);
@@ -112,10 +104,8 @@ class DashBoardController extends Controller
                 'month' => $month,
                 'year' => $year,
                 'dataJson' => $serializer->serialize($currentTransactions, 'json'),
-                'graphDay' => $amountDay,
                 'graphMonth' => $transactionsDay,
                 'recurringAvg' => $recurringAvg,
-                'amountPerDay' => $amountPerDay,
                 'previousMonth' => $previousMonth,
                 'saldoDay' => $saldoDay,
             )
