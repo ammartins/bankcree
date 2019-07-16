@@ -6,17 +6,7 @@ $(document).ready(
         var sdF = [];
         var idx = 0;
         var total = 0;
-        
-        // Disaply Bar or Columns
-        if (window.innerHeight > window.innerWidth) {
-            gtype = 'bar';
-        } else {
-            gtype = 'column';
-        }
 
-    /***************************************************************************
-     *                        This is for the Pie Chart                        *
-     **************************************************************************/
         // Calculate Total Expenses
         for (key in obj) {
             if (obj.hasOwnProperty(key)) {
@@ -79,9 +69,7 @@ $(document).ready(
             }
         );
 
-    /***************************************************************************
-     *                        This is for the Pie Chart                        *
-     **************************************************************************/
+        // ---------------------------------------------------------------------
         graphData = [];
         for (key in objM) {
             if (objM[key]['category']) {
@@ -138,87 +126,76 @@ $(document).ready(
             series: endResult
         })
 
-    /***************************************************************************
-     *             This is for the Month and Predictions Chart                 *
-     **************************************************************************/
-        // console.log(objR);
-        recurringData = [0]
-        currentMonthData = [0]
-        previouMonth = [0]
-
-        for(var n = 1; n < 31; n++) {
-            recurringData[n] = 0
-            currentMonthData[n] = 0
-            previouMonth[n] = 0
-        }
-
-        for (key in objR) {
-            recurringData[objR[key]['day']] = parseInt(objR[key]['median']*-1)
-        }
-
-        for(key in objDE) {
-            if (objDE[key]['total'] < 0) {
-                currentMonthData[objDE[key]['day']] = parseInt(objDE[key]['total']*-1)
-            }
-        }
-
-        for(key in objPM) {
-            if (objPM[key]['total'] < 0) {
-                previouMonth[objPM[key]['day']] = parseInt(objPM[key]['total']*-1)
-            }
-        }
-
-        Highcharts.chart('container3', {
-            title: {
-                text: 'Solar Employment Growth by Sector, 2010-2016'
-            },
-            subtitle: {
-                text: 'Source: thesolarfoundation.com'
-            },
-            yAxis: {
-                title: {
-                    text: 'Number of Employees'
-                }
-            },
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'middle'
-            },
-
-            plotOptions: {
-                series: {
-                    label: {
-                        connectorAllowed: false
-                    },
-                    pointStart: 1
-                }
-            },
-            series: [{
-                name: 'Current Month',
-                data: currentMonthData
-            }, {
-                name: 'Prediction',
-                data: recurringData
-            }, {
-                name: 'Previous Month',
-                data: previouMonth
-            }],
-
-            responsive: {
-                rules: [{
-                    condition: {
-                        maxWidth: 500
-                    },
-                    chartOptions: {
-                        legend: {
-                            layout: 'horizontal',
-                            align: 'center',
-                            verticalAlign: 'bottom'
-                        }
-                    }
-                }]
-            }
-        });
+        // ---------------------------------------------------------------------------------------
+        // recurringData = [0]
+        // currentMonthData = [0]
+        // previouMonth = [0]
+        //
+        // for (var n = 1; n < 32; n++) {
+        //     recurringData[n] = 0
+        //     currentMonthData[n] = 0
+        //     previouMonth[n] = 0
+        // }
+        //
+        // for (key in objDS) {
+        //     if (objDS.hasOwnProperty(key)) {
+        //         currentMonthData[objDS[key]['day']] = parseInt(objDS[key]['endsaldo'])
+        //     }
+        // }
+        //
+        // // This is not nice but ya ...
+        // for (key in currentMonthData) {
+        //     if (currentMonthData[key] == 0 && key > 0) {
+        //         currentMonthData[key] = currentMonthData[key-1]
+        //     }
+        // }
+        //
+        // for (key in objPM) {
+        //     previouMonth[objPM[key]['day']] = parseInt(objPM[key]['endsaldo'])
+        // }
+        //
+        // // This is not nice but ya ...
+        // for (key in previouMonth) {
+        //     if (previouMonth[key] == 0 && key > 0) {
+        //         previouMonth[key] = previouMonth[key-1]
+        //     }
+        // }
+        //
+        // for (key in objR) {
+        //     recurringData[objR[key]['day']] = parseInt(objR[key]['median']*-1)
+        // }
+        //
+        // Highcharts.chart('container3', {
+        //     title: {
+        //         text: 'Available Saldo'
+        //     },
+        //     yAxis: {
+        //         title: {
+        //             text: ''
+        //         }
+        //     },
+        //     plotOptions: {
+        //         area: {
+        //             pointStart: 1,
+        //             marker: {
+        //                 enabled: false,
+        //                 symbol: 'circle',
+        //                 radius: 2,
+        //                 states: {
+        //                     hover: {
+        //                         enabled: true
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     },
+        //     series: [{
+        //         name: 'Current Month',
+        //         data: currentMonthData
+        //     },{
+        //         name: 'Previous Month',
+        //         data: previouMonth
+        //     }],
+        // });
     }
 );

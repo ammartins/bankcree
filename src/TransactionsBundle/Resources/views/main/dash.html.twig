@@ -2,12 +2,13 @@
 
 {% block body %}
     <script type="text/javascript">
-        obj = jQuery.parseJSON('{{ data.pieChart|raw }}');
-        objD = jQuery.parseJSON('{{ graphDay|raw }}');
-        objM = jQuery.parseJSON('{{ graphMonth|raw }}');
-        objR = jQuery.parseJSON('{{ recurringAvg|raw }}');
-        objDE = jQuery.parseJSON(' {{ amountPerDay|raw }}');
-        objPM = jQuery.parseJSON(' {{ previousMonth|raw }}');
+        obj   = jQuery.parseJSON('{{data.pieChart|raw}}');
+        objD  = jQuery.parseJSON('{{graphDay|raw}}');
+        objM  = jQuery.parseJSON('{{graphMonth|raw}}');
+        objR  = jQuery.parseJSON('{{recurringAvg|raw}}');
+        objDE = jQuery.parseJSON('{{amountPerDay|raw}}');
+        objPM = jQuery.parseJSON('{{previousMonth|raw}}');
+        objDS = jQuery.parseJSON('{{saldoDay|raw}}');
     </script>
 
     {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}

@@ -157,15 +157,12 @@ class TransactionsRepository extends EntityRepository
             ->select(
                 'count(t.id) as nOfPayments,
                 DAY(t.createAt) as day,
-                c.name,
                 sum(t.amount) as total,
                 avg(t.amount) as median'
             )
             ->from('TransactionsBundle:Transactions', 't')
-            ->join('CategoriesBundle:Categories', 'c', 'with', 'c.id = t.categories')
-            ->where('c.recurring = 1')
-            ->groupBy('t.categories')
-            ->groupBy('c.name')
+            ->where('YEAR(t.createAt) > 2016')
+            ->groupBy('day')
             ->getQuery()
             ->getResult();
     }
@@ -194,7 +191,7 @@ class TransactionsRepository extends EntityRepository
     }
 
     /**
-     * Expenses per category and number of transactions of that category 
+     * Expenses per category and number of transactions of that category
      * Monthh and Year
      */
     public function getDescriptionUsage($month, $year)
@@ -218,5 +215,26 @@ class TransactionsRepository extends EntityRepository
             ->groupBy('c.name')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * select endsaldo, Day(create_at) from transactions where Year(create_at) = 2019 and Month(create_at) = 7;
+     */
+    public function getSaldo($month, $year)
+    {
+        return $this
+        ->getEntityManager()
+        ->createQueryBuilder()
+        ->select(
+            't.endsaldo,
+            Day(t.createAt) as day'
+        )
+        ->from('TransactionsBundle:Transactions', 't')
+        ->where('Month(t.createAt) = ?1')
+        ->andWhere('Year(t.createAt) = ?2')
+        ->setParameter(1, $month)
+        ->setParameter(2, $year)
+        ->getQuery()
+        ->getResult();
     }
 }

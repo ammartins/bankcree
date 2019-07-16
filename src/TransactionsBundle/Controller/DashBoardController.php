@@ -34,7 +34,8 @@ class DashBoardController extends Controller
             $lastTransaction = $em->getRepository('TransactionsBundle:Transactions')->findLastOne();
             $date = $lastTransaction[0]->getCreateAt();
 
-            return $this->redirectToRoute('main_dashboard',array('year' => $date->format('Y'),'month' => $date->format('m')));
+            return $this
+            ->redirectToRoute('main_dashboard', array('year' => $date->format('Y'),'month' => $date->format('m')));
         }
 
         // Get Data for Pie Chart Group By Category
@@ -51,17 +52,21 @@ class DashBoardController extends Controller
         // Get all years in place
         $allYears = $em->getRepository('TransactionsBundle:Transactions')->getAllYears();
 
-        // Get Average Recurring payments and show them in a map of predictions
-        $recurringAvg = $em->getRepository('TransactionsBundle:Transactions')->getAveragePayments();
-        $recurringAvg = $serializer->serialize($recurringAvg, 'json');
-
         // Get Amount spent per day
         $amountPerDay = $em->getRepository('TransactionsBundle:Transactions')->getDailySpent($month, $year);
         $amountPerDay = $serializer->serialize($amountPerDay, 'json');
 
+        // Get Saldo Per DAY
+        $saldoDay = $em->getRepository('TransactionsBundle:Transactions')->getSaldo($month, $year);
+        $saldoDay = $serializer->serialize($saldoDay, 'json');
+
         // Get Last Month expenses per day
-        $previousMonth = $em->getRepository('TransactionsBundle:Transactions')->getDailySpent($month-1, $year);
-        $previousMonth = $serializer->serialize($previousMonth, 'json');        
+        $previousMonth = $em->getRepository('TransactionsBundle:Transactions')->getSaldo($month-1, $year);
+        $previousMonth = $serializer->serialize($previousMonth, 'json');
+
+        // Get Average Recurring payments and show them in a map of predictions
+        $recurringAvg = $em->getRepository('TransactionsBundle:Transactions')->getAveragePayments();
+        $recurringAvg = $serializer->serialize($recurringAvg, 'json');
 
         // Current transactions group by day and category type
         $transactionsDay = $em->getRepository('TransactionsBundle:Transactions')->findAllGroupByDay($month, $year);
@@ -71,8 +76,7 @@ class DashBoardController extends Controller
         $ignoreSavings = $user->getIgnoreSavings();
 
         foreach ($currentTransactions as $transaction) {
-            if (
-                $transaction->getCategories() and
+            if ($transaction->getCategories() and
                 $transaction->getCategories()->getSavings() and
                 $ignoreSavings
             ) {
@@ -115,6 +119,7 @@ class DashBoardController extends Controller
                 'recurringAvg' => $recurringAvg,
                 'amountPerDay' => $amountPerDay,
                 'previousMonth' => $previousMonth,
+                'saldoDay' => $saldoDay,
             )
         );
     }
