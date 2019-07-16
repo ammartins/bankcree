@@ -25,8 +25,6 @@ class DashBoardController extends Controller
 
         // Current Month Transactions
         $currentTransactions = $em->getRepository('TransactionsBundle:Transactions')->findAllByMonthYear($month, $year);
-        // dump($currentTransactions);
-        // exit;
 
         // In fone redirect for the Last Year/Month Available
         if (!count($currentTransactions)) {
