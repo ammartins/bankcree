@@ -38,7 +38,29 @@ class DashBoardController extends Controller
 
         // Get Data for Pie Chart Group By Category
         $graphDataType = $em->getRepository('TransactionsBundle:Transactions')->getDescriptionUsage($month, $year);
+        $groupExpenses = $graphDataType;
+        $parents = [];
+        foreach ($groupExpenses as $cat) {
+            if ($cat['total'] > 0) {
+                continue;
+            }
+            if ($cat[0]->getParent()) {
+                if (!array_key_exists($cat[0]->getParent()->getName(), $parents)) {
+                    $parents[$cat[0]->getParent()->getName()] = $cat['total'];
+                    continue;
+                }
+                $parents[$cat[0]->getParent()->getName()] += $cat['total'];
+                continue;
+            }
+            if (!array_key_exists($cat[0]->getName(), $parents)) {
+                $parents[$cat[0]->getName()] = $cat['total'];
+                continue;
+            }
+            $parents[$cat[0]->getName()] += $cat['total'];
+            continue;
+        }
         $graphDataType = $serializer->serialize($graphDataType, 'json');
+        $parents = $serializer->serialize($parents, 'json');
 
         // Get Months of the current Year in display
         $monthsData = $em->getRepository('TransactionsBundle:Transactions')->getMonths($year);
@@ -97,17 +119,17 @@ class DashBoardController extends Controller
                         'profits' => $profits,
                         'expenses' => $expenses,
                         'pieChart' => $graphDataType,
+                        'graphMonth' => $transactionsDay,
+                        'recurringAvg' => $recurringAvg,
+                        'previousMonth' => $previousMonth,
+                        'saldoDay' => $saldoDay,
+                        'parents' => $parents,
                     ),
                 'transactions' => $currentTransactions,
                 'months' => $monthsData,
                 'years' => $allYears,
                 'month' => $month,
                 'year' => $year,
-                'dataJson' => $serializer->serialize($currentTransactions, 'json'),
-                'graphMonth' => $transactionsDay,
-                'recurringAvg' => $recurringAvg,
-                'previousMonth' => $previousMonth,
-                'saldoDay' => $saldoDay,
             )
         );
     }

@@ -3,13 +3,17 @@
 {% block body %}
     <script type="text/javascript">
         obj   = jQuery.parseJSON('{{data.pieChart|raw}}');
-        objM  = jQuery.parseJSON('{{graphMonth|raw}}');
-        objDS = jQuery.parseJSON('{{saldoDay|raw}}');
-        objPM = jQuery.parseJSON('{{previousMonth|raw}}');
-        objR  = jQuery.parseJSON('{{recurringAvg|raw}}');
+        objM  = jQuery.parseJSON('{{data.graphMonth|raw}}');
+        objDS = jQuery.parseJSON('{{data.saldoDay|raw}}');
+        objPM = jQuery.parseJSON('{{data.previousMonth|raw}}');
+        objR  = jQuery.parseJSON('{{data.recurringAvg|raw}}');
+        objP  = jQuery.parseJSON('{{data.parents|raw}}');
     </script>
 
     {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@TransactionsBundle/Resources/public/js/test.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <div class="card">
