@@ -1,35 +1,46 @@
 $(document).ready(
     function () {
-        $(".table").tablesorter({debug: false});
+        $(".table").tablesorter({debug: false})
 
         // Data For Graphs
-        var sdF = [];
-        var idx = 0;
-        var total = 0;
+        var sdF = []
+        var sdFP = []
+        var idx = 0
+        var total = 0
 
-        // Calculate Total Expenses
-        for (key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                if (obj[key].total > 0) {
-                    total += parseInt(obj[key].total);
-                }
+        for (key in objP) {
+            total += parseInt(objP[key]);
+        }
+        for (key in objP) {
+            if (objP.hasOwnProperty(key) && parseInt(objP[key]) < 0) {
+                color = '#'+stringToHex(key)
+                sdFP[idx++] = {
+                    "name": key,
+                    "y" : parseFloat(((parseInt(objP[key]))/total).toFixed(2)),
+                    "value" : parseInt(objP[key]),
+                    "color" : color,
+                };
             }
         }
 
-        // To avoid strange infinity on the y value
-        if (total <= 0) {
-            total = 1;
+        idx = 0
+        total = 0
+        for (key in obj) {
+            if (parseInt(obj[key].total) < 0) {
+                total += parseInt(obj[key].total);
+            }
         }
-
-        // total is 100 so sd[key] is percent
-        // 100 - total
-        // x   -  sd[key]
         for (key in obj) {
             if (obj.hasOwnProperty(key) && parseInt(obj[key].total) < 0) {
+                color = '#'+stringToHex(obj[key][0]['name'])
+                if (obj[key][0]['parent']) {
+                    color = '#'+stringToHex(obj[key][0]['parent']['name'])
+                }
                 sdF[idx++] = {
                     "name": obj[key].shortDescription,
-                    "y" : (((parseInt(obj[key].total)*100)/total))*-1,
-                    "value" : parseInt(obj[key].total)
+                    "y" : parseFloat(((parseInt(obj[key].total))/total).toFixed(2)),
+                    "value" : parseInt(obj[key].total),
+                    "color" : color,
                 };
             }
         }
@@ -64,67 +75,118 @@ $(document).ready(
                     text: ''
                 },
                 series: [{
-                    data: sdF
+                    name: 'Browsers',
+                    data: sdFP,
+                    size: '60%',
+                    dataLabels: {
+                        formatter: function () {
+                            return this.y > 5 ? this.point.name : null;
+                        },
+                        color: '#000'
+                    }
+                }]
+            }
+        );
+
+        chart1 = new Highcharts.Chart(
+            {
+                chart: {
+                    renderTo: 'container',
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie',
+                },
+                tooltip: {
+                    pointFormat: "<b>Spent %: {point.percentage:.2f}%</b>"
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: "{point.name} {point.value}",
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        },
+                        showInLegend: true
+                    }
+                },
+                title: {
+                    text: ''
+                },
+                series: [{
+                    name: 'Browsers',
+                    data: sdF,
+                    size: '60%',
+                    dataLabels: {
+                        formatter: function () {
+                            return this.y > 5 ? this.point.name : null;
+                        },
+                        color: '#000'
+                    }
                 }]
             }
         );
 
         // ---------------------------------------------------------------------
-        graphData = [];
-        for (key in objM) {
-            if (objM[key]['category']) {
-                if (parseInt(objM[key]['cost']) < 0 && !objM[key]['savings']) {
-                    if (!graphData[objM[key]['category']]) {
-                        graphData[objM[key]['category']] =
-                        {
-                            'name': objM[key]['category'],
-                            data: [0,0,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-                        };
-                    }
-                    graphData[objM[key]['category']]['data'][objM[key]['dia']] = parseInt(objM[key]['cost']);
-                }
-            }
-        }
-
-        endResult = [];
-        for (obj in graphData) {
-            endResult.push(graphData[obj]);
-        }
-
-        Highcharts.chart('container', {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Daily Categories'
-            },
-            yAxis: {
-                title: {
-                    text: 'Here'
-                },
-                stackLabels: {
-                    enabled: false,
-                    style: {
-                        fontWeight: 'bold',
-                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                    }
-                }
-            },
-            tooltip: {
-                headerFormat: '<b>{point.x}</b><br/>',
-                pointFormat: '{series.name}: {point.y} <br/>Total: {point.stackTotal} '
-            },
-            plotOptions: {
-                column: {
-                    stacking: 'normal',
-                    dataLabels: {
-                        enabled: false,
-                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
-                    }
-                }
-            },
-            series: endResult
-        })
+        // graphData = [];
+        // for (key in objM) {
+        //     if (objM[key]['category']) {
+        //         if (parseInt(objM[key]['cost']) < 0 && !objM[key]['savings']) {
+        //             if (!graphData[objM[key]['category']]) {
+        //                 graphData[objM[key]['category']] =
+        //                 {
+        //                     'name': objM[key]['category'],
+        //                     data: [0,0,0,0,0,0,0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        //                 };
+        //             }
+        //             graphData[objM[key]['category']]['data'][objM[key]['dia']] = parseInt(objM[key]['cost']);
+        //         }
+        //     }
+        // }
+        //
+        // endResult = [];
+        // for (obj in graphData) {
+        //     endResult.push(graphData[obj]);
+        // }
+        //
+        // Highcharts.chart('container', {
+        //     chart: {
+        //         type: 'column'
+        //     },
+        //     title: {
+        //         text: 'Daily Categories'
+        //     },
+        //     yAxis: {
+        //         title: {
+        //             text: 'Here'
+        //         },
+        //         stackLabels: {
+        //             enabled: false,
+        //             style: {
+        //                 fontWeight: 'bold',
+        //                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+        //             }
+        //         }
+        //     },
+        //     tooltip: {
+        //         headerFormat: '<b>{point.x}</b><br/>',
+        //         pointFormat: '{series.name}: {point.y} <br/>Total: {point.stackTotal} '
+        //     },
+        //     plotOptions: {
+        //         column: {
+        //             stacking: 'normal',
+        //             dataLabels: {
+        //                 enabled: false,
+        //                 color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+        //             }
+        //         }
+        //     },
+        //     series: endResult
+        // })
 
         // ---------------------------------------------------------------------------------------
         // recurringData = [0]
@@ -197,5 +259,18 @@ $(document).ready(
         //         data: previouMonth
         //     }],
         // });
+        function stringToHex(tmp)
+        {
+            var str = '',
+                i = 0,
+                tmp_len = tmp.length,
+                c;
+
+            for (; i < 2; i += 1) {
+                c = tmp.charCodeAt(i);
+                str += c.toString(16);
+            }
+            return str;
+        }
     }
 );
