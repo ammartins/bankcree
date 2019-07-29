@@ -25,13 +25,6 @@ pipeline {
         '''
       }
     }
-    stage('PHPCS') {
-      steps {
-        sh '''
-            # vendor/squizlabs/php_codesniffer/bin/phpcs src
-        '''
-      }
-    }
     stage('Merge Dev To Master') {
       steps {
         sh '''
