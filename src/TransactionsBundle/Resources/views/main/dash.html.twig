@@ -13,9 +13,6 @@
     {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    {% javascripts '@TransactionsBundle/Resources/public/js/test.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
     <div class="card">
         <div class="card-header">
             <div class="card-deck mb-4">
@@ -71,9 +68,6 @@
                 </div>
             </div>
             <div class="card-deck mb-4">
-                <div class="card text-center">
-                    {% include 'TransactionsBundle:partial:_piegraph.html.twig' %}
-                </div>
                 <div class="card text-center">
                     <div id="container"></div>
                 </div>
