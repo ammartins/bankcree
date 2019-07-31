@@ -133,7 +133,3 @@ class DashBoardController extends Controller
         );
     }
 }
-
-
-// obj   = jQuery.parseJSON('{{data.pieChart|raw}}');
-//         objP  = jQuery.parseJSON('{{data.parents|raw}}');
