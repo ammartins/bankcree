@@ -3,14 +3,15 @@
 {% block body %}
     <script type="text/javascript">
         obj   = jQuery.parseJSON('{{data.pieChart|raw}}');
-        objM  = jQuery.parseJSON('{{data.graphMonth|raw}}');
-        objDS = jQuery.parseJSON('{{data.saldoDay|raw}}');
-        objPM = jQuery.parseJSON('{{data.previousMonth|raw}}');
-        objR  = jQuery.parseJSON('{{data.recurringAvg|raw}}');
+        objPM   = jQuery.parseJSON('{{data.pieChartP|raw}}');
         objP  = jQuery.parseJSON('{{data.parents|raw}}');
+        objPPM  = jQuery.parseJSON('{{data.parentsP|raw}}');
     </script>
 
     {% javascripts '@TransactionsBundle/Resources/public/js/pie.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@TransactionsBundle/Resources/public/js/pie2.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <div class="card">
@@ -70,6 +71,9 @@
             <div class="card-deck mb-4">
                 <div class="card text-center">
                     <div id="container"></div>
+                </div>
+                <div class="card text-center">
+                    <div id="container2"></div>
                 </div>
             </div>
             <div class="card-deck mb-4">
