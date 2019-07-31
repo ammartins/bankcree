@@ -25,11 +25,16 @@ pipeline {
         '''
       }
     }
-    stage('PHPCS') {
+    stage('Merge Dev To Master') {
       steps {
         sh '''
-            vendor/squizlabs/php_codesniffer/bin/phpcs src
-        '''
+                cd /tmp &&
+                git clone https://github.com/ammartins/bankcree &&
+                cd bankcree/ &&
+                git pull origin dev &&
+                git status &&
+                rm -rf /tmp/bankcree/
+            '''
       }
     }
   }

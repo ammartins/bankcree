@@ -157,7 +157,8 @@ class TransactionsRepository extends EntityRepository
             ->select(
                 'c.name as shortDescription,
                 sum(t.amount) as total,
-                count(t.categories) as ocurrencies'
+                count(t.categories) as ocurrencies,
+                c'
             )
             ->from('TransactionsBundle:Transactions', 't')
             ->join('CategoriesBundle:Categories', 'c', 'with', 'c.id = t.categories')

@@ -38,28 +38,61 @@ class DashBoardController extends Controller
 
         // Get Data for Pie Chart Group By Category
         $graphDataType = $em->getRepository('TransactionsBundle:Transactions')->getDescriptionUsage($month, $year);
+        $graphDataTypeP = $em->getRepository('TransactionsBundle:Transactions')->getDescriptionUsage($month-1, $year);
+        
+        $groupExpenses = $graphDataType;
+        $parents = [];
+        foreach ($groupExpenses as $cat) {
+            if ($cat['total'] > 0) {
+                continue;
+            }
+            if ($cat[0]->getParent()) {
+                if (!array_key_exists($cat[0]->getParent()->getName(), $parents)) {
+                    $parents[$cat[0]->getParent()->getName()] = $cat['total'];
+                    continue;
+                }
+                $parents[$cat[0]->getParent()->getName()] += $cat['total'];
+                continue;
+            }
+            if (!array_key_exists($cat[0]->getName(), $parents)) {
+                $parents[$cat[0]->getName()] = $cat['total'];
+                continue;
+            }
+            $parents[$cat[0]->getName()] += $cat['total'];
+            continue;
+        }
+
+        $groupExpenses = $graphDataTypeP;
+        $parentsP = [];
+        foreach ($groupExpenses as $cat) {
+            if ($cat['total'] > 0) {
+                continue;
+            }
+            if ($cat[0]->getParent()) {
+                if (!array_key_exists($cat[0]->getParent()->getName(), $parentsP)) {
+                    $parentsP[$cat[0]->getParent()->getName()] = $cat['total'];
+                    continue;
+                }
+                $parentsP[$cat[0]->getParent()->getName()] += $cat['total'];
+                continue;
+            }
+            if (!array_key_exists($cat[0]->getName(), $parentsP)) {
+                $parentsP[$cat[0]->getName()] = $cat['total'];
+                continue;
+            }
+            $parentsP[$cat[0]->getName()] += $cat['total'];
+            continue;
+        }
+
         $graphDataType = $serializer->serialize($graphDataType, 'json');
+        $graphDataTypeP = $serializer->serialize($graphDataTypeP, 'json');
+        $parents = $serializer->serialize($parents, 'json');
 
         // Get Months of the current Year in display
         $monthsData = $em->getRepository('TransactionsBundle:Transactions')->getMonths($year);
 
         // Get all years in place
         $allYears = $em->getRepository('TransactionsBundle:Transactions')->getAllYears();
-
-        // Get Saldo Per DAY
-        $saldoDay = $em->getRepository('TransactionsBundle:Transactions')->getSaldo($month, $year);
-        $saldoDay = $serializer->serialize($saldoDay, 'json');
-
-        // Get Last Month expenses per day
-        $previousMonth = $em->getRepository('TransactionsBundle:Transactions')->getSaldo($month-1, $year);
-        $previousMonth = $serializer->serialize($previousMonth, 'json');
-
-        // Get Average Recurring payments and show them in a map of predictions
-        $recurringAvg = $em->getRepository('TransactionsBundle:Transactions')->getAveragePayments();
-        $recurringAvg = $serializer->serialize($recurringAvg, 'json');
-
-        // Current transactions group by day and category type
-        $transactionsDay = $em->getRepository('TransactionsBundle:Transactions')->findAllGroupByDay($month, $year);
 
 
         $profits = $expenses = 0;
@@ -78,17 +111,7 @@ class DashBoardController extends Controller
             }
             $expenses += $transaction->getAmount();
         }
-
-        foreach ($transactionsDay as $key => $tday) {
-            $trans = $em->getRepository('TransactionsBundle:Transactions')->findById($tday['id']);
-            if ($trans[0]->getCategories()) {
-                $transactionsDay[$key]['category'] = $trans[0]->getCategories()->getName();
-                $transactionsDay[$key]['savings'] = $trans[0]->getCategories()->getSavings();
-                continue;
-            }
-            $transactionsDay[$key]['id'] = "";
-        }
-        $transactionsDay = $serializer->serialize($transactionsDay, 'json');
+        $parentsP = $serializer->serialize($parentsP, 'json');
 
         return $this->render(
             'TransactionsBundle:main:dash.html.twig',
@@ -97,18 +120,20 @@ class DashBoardController extends Controller
                         'profits' => $profits,
                         'expenses' => $expenses,
                         'pieChart' => $graphDataType,
+                        'pieChartP' => $graphDataTypeP,
+                        'parents' => $parents,
+                        'parentsP' => $parentsP,
                     ),
                 'transactions' => $currentTransactions,
                 'months' => $monthsData,
                 'years' => $allYears,
                 'month' => $month,
                 'year' => $year,
-                'dataJson' => $serializer->serialize($currentTransactions, 'json'),
-                'graphMonth' => $transactionsDay,
-                'recurringAvg' => $recurringAvg,
-                'previousMonth' => $previousMonth,
-                'saldoDay' => $saldoDay,
             )
         );
     }
 }
+
+
+// obj   = jQuery.parseJSON('{{data.pieChart|raw}}');
+//         objP  = jQuery.parseJSON('{{data.parents|raw}}');

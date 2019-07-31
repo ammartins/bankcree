@@ -5,9 +5,9 @@ $(document).ready(
         var parentData = []
         var transactionsData = []
 
-        for (key in objP) {
+        for (key in objPPM) {
             sdF[key] = []
-            sdF[key].push(objP[key])
+            sdF[key].push(objPPM[key])
         }
 
         for (cat in sdF) {
@@ -22,8 +22,8 @@ $(document).ready(
             }
         }
 
-        for (trans in obj) {
-            cena = obj[trans]
+        for (trans in objPM) {
+            cena = objPM[trans]
             if (cena[0].parent && newTrans(cena[0].parent.name, transactionsData)) {
                 transactionsData.push({
                     name: cena[0].parent.name,
@@ -34,11 +34,11 @@ $(document).ready(
         }
 
         for (g in transactionsData) {
-            for (trans in obj) {
-                if (obj[trans][0].parent && obj[trans][0].parent.name === transactionsData[g].name) {
+            for (trans in objPM) {
+                if (objPM[trans][0].parent && objPM[trans][0].parent.name === transactionsData[g].name) {
                     item = []
-                    item.push(obj[trans].shortDescription)
-                    item.push(obj[trans].total*-1)
+                    item.push(objPM[trans].shortDescription)
+                    item.push(objPM[trans].total*-1)
                     transactionsData[g].data.push(item)
                 }
             }
@@ -54,12 +54,12 @@ $(document).ready(
             return true;
         }
 
-        Highcharts.chart('container', {
+        Highcharts.chart('container2', {
             chart: {
                 type: 'pie'
             },
             title: {
-                text: 'Current Month'
+                text: 'Previous Month'
             },
             subtitle: {
                 text: ''
