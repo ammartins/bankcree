@@ -22,7 +22,7 @@
         "sensio/framework-extra-bundle": "v5.2.4",
         "incenteev/composer-parameter-handler": "~2.0",
         "twitter/bootstrap": "4.*",
-        "components/jquery": "3.3.1",
+        "components/jquery": "3.4.1",
         "fortawesome/font-awesome": "*",
         "symfony/assetic-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^1.0",
