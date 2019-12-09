@@ -8,9 +8,7 @@ pipeline {
     }
     stage('Install Assetics') {
       steps {
-        sh '''
-            php app/console assetic:dump
-        '''
+        sh '''php app/console assetic:dump'''
       }
     }
     stage('Set Ref to master') {
@@ -20,21 +18,7 @@ pipeline {
     }
     stage('Lint') {
       steps {
-        sh '''
-            phplint \'**/*.php\' \'!vendor/**\' \'!app/cache/**\'
-        '''
-      }
-    }
-    stage('Merge Dev To Master') {
-      steps {
-        sh '''
-                cd /tmp &&
-                git clone https://github.com/ammartins/bankcree &&
-                cd bankcree/ &&
-                git pull origin dev &&
-                git status &&
-                rm -rf /tmp/bankcree/
-            '''
+        sh '''phplint \'**/*.php\' \'!vendor/**\' \'!app/cache/**\''''
       }
     }
   }
