@@ -21,5 +21,10 @@ pipeline {
         sh '''phplint \'**/*.php\' \'!vendor/**\' \'!app/cache/**\''''
       }
     }
+    stage('Remove Vendor Folder') {
+      steps {
+        sh '''rm -rf vendor'''
+      }
+    }
   }
 }
