@@ -23,7 +23,7 @@ pipeline {
     }
     stage('Remove Vendor Folder') {
       steps {
-        sh '''rm -rf vendor''''
+        sh '''rm -rf vendor'''
       }
     }
   }
