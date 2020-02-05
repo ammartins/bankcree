@@ -21,3 +21,5 @@ help/
 watch/
 phpunit.phar
 *.TAB
+.idea/
+parser.pl
