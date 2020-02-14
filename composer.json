@@ -13,7 +13,7 @@
     },
     "require": {
         "php": ">=5.5",
-        "symfony/symfony": "3.4.37",
+        "symfony/symfony": "5.0.4",
         "doctrine/orm": "2.7.0",
         "doctrine/doctrine-bundle": "1.12.7",
         "symfony/swiftmailer-bundle": "v3.3.1",
@@ -36,7 +36,7 @@
     "require-dev": {
         "sensio/generator-bundle": "3.1.7",
         "symfony/phpunit-bridge": "5.0.4",
-        "symfony/web-server-bundle": "3.4.37"
+        "symfony/web-server-bundle": "4.4.4"
     },
     "scripts": {
         "post-install-cmd": [
