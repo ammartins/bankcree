@@ -28,6 +28,6 @@ RUN curl -s https://getcomposer.org/installer | php && \
 WORKDIR /srv/
 
 RUN composer install
-RUN php app/console assetic:dump --env=prod
+#RUN php app/console assetic:dump --env=prod
 
 ENTRYPOINT php app/console match:payments -- all
