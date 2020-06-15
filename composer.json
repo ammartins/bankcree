@@ -13,10 +13,10 @@
     },
     "require": {
         "php": ">=5.5",
-        "symfony/symfony": "5.0.4",
+        "symfony/symfony": "5.1.2",
         "doctrine/orm": "2.7.0",
         "doctrine/doctrine-bundle": "1.12.7",
-        "symfony/swiftmailer-bundle": "v3.3.1",
+        "symfony/swiftmailer-bundle": "3.4.0",
         "symfony/monolog-bundle": "v3.5.0",
         "sensio/distribution-bundle": "5.0.25",
         "sensio/framework-extra-bundle": "v5.4.1",
@@ -35,8 +35,8 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "3.1.7",
-        "symfony/phpunit-bridge": "5.0.4",
-        "symfony/web-server-bundle": "4.4.4"
+        "symfony/phpunit-bridge": "5.1.2",
+        "symfony/web-server-bundle": "4.4.10"
     },
     "scripts": {
         "post-install-cmd": [
