@@ -205,9 +205,12 @@ class ImportService
                     ->getRepository('TransactionsBundle:Transactions')
                     ->getTransactionByHash($hash);
 
+                // var_dump($verify);
+                // exit;
+
                 // Check if this is already on DB and if so continue
                 // Should probably clean this a bit
-                if ($verify['id'] > 0) {
+                if ($verify && $verify['id'] > 0) {
                     $line = '';
                     continue;
                 }

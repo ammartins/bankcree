@@ -26,10 +26,14 @@ class DashBoardController extends Controller
         // Current Month Transactions
         $currentTransactions = $em->getRepository('TransactionsBundle:Transactions')->findAllByMonthYear($month, $year);
 
-        // In fone redirect for the Last Year/Month Available
+        // In no data, redirect for the Last Year/Month Available
         if (!count($currentTransactions)) {
             // Redirect to the Latest Month and Year available
             $lastTransaction = $em->getRepository('TransactionsBundle:Transactions')->findLastOne();
+            if (!count($lastTransaction)) {
+                return $this
+                    ->redirectToRoute('profile');
+            }
             $date = $lastTransaction[0]->getCreateAt();
 
             return $this
@@ -112,6 +116,9 @@ class DashBoardController extends Controller
             $expenses += $transaction->getAmount();
         }
         $parentsP = $serializer->serialize($parentsP, 'json');
+
+        // dump($currentTransactions);
+        // exit;
 
         return $this->render(
             'TransactionsBundle:main:dash.html.twig',

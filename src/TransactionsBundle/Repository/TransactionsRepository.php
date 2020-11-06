@@ -18,12 +18,13 @@ class TransactionsRepository extends EntityRepository
         $months = $this
             ->getEntityManager()
             ->createQuery(
-                "SELECT DISTINCT Month(p.createAt) as months, p.createAt as monthName
+                "SELECT DISTINCT Month(p.createAt) as months
                 FROM TransactionsBundle:Transactions p
                 WHERE Year(p.createAt) = $year
-                GROUP BY months"
+                GROUP BY months
+                ORDER BY months"
             )->execute();
-
+            
         return $months;
     }
 
@@ -33,7 +34,7 @@ class TransactionsRepository extends EntityRepository
             ->createQuery(
                 "SELECT DISTINCT YEAR(p.createAt) as year
                 FROM TransactionsBundle:Transactions p
-                ORDER BY p.createAt"
+                ORDER BY year"
             )->getResult();
     }
 
@@ -168,7 +169,7 @@ class TransactionsRepository extends EntityRepository
             ->setParameter(1, $month)
             ->setParameter(2, $year)
             ->setParameter(3, '')
-            ->groupBy('c.name')
+            ->groupBy('c.name, t.id')
             ->getQuery()
             ->getResult();
     }
