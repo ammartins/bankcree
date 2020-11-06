@@ -12,15 +12,10 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20180316163051 extends AbstractMigration
 {
-    public function getDescription() : string
-    {
-        return '';
-    }
-
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema) : void
+    public function up((Schema $schema) : void
     {
         $this->addSql('ALTER TABLE imported ADD success INT NOT NULL;');
     }
@@ -28,7 +23,7 @@ class Version20180316163051 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema) : void
+    public function down((Schema $schema) : void
     {
     }
 }

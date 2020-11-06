@@ -13,7 +13,7 @@ class Version20180316102438 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up((Schema $schema) : void
     {
         $this->addSql(
             "CREATE TABLE imported
@@ -39,7 +39,7 @@ class Version20180316102438 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down((Schema $schema) : void
     {
     }
 }
