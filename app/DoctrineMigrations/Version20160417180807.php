@@ -21,6 +21,7 @@ class Version20160417180807 extends AbstractMigration
             ADD FOREIGN KEY (transaction_type)
             REFERENCES transaction_type(id)"
         );
+        $this->addSql("ALTER TABLE transaction_type ADD recurring bool");
     }
 
     /**
