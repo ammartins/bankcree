@@ -19,38 +19,6 @@ class Version20170829123451 extends AbstractMigration
             "ALTER TABLE transactions
             CHANGE description description LONGTEXT DEFAULT NULL"
         );
-        $this->addSql(
-            "CREATE TABLE accounts (
-                id INT AUTO_INCREMENT NOT NULL,
-                parent_id INT NOT NULL,
-                user_id INT NOT NULL,
-                PRIMARY KEY(id)
-            )
-                DEFAULT CHARACTER
-                SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"
-        );
-        $this->addSql(
-            "CREATE UNIQUE INDEX UNIQ_8D93D649F85E0677 ON user (username)"
-        );
-        $this->addSql(
-            "DROP INDEX UNIQ_EAA81A4C664F7A0B ON transactions"
-        );
-        $this->addSql(
-            "ALTER TABLE transactions
-            ADD CONSTRAINT FK_EAA81A4C6E9D6988 FOREIGN KEY (transaction_type)
-            REFERENCES transaction_type (id)"
-        );
-        $this->addSql(
-            "ALTER TABLE transaction_type ADD parent_id INT DEFAULT NULL"
-        );
-        $this->addSql(
-            "ALTER TABLE transaction_type
-            ADD CONSTRAINT FK_6E9D6988727ACA70 FOREIGN KEY (parent_id)
-            REFERENCES transaction_type (id)"
-        );
-        $this->addSql(
-            "CREATE INDEX IDX_6E9D6988727ACA70 ON transaction_type (parent_id)"
-        );
     }
 
     /**
