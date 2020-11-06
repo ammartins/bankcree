@@ -15,7 +15,6 @@ class Version20170723181426 extends AbstractMigration
      */
     public function up(Schema $schema) : void
     {
-        $this->addSql("DROP INDEX IDX_6E9D6988727ACA70 ON transaction_type");
         $this->addSql("ALTER TABLE transaction_type DROP parent_id");
     }
 
