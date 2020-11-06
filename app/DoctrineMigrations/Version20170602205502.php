@@ -16,9 +16,7 @@ class Version20170602205502 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         $this->addSql(
-            "ALTER TABLE transaction_type
-            ADD discard TINYINT(1) DEFAULT NULL,
-            CHANGE recurring recurring TINYINT(1) NOT NULL"
+            "ALTER TABLE transaction_type CHANGE recurring recurring TINYINT(1) NOT NULL"
         );
         $this->addSql(
             "ALTER TABLE transactions DROP FOREIGN KEY transactions_ibfk_1"
