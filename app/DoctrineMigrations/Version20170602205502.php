@@ -18,7 +18,6 @@ class Version20170602205502 extends AbstractMigration
         $this->addSql(
             "ALTER TABLE transaction_type CHANGE recurring recurring TINYINT(1) NOT NULL"
         );
-        $this->addSql("ALTER TABLE transactions DROP transactions_type");
     }
 
     /**
