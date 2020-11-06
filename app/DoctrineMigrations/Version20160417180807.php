@@ -3,7 +3,7 @@
 namespace Application\Migrations;
 
 use Doctrine\Migrations\AbstractMigration;
-use Doctrine\Schema\Schema;
+use Doctrine\DBAL\Schema\Schema;
 
 /**
 * Auto-generated Migration: Please modify to your needs!
