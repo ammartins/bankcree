@@ -10,6 +10,12 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20180806084137 extends AbstractMigration
 {
+
+    public function getDescription() : string
+    {
+        return '';
+    }
+
     /**
      * @param Schema $schema
      */
