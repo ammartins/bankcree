@@ -17,7 +17,6 @@ class Version20170829123451 extends AbstractMigration
     {
         $this->addSql(
             "ALTER TABLE transactions
-            ADD match_percentage INT DEFAULT NULL,
             CHANGE description description LONGTEXT DEFAULT NULL"
         );
         $this->addSql(
