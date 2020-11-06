@@ -13,7 +13,7 @@ class Version20180317220211 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up((Schema $schema) : void
+    public function up(Schema $schema) : void
     {
         $this->addSql("ALTER TABLE user ADD bank_account VARCHAR(255) NOT NULL;");
     }
@@ -21,7 +21,7 @@ class Version20180317220211 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down((Schema $schema) : void
+    public function down(Schema $schema) : void
     {
     }
 }

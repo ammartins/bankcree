@@ -13,7 +13,7 @@ class Version20170723183319 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up((Schema $schema) : void
+    public function up(Schema $schema) : void
     {
         $this->addSql("ALTER TABLE budget ADD name_id INT DEFAULT NULL, DROP name");
         $this->addSql("ALTER TABLE budget ADD CONSTRAINT FK_73F2F77B71179CD6 FOREIGN KEY (name_id) REFERENCES transaction_type (id)");
@@ -23,7 +23,7 @@ class Version20170723183319 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down((Schema $schema) : void
+    public function down(Schema $schema) : void
     {
     }
 }

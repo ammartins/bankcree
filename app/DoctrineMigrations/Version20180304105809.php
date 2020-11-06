@@ -13,7 +13,7 @@ class Version20180304105809 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up((Schema $schema) : void
+    public function up(Schema $schema) : void
     {
         $this->addSql(
             "ALTER TABLE transaction_type
@@ -24,7 +24,7 @@ class Version20180304105809 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down((Schema $schema) : void
+    public function down(Schema $schema) : void
     {
     }
 }

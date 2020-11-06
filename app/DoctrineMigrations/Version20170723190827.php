@@ -13,7 +13,7 @@ class Version20170723190827 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up((Schema $schema) : void
+    public function up(Schema $schema) : void
     {
         $this->addSql("ALTER TABLE budget DROP FOREIGN KEY FK_73F2F77B71179CD6");
         $this->addSql("DROP INDEX UNIQ_73F2F77B71179CD6 ON budget");
@@ -25,7 +25,7 @@ class Version20170723190827 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down((Schema $schema) : void
+    public function down(Schema $schema) : void
     {
     }
 }
