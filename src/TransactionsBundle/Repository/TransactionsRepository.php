@@ -66,21 +66,32 @@ class TransactionsRepository extends EntityRepository
     /**
      * Find all transactions from given Month and Year
      */
-    public function findAllByMonthYear($month, $year)
+    public function findAllByMonthYear($month, $year, $day = 1)
     {
+        $monthA = $month-1;
+        $yearA = $year;
+
+        if ($month == "1") {
+            $monthA = 12;
+            $yearA = $year-1;
+        }
+
+        $dayA = cal_days_in_month(CAL_GREGORIAN, $monthA, $yearA);
+        $day = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
         return $this
-            ->getEntityManager()
-            ->createQueryBuilder()
-            ->select('t')
-            ->from('TransactionsBundle:Transactions', 't')
-            ->where('Month(t.createAt) = ?1')
-            ->andWhere('Year(t.createAt) = ?2')
-            ->setParameter(1, $month)
-            ->setParameter(2, $year)
-            ->orderBy('t.createAt')
-            ->orderBy('t.id')
-            ->getQuery()
-            ->getResult();
+                ->getEntityManager()
+                ->createQueryBuilder()
+                ->select('t')
+                ->from('TransactionsBundle:Transactions', 't')
+                ->where('t.createAt > ?1')
+                ->andWhere('t.createAt <= ?2')
+                ->setParameter(1, date("Y-m-d", mktime(0, 0, 0, $monthA, $dayA, $yearA)))
+                ->setParameter(2, date("Y-m-d", mktime(0, 0, 0, $month, $day, $year)))
+                ->orderBy('t.createAt')
+                ->orderBy('t.id')
+                ->getQuery()
+                ->getResult();
     }
 
     /**
@@ -94,7 +105,7 @@ class TransactionsRepository extends EntityRepository
             ->createQueryBuilder()
             ->select('t')
             ->from('TransactionsBundle:Transactions', 't')
-            ->orderBy('t.id', 'DESC')
+            ->orderBy('t.createAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();

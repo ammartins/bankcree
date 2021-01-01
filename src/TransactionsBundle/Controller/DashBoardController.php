@@ -12,32 +12,35 @@ class DashBoardController extends Controller
      */
     public function mainDashAction($year, $month)
     {
-        // Entity Manager
+        if($month <= 0 || $month > 12) {
+            $month = 1;
+        }
         $em = $this->getDoctrine()->getManager();
-        // Serializer
         $serializer = $this->get('jms_serializer');
-        // Get Loggedin user
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
         if ($user->getBankName() === "") {
             $this->addFlash('error', 'Please Set Your Bank in Profile Page.');
         }
 
-        // Current Month Transactions
         $currentTransactions = $em->getRepository('TransactionsBundle:Transactions')->findAllByMonthYear($month, $year);
 
         // In no data, redirect for the Last Year/Month Available
         if (!count($currentTransactions)) {
             // Redirect to the Latest Month and Year available
             $lastTransaction = $em->getRepository('TransactionsBundle:Transactions')->findLastOne();
-            if (!count($lastTransaction)) {
-                return $this
-                    ->redirectToRoute('profile');
-            }
-            $date = $lastTransaction[0]->getCreateAt();
 
-            return $this
-            ->redirectToRoute('main_dashboard', array('year' => $date->format('Y'),'month' => $date->format('m')));
+            if (!count($lastTransaction)) {
+                return $this->redirectToRoute('profile');
+            }
+
+            return $this->redirectToRoute(
+                'main_dashboard',
+                array(
+                    'year' => $lastTransaction[0]->getCreateAt()->format('Y'),
+                    'month' => $lastTransaction[0]->getCreateAt()->format('m')
+                )
+            );
         }
 
         // Get Data for Pie Chart Group By Category
