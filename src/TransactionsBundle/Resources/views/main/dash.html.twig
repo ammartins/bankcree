@@ -42,7 +42,7 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             {% for m in months %}
                                 <a class="page-link" href="{{ path('main_dashboard', {'year' : year,'month' : m.months}) }}">
-                                    {{ m.monthName|date('F') }}
+                                    {{ date("1-"~m.months~"-1")|date('F') }}
                                 </a>
                             {% endfor %}
                         </div>
