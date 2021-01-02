@@ -26,27 +26,27 @@ pipeline {
         sh '''rm -rf vendor'''
       }
     }
-    // stage('Docker image Create') {
-    //   steps {
-    //     script {
-    //       dockerImage = docker.build registry + ":$BUILD_NUMBER"
-    //     }
+    stage('Docker image Create') {
+      steps {
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
 
-    //   }
-    // }
-    // stage('Push Images') {
-    //   parallel {
-    //     stage('Deploy Image Cron') {
-    //       steps {
-    //         script {
-    //           docker.withRegistry( '', registryCredential ) {
-    //             dockerImage.push()
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
+      }
+    }
+    stage('Push Images') {
+      parallel {
+        stage('Deploy Image Cron') {
+          steps {
+            script {
+              docker.withRegistry( '', registryCredential ) {
+                dockerImage.push()
+              }
+            }
+          }
+        }
+      }
+    }
   }
   environment {
     registry = 'ammartins/abnapp'
