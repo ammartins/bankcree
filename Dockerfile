@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:20.10
 
 ADD app /srv/app
 ADD composer.json /srv/composer.json
