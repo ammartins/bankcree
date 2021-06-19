@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:groovy-20210614
 
 ADD app /srv/app
 ADD composer.json /srv/composer.json
