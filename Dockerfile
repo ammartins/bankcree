@@ -22,8 +22,11 @@ RUN apt-get install software-properties-common -y && \
     apt-get install php7.3 php7.3-cli php7.3-xml php7.3-curl curl git libmysqlclient-dev zip unzip php-zip php7.3-mysql -y
 
 # Install Composer
-RUN curl -s https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/local/bin/composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN ls -lsa
+RUN php composer-setup.php --version=1.6.3
+RUN php -r "unlink('composer-setup.php');"
+RUN mv composer.phar /usr/local/bin/composer
 
 WORKDIR /srv/
 

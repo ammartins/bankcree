@@ -20,7 +20,7 @@
             </thead>
             {% for transaction in transactions %}
                 <tr {% if transaction.categories %}class="hideTransaction"{% endif %}>
-                    <td>{{ transaction.createAt.date|date('Y-m-d') }}</td>
+                    <td>{{ transaction.createAt|date('Y-m-d') }}</td>
                     {% if transaction.categories and transaction.categories.parent %}
                         <td>{{ transaction.categories.parent.name }}</td>
                     {% else %}
