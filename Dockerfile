@@ -1,11 +1,11 @@
 FROM ubuntu:22.04
 
-ADD app /srv/app
-ADD composer.json /srv/composer.json
-ADD composer.lock /srv/composer.lock
-ADD renovate.json /srv/renovate.json
-ADD src /srv/src
-ADD web /srv/web
+COPY app /srv/app
+COPY composer.json /srv/composer.json
+COPY composer.lock /srv/composer.lock
+COPY renovate.json /srv/renovate.json
+COPY src /srv/src
+COPY web /srv/web
 
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
