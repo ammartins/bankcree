@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:kinetic
 
 ADD app /srv/app
 ADD composer.json /srv/composer.json
