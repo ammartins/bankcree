@@ -1,0 +1,80 @@
+FROM ubuntu:22.04
+
+ADD app /srv/app
+ADD composer.json /srv/composer.json
+ADD composer.lock /srv/composer.lock
+ADD renovate.json /srv/renovate.json
+ADD src /srv/src
+ADD web /srv/web
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get dist-upgrade -y && \
+    apt-get install sudo -y && \
+    apt-get autoremove -y && \
+    apt-get autoclean -y
+
+RUN apt-get install software-properties-common -y && \
+    add-apt-repository ppa:ondrej/php && \
+    apt-get update && \
+    apt-get install php7.3 php7.3-cli php7.3-xml php7.3-curl curl git libmysqlclient-dev zip unzip php-zip php7.3-mysql -y
+RUN apt-get install curl git libmysqlclient-dev zip unzip php7.3-mysql -y
+
+# Install Composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN ls -lsa
+RUN php composer-setup.php --version=1.6.3
+RUN php -r "unlink('composer-setup.php');"
+RUN mv composer.phar /usr/local/bin/composer
+
+WORKDIR /srv/
+
+RUN composer install --no-scripts --no-interaction
+COPY nginx/default.conf /etc/nginx/sites-available/default
+
+EXPOSE 80
+
+ENTRYPOINT php-fpm -f
+#php app/console match:payments -- all
+# Use an official PHP image with the desired version
+FROM php:7.3-fpm
+
+# Install required system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    nginx \
+    libpng-dev \
+    libonig-dev
+
+# Install Composer globally
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.19
+
+# Set the working directory in the container
+WORKDIR /srv/banckree
+
+# Clone your Symfony application
+RUN git clone https://github.com/your/symfony/app.git .
+
+# Checkout the desired Symfony version
+RUN git checkout tags/v5.0.4
+
+# Install Symfony dependencies using Composer
+RUN composer install --no-scripts --no-interaction
+
+# Copy Nginx configuration
+COPY nginx/default.conf /etc/nginx/sites-available/default
+
+# Expose ports
+EXPOSE 80
+
+# Set up environment variables for Symfony
+ENV APP_ENV=prod
+ENV APP_SECRET=your_app_secret
+
+# Set up environment variables for database configuration
+ENV DATABASE_URL=mysql://db_user:db_password@db_host:3306/db_name
+
+# Start PHP-FPM and Nginx
+CMD ["sh", "-c", "envsubst < /etc/nginx/sites-available/default > /etc/nginx/sites-available/default && nginx -g 'daemon off;'"]
